@@ -23,3 +23,22 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew build
+
+      - name: Docker build
+        run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -t test .
+          docker tag test gusdn85554/test:${GITHUB_SHA::7}
+          docker push gusdn85554/test:${GITHUB_SHA::7}
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ec2-3-38-39-40.ap-northeast-2.compute.amazonaws.com
+          username: ec2-user
+          key: ${{ secrets.PRIVATE_KEY }}
+          envs: GITHUB_SHA
+          script: |
+            docker pull gusdn85554/test:${GITHUB_SHA::7}
+            docker tag gusdn85554/test:${GITHUB_SHA::7} test
+            docker stop server
+            docker run -d --rm --name server -p 8080:8080 test
