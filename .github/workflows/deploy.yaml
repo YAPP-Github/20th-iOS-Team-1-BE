@@ -41,3 +41,13 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: ${{ secrets.DOCKER_TAG }}
+
+  deploy:
+    needs: build
+    name: Deploy
+    runs-on: [ self-hosted, label-development ]
+    steps:
+      - name: Docker run
+        run: |
+            sudo docker ps -q --filter "name=test" | grep -q . && sudo docker stop "test" && sudo docker rmi "gusdn85554/test"
+            sudo docker run -d --name test --rm -p 8080:8080 gusdn85554/test
