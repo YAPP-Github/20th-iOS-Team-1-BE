@@ -25,7 +25,6 @@ jobs:
         run: ./gradlew build
 
       - name: Docker build & Login DockerHub
-        uses: docker/login-action@v1
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker build -t test .
