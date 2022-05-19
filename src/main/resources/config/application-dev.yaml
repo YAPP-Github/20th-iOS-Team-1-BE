@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: ENC(dIFkqZi9C1YaPmh25XgUIMoQF+o4XDIW7H2kq/5anKnCXvdKd5asjmeF8JmL2oT8CNjJBCUi0LdlnArHCAaatDoyUW/diKQz)
+    username: ENC(OTUfXu9X9QBk4lG0mm19+A==)
+    password: ENC(8d+CPaIyBQOntW/l/k6WlE9NqDqx5eoR)
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    database: mysql
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL57Dialect
+        naming:
+          physical-strategy: org.hibernate.boot.model.naming.MySQL5InnoDBDialect
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
