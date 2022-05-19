@@ -62,5 +62,5 @@ jobs:
     steps:
       - name: Docker run
         run: |
-            sudo docker ps -q --filter "name=yapp" | grep -q . && sudo docker stop "yapp" && sudo docker rmi "${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_TAG }}"
+            sudo docker ps -q --filter "name=test" | grep -q . && sudo docker stop "test" && sudo docker rmi "${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_TAG }}"
             sudo docker run -d --name yapp --rm -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_PASSWORD }}
