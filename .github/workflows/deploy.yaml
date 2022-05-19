@@ -24,12 +24,14 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      - name: Docker build & Login DockerHub
-        run: |
-          docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin ${{ secrets.DOCKER_PASSWORD }}
-          docker build -t test .
-          docker tag test gusdn85554/test:${GITHUB_SHA::7}
-          docker push gusdn85554/test:${GITHUB_SHA::7}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push to DockerHub
         uses: docker/build-push-action@v2
