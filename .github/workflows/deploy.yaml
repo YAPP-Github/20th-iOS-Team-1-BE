@@ -63,4 +63,4 @@ jobs:
       - name: Docker run
         run: |
             sudo docker ps -q --filter "name=yapp" | grep -q . && sudo docker stop "yapp" && sudo docker rmi "${{ secrets.DOCKER_TAG }}"
-            sudo docker run --name yapp --rm -p 8080:8080 -e TOGATHER_JASYPT_PASSWORD=${{ secrets.TOGATHER_JASYPT_PASSWORD }} ${{ secrets.DOCKER_TAG }}
+            sudo docker run -d --name yapp --rm -p 8080:8080 -e TOGATHER_JASYPT_PASSWORD=${{ secrets.TOGATHER_JASYPT_PASSWORD }} ${{ secrets.DOCKER_TAG }}
