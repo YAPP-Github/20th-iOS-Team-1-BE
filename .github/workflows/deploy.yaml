@@ -63,4 +63,4 @@ jobs:
       - name: Docker run
         run: |
             sudo docker stop yapp && docker rm yapp && docker rmi $ {{ secrets.DOCKER_TAG }}
-            sudo docker run -d -p 8080:8080 --name yapp -e TOGATHER_JASYPT_PASSWORD=${{ secrets.TOGATHER_JASYPT_PASSWORD }} --restart always ${{ secrets.DOCKER_TAG }}
+            sudo docker run -d -p 8080:8080 --name yapp -e TOGATHER_JASYPT_PASSWORD=${{ secrets.TOGATHER_JASYPT_PASSWORD }} ${{ secrets.DOCKER_TAG }}
