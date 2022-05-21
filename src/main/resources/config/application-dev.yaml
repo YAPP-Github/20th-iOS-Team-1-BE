@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://yapp20be.cy7tcir4lv85.ap-northeast-2.rds.amazonaws.com:3306/yapp
+    url: ENC(LbJ/mHuNdf8ev0K55UK22Fu1IG78TZT6PPMNQTp3Qr8f6F6imvQ0WYkZNx2kkq3RWxkdviucv4dTVqRZ7zKFhAluy1tk4kO1xQvPk5L2/MvHXjR9MQykrbZkROeUz7Ue)
     username: ENC(OTUfXu9X9QBk4lG0mm19+A==)
     password: ENC(8d+CPaIyBQOntW/l/k6WlE9NqDqx5eoR)
     driver-class-name: com.mysql.cj.jdbc.Driver
