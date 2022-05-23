@@ -27,7 +27,7 @@ public class Club extends BaseEntity {
     private List<AccountClub> accountClubs = new ArrayList<>();
 
     @Column(nullable = false, length = 70)
-    private String name;
+    private String title;
 
     @Column(columnDefinition = "TEXT")
     private String description;
@@ -66,12 +66,12 @@ public class Club extends BaseEntity {
     private Double longitude;
 
     @Builder
-    public Club(Long id, List<AccountClub> accountClubs, String name, String description,
+    public Club(List<AccountClub> accountClubs, String title, String description,
                 Category category, int maximumPeople, EligibleSex eligibleSex,
                 List<PetSizeType> eligiblePetSizeTypes, List<EligibleBreed> eligibleBreeds,
                 ZonedDateTime startDate, ZonedDateTime endDate, Double latitude, Double longitude) {
         this.accountClubs = accountClubs;
-        this.name = name;
+        this.title = title;
         this.description = description;
         this.category = category;
         this.maximumPeople = maximumPeople;
