@@ -32,24 +32,26 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.8'
-
 	// querydsl
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
+	// swagger
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+	// Jasypt
+	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.3'
+
+	// JWT
+	compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.projectlombok:lombok'
 
-	// swagger
-	implementation 'io.springfox:springfox-boot-starter:3.0.0'
-
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
-
-	// Jasypt
-	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.3'
 }
 
 tasks.named('test') {

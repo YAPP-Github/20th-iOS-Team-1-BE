@@ -1,4 +1,4 @@
-package com.yapp.pet.web.club.dto;
+package com.yapp.pet.web.club.model;
 
 public class ClubDto {
 
