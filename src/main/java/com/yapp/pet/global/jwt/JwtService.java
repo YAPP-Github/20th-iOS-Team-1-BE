@@ -51,7 +51,8 @@ public class JwtService {
 				.signWith(key, SignatureAlgorithm.HS512)
 				.setHeaderParam(JWT_HEADER_PARAM_TYPE, headerType)
 				.setIssuer(issuer)
-				.setSubject(String.valueOf(account.getId()))
+				.setSubject(TokenType.ACCESS.name())
+				.setAudience(String.valueOf(account.getId()))
 				.setExpiration(expiration)
 				.setIssuedAt(issuedAt)
 				.claim(AUTHORITIES_KEY, account.getRole())
@@ -60,7 +61,7 @@ public class JwtService {
 
 	public JwtAuthentication getAuthentication(String token) {
 		Claims claims = parseClaims(token);
-		long accountId = Long.parseLong(claims.getSubject());
+		long accountId = Long.parseLong(claims.getAudience());
 
 		Collection<? extends GrantedAuthority> authorities =
 				Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
