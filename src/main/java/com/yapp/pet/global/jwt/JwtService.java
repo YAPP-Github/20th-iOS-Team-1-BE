@@ -2,7 +2,7 @@ package com.yapp.pet.global.jwt;
 
 import com.yapp.pet.domain.account.AccountRepository;
 import com.yapp.pet.domain.account.entity.Account;
-import com.yapp.pet.global.exception.jwt.*;
+import com.yapp.pet.global.exception.jwt.AuthorityInfoNotFoundException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -12,7 +12,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityNotFoundException;
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
@@ -30,20 +29,17 @@ public class JwtService {
 	private final String headerType;
 	private final Key key;
 	private final String issuer;
-	private final AccountRepository accountRepository;
 
 	public JwtService(@Value("${jwt.token.header-type}") String headerType,
 					  @Value("${jwt.token.issuer}") String issuer,
 					  @Value("${jwt.token.secret}") String secret,
-					  @Value("${jwt.token.access-time}") long accessTime,
-					  AccountRepository accountRepository) {
+					  @Value("${jwt.token.access-time}") long accessTime) {
 
 		byte[] keyBytes = Decoders.BASE64.decode(secret);
 		this.key = Keys.hmacShaKeyFor(keyBytes);
 		this.headerType = headerType;
 		this.issuer = issuer;
 		this.accessTime = accessTime;
-		this.accountRepository = accountRepository;
 	}
 
 	public String createAccessToken(Account account) {
@@ -96,27 +92,21 @@ public class JwtService {
 		return false;
 	}
 
-	public Account getAccount(String token) {
+	public boolean validateToken(String token){
 		try {
-			Claims claims = Jwts.parserBuilder()
-					.setSigningKey(key)
-					.build()
-					.parseClaimsJws(token)
-					.getBody();
-
-			Long accountId = Long.parseLong(claims.getSubject());
-
-			return accountRepository.findById(accountId).orElseThrow(EntityNotFoundException::new);
-
-		} catch (SecurityException | MalformedJwtException e) {
-			throw new InvalidJwtSignatureException();
+			Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+			return true;
+		} catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+			log.info("잘못된 JWT 서명입니다.");
 		} catch (ExpiredJwtException e) {
-			throw new ExpiredJwtTokenException();
+			log.info("만료된 JWT 토큰입니다.");
 		} catch (UnsupportedJwtException e) {
-			throw new UnsupportedJwtTokenException();
+			log.info("지원되지 않는 JWT 토큰입니다.");
 		} catch (IllegalArgumentException e) {
-			throw new InvalidJwtTokenException();
+			log.info("JWT 토큰이 잘못되었습니다.");
 		}
+
+		return false;
 	}
 
 }
