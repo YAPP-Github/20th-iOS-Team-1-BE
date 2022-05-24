@@ -26,16 +26,3 @@ jwt:
     secret: ENC(96CvoYH1HnbpIxw7kLXaESwEcgB92xTiloPB5QoFCGFL4fWEIsCxbpoCYoqCxgSGp7Umj9C6mnUjh99cPEGM8RYzcVF5v+82G2Wos2xsyUtMZh/ZITZzh0R74NtoS6ma7G4UjHECfIfMdpiFQuDJMg1JKcXurOP2rSHGxdTTSFs=)
     access-time: 1800000 # 30분
     issuer: yapp
-
-apple:
-  auth-token-url: https://appleid.apple.com/auth/token
-  public-key-url: https://appleid.apple.com/auth/keys
-  callback-url: https://yapp-togather.com:443/auth/apple/callback
-  identifier: com.yapp.services
-  team-id: SQ5T25W9V5
-  key-id: 4P665B42JX
-  key-path: static/Authkey_4P665B42JX.p8
-  #client-id: com.test.apple.login
-  #auth-grant-type: authorization_code
-  #redirect-url: https://test.com/oauth2/redirect
-  #scope: openid,name,email
