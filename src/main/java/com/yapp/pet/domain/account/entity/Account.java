@@ -40,6 +40,8 @@ public class Account extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    private String refreshToken;
+
     @Builder
     public Account(String loginId, String password, String nickname,
                    int age, AccountSex sex, Address address, Role role) {
@@ -50,5 +52,13 @@ public class Account extends BaseEntity {
         this.sex = sex;
         this.address = address;
         this.role = role;
+    }
+
+    public void addRefreshToken(String refreshToken){
+        this.refreshToken = refreshToken;
+    }
+
+    public void expireRefreshToken(){
+        this.refreshToken = null;
     }
 }

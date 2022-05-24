@@ -26,20 +26,27 @@ import static com.yapp.pet.global.TogaetherConstants.JWT_HEADER_PARAM_TYPE;
 public class JwtService {
 
 	private final long accessTime;
+	private final long refreshTime;
 	private final String headerType;
 	private final Key key;
 	private final String issuer;
 
+	public AccountRepository accountRepository;
+
 	public JwtService(@Value("${jwt.token.header-type}") String headerType,
 					  @Value("${jwt.token.issuer}") String issuer,
 					  @Value("${jwt.token.secret}") String secret,
-					  @Value("${jwt.token.access-time}") long accessTime) {
+					  @Value("${jwt.token.access-time}") long accessTime,
+					  @Value("${jwt.token.refresh-time}") long refreshTime,
+					  AccountRepository accountRepository) {
 
 		byte[] keyBytes = Decoders.BASE64.decode(secret);
 		this.key = Keys.hmacShaKeyFor(keyBytes);
 		this.headerType = headerType;
 		this.issuer = issuer;
 		this.accessTime = accessTime;
+		this.refreshTime = refreshTime;
+		this.accountRepository = accountRepository;
 	}
 
 	public String createAccessToken(Account account) {
@@ -57,6 +64,28 @@ public class JwtService {
 				.setIssuedAt(issuedAt)
 				.claim(AUTHORITIES_KEY, account.getRole())
 				.compact();
+	}
+
+	public String createRefreshToken(Account account) {
+		long now = (new Date()).getTime();
+		Date issuedAt = new Date();
+		Date expiration = new Date(now + refreshTime);
+
+		String jwt = Jwts.builder()
+				.signWith(key, SignatureAlgorithm.HS512)
+				.setHeaderParam(JWT_HEADER_PARAM_TYPE, headerType)
+				.setIssuer(issuer)
+				.setSubject(TokenType.REFRESH.name())
+				.setAudience(String.valueOf(account.getId()))
+				.setExpiration(expiration)
+				.setIssuedAt(issuedAt)
+				.claim(AUTHORITIES_KEY, account.getRole())
+				.compact();
+
+		account.addRefreshToken(jwt);
+		accountRepository.save(account);
+
+		return jwt;
 	}
 
 	public JwtAuthentication getAuthentication(String token) {
