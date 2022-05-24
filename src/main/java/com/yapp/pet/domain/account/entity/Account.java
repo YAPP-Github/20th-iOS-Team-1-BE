@@ -37,14 +37,18 @@ public class Account extends BaseEntity {
     @Embedded
     private Address address;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     @Builder
     public Account(String loginId, String password, String nickname,
-                   int age, AccountSex sex, Address address) {
+                   int age, AccountSex sex, Address address, Role role) {
         this.loginId = loginId;
         this.password = password;
         this.nickname = nickname;
         this.age = age;
         this.sex = sex;
         this.address = address;
+        this.role = role;
     }
 }
