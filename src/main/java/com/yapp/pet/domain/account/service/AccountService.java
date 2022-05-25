@@ -9,11 +9,13 @@ import com.yapp.pet.global.jwt.JwtAuthentication;
 import com.yapp.pet.global.jwt.JwtService;
 import com.yapp.pet.web.oauth.apple.model.TokenResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AccountService {
@@ -37,16 +39,20 @@ public class AccountService {
         Optional<Token> findToken = tokenRepository.findByUniqueIdentifier(uniqueIdentifier);
 
         findToken.ifPresentOrElse(token -> {
+            log.info("social signIn - " + social.getValue());
+
             tokenResponse.setFirstAccount(false);
             token.exchangeRefreshToken(refreshToken);
         }, () -> {
+            log.info("social signUp - " + social.getValue());
+
             tokenResponse.setFirstAccount(true);
 
             Token createToken = Token.of(uniqueIdentifier, social, refreshToken);
             tokenRepository.save(createToken);
 
-            Account saveAccount = accountRepository.save(Account.of(createToken));
-            tokenResponse.setAccountId(saveAccount.getId());
+            Account createAccount = Account.of(createToken);
+            accountRepository.save(createAccount);
         });
 
         return tokenResponse;

@@ -19,9 +19,6 @@ public class TokenResponse {
             example = "fdsdfu9fjcXjivxJasiC.ezZFD5nopjJ453fxfji6FCjVKcfkld.fC2dFD04kzls4V")
     private String refreshToken;
 
-    @Schema(title = "Togaether 계정 식별 ID", description = "계정 별 고유 식별자 입니다.", example = "1")
-    private Long accountId;
-
     @Schema(title = "계정 존재 여부", description = "이미 존재하는 회원인지 여부 확인", example = "true")
     private boolean isFirstAccount;
 
