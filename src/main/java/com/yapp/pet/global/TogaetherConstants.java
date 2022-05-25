@@ -7,5 +7,6 @@ public final class TogaetherConstants {
 
     public static final String AUTHORITIES_KEY = "auth";
     public static final String JWT_HEADER_PARAM_TYPE = "typ";
+    public static final String ROLE = "USER";
 
 }
