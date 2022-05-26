@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/api")
+@RestController
 @RequiredArgsConstructor
 @Tag(name = "소셜로그인", description = "애플 또는 카카오를 통해 로그인 및 회원가입을 진행합니다.")
 public class AppleController {

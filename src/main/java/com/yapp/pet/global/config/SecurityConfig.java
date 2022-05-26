@@ -30,7 +30,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-
                 .exceptionHandling()
                 .authenticationEntryPoint((request, response, authException) ->
                         response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
@@ -41,7 +40,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
                 .authorizeRequests()
-                .antMatchers("/", "/swagger/**", "/swagger-ui/**", "/swagger-ui.html/**", "/swagger-resources/**").permitAll()
+                .antMatchers("/", "/swagger/**", "/swagger-ui/**", "/swagger-ui.html/**",
+                        "/swagger-resources/**", "/auth/apple/callback").permitAll()
                 .anyRequest().authenticated()
         .and()
                 .apply(new JwtSecurityConfig(jwtService));

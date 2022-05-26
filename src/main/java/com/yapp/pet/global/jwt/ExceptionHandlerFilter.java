@@ -18,14 +18,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.yapp.pet.global.TogaetherConstants.*;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class ExceptionHandlerFilter extends OncePerRequestFilter {
 
 	private final ObjectMapper objectMapper;
-	private static final String ERROR_LOG_MESSAGE = "Exception = {} , message = {}";
-	private static final String CONTENT_TYPE = "application/json";
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -48,6 +48,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
 	}
 
 	private void sendErrorMessage(HttpServletResponse response, BusinessException e) throws IOException {
+		response.setCharacterEncoding(CHARACTER_ENCODING);
 		response.setContentType(CONTENT_TYPE);
 		response.setStatus(e.getHttpStatus().value());
 		response.getWriter().write(objectMapper.writeValueAsString(ExceptionResponseInfo.from(e)));

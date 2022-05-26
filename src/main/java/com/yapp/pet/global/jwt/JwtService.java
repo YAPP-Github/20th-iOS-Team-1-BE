@@ -1,6 +1,6 @@
 package com.yapp.pet.global.jwt;
 
-import com.yapp.pet.global.exception.jwt.AuthorityInfoNotFoundException;
+import com.yapp.pet.global.exception.jwt.*;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -63,7 +63,7 @@ public class JwtService {
 		Date issuedAt = new Date();
 		Date expiration = new Date(now + refreshTime);
 
-		String jwt = Jwts.builder()
+		return Jwts.builder()
 				.signWith(key, SignatureAlgorithm.HS512)
 				.setHeaderParam(JWT_HEADER_PARAM_TYPE, headerType)
 				.setIssuer(issuer)
@@ -72,8 +72,6 @@ public class JwtService {
 				.setIssuedAt(issuedAt)
 				.claim(AUTHORITIES_KEY, ROLE)
 				.compact();
-
-		return jwt;
 	}
 
 	public JwtAuthentication getAuthentication(String token) {
@@ -116,15 +114,17 @@ public class JwtService {
 			return true;
 		} catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
 			log.info("잘못된 JWT 서명입니다.");
+			throw new InvalidJwtSignatureException();
 		} catch (ExpiredJwtException e) {
 			log.info("만료된 JWT 토큰입니다.");
+			throw new ExpiredJwtTokenException();
 		} catch (UnsupportedJwtException e) {
 			log.info("지원되지 않는 JWT 토큰입니다.");
+			throw new UnsupportedJwtTokenException();
 		} catch (IllegalArgumentException e) {
 			log.info("JWT 토큰이 잘못되었습니다.");
+			throw new InvalidJwtTokenException();
 		}
-
-		return false;
 	}
 
 }
