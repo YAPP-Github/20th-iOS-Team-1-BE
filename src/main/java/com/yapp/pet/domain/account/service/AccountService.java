@@ -30,23 +30,23 @@ public class AccountService {
 
         String uniqueIdBySocial = jwtService.getSubject(idToken);
 
-        String accessToken = jwtService.createAccessToken(uniqueIdBySocial);
-        String refreshToken = jwtService.createRefreshToken(uniqueIdBySocial);
-        tokenResponse.addToken(accessToken, refreshToken);
+        String createAccessToken = jwtService.createAccessToken(uniqueIdBySocial);
+        String createRefreshToken = jwtService.createRefreshToken(uniqueIdBySocial);
+        tokenResponse.addToken(createAccessToken, createRefreshToken);
 
-        Optional<Token> findToken = tokenRepository.findByUniqueIdBySocial(uniqueIdBySocial);
+        Optional<Token> findRefreshToken = tokenRepository.findByUniqueIdBySocial(uniqueIdBySocial);
 
-        findToken.ifPresentOrElse(token -> {
+        findRefreshToken.ifPresentOrElse(token -> {
             log.info("social signIn - " + social.getValue());
 
             tokenResponse.setIsFirstAccount(Boolean.FALSE);
-            token.exchangeRefreshToken(refreshToken);
+            token.exchangeRefreshToken(createRefreshToken);
         }, () -> {
             log.info("social signUp - " + social.getValue());
 
             tokenResponse.setIsFirstAccount(Boolean.TRUE);
 
-            Token createToken = Token.of(uniqueIdBySocial, social, refreshToken);
+            Token createToken = Token.of(uniqueIdBySocial, social, createRefreshToken);
             tokenRepository.save(createToken);
 
             Account createAccount = Account.of(createToken);

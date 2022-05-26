@@ -35,9 +35,9 @@ public class TokenService {
 
         String uniqueIdBySocial = jwtService.getSubject(requestRefreshToken);
 
-        Optional<Token> findToken = tokenRepository.findByUniqueIdBySocial(uniqueIdBySocial);
+        Optional<Token> findRefreshToken = tokenRepository.findByUniqueIdBySocial(uniqueIdBySocial);
 
-        findToken.ifPresentOrElse(token -> {
+        findRefreshToken.ifPresentOrElse(token -> {
             String createAccessToken = jwtService.createAccessToken(uniqueIdBySocial);
             String createRefreshToken = jwtService.createRefreshToken(uniqueIdBySocial);
 
@@ -51,6 +51,19 @@ public class TokenService {
         return tokenResponse;
     }
 
+    @Transactional
+    public void expireRefreshToken(HttpServletRequest httpRequest){
+        String requestRefreshToken = getAndValidRefreshToken(httpRequest);
+
+        String uniqueIdBySocial = jwtService.getSubject(requestRefreshToken);
+
+        Optional<Token> findRefreshToken = tokenRepository.findByUniqueIdBySocial(uniqueIdBySocial);
+
+        findRefreshToken.ifPresentOrElse(tokenRepository::delete, () -> {
+            throw new InvalidJwtTokenException();
+        });
+    }
+
     private String getAndValidRefreshToken(HttpServletRequest httpRequest){
         final String bearerToken = httpRequest.getHeader(AUTHORIZATION_HEADER);
 
@@ -58,14 +71,14 @@ public class TokenService {
             throw new InvalidJwtTokenException();
         }
 
-        String jwt = bearerToken.substring(AUTHORIZATION_HEADER_BEARER.length());
-        Claims claims = jwtService.parseClaims(jwt);
+        String refreshToken = bearerToken.substring(AUTHORIZATION_HEADER_BEARER.length());
+        Claims claims = jwtService.parseClaims(refreshToken);
 
         if(!TokenType.isRefreshToken(claims.getAudience())){
             throw new NotRefreshTokenException();
         }
 
-        return jwt;
+        return refreshToken;
     }
 
 }

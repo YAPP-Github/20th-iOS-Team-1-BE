@@ -9,7 +9,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,12 +31,26 @@ public class TokenController {
             description = "access token 만료시, refresh token을 통해 재발급받습니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
-                    content = @Content(schema = @Schema(implementation = TokenResponse.class)))
+                    content = @Content(schema = @Schema(implementation = TokenResponse.class))),
+            @ApiResponse(responseCode = "401", description = "잘못된 토큰인 경우")
     })
     public ResponseEntity<TokenResponse> reIssuance(HttpServletRequest httpRequest) {
         TokenResponse tokenResponse = tokenService.reIssuance(httpRequest);
 
         return ResponseEntity.ok(tokenResponse);
+    }
+
+    @DeleteMapping("/token/expire")
+    @Operation(summary = "로그아웃", tags = "토큰",
+            description = "refresh token 삭제를 통해 로그아웃 합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "401", description = "잘못된 토큰인 경우")
+    })
+    public ResponseEntity<HttpStatus> expireRefreshToken(HttpServletRequest httpRequest) {
+        tokenService.expireRefreshToken(httpRequest);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
