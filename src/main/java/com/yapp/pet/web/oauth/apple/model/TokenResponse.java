@@ -1,5 +1,6 @@
 package com.yapp.pet.web.oauth.apple.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Schema(description = "소셜 로그인 응답 객체")
 public class TokenResponse {
 
@@ -20,7 +22,7 @@ public class TokenResponse {
     private String refreshToken;
 
     @Schema(title = "계정 존재 여부", description = "이미 존재하는 회원인지 여부 확인", example = "true")
-    private boolean isFirstAccount;
+    private Boolean isFirstAccount;
 
     public void addToken(String accessToken, String refreshToken){
         this.accessToken = accessToken;

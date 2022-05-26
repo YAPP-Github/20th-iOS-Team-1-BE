@@ -41,12 +41,12 @@ public class AccountService {
         findToken.ifPresentOrElse(token -> {
             log.info("social signIn - " + social.getValue());
 
-            tokenResponse.setFirstAccount(false);
+            tokenResponse.setIsFirstAccount(Boolean.FALSE);
             token.exchangeRefreshToken(refreshToken);
         }, () -> {
             log.info("social signUp - " + social.getValue());
 
-            tokenResponse.setFirstAccount(true);
+            tokenResponse.setIsFirstAccount(Boolean.TRUE);
 
             Token createToken = Token.of(uniqueIdentifier, social, refreshToken);
             tokenRepository.save(createToken);

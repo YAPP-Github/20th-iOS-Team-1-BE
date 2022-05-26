@@ -40,8 +40,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
                 .authorizeRequests()
+                .antMatchers(POST, "/test/**").permitAll()
                 .antMatchers("/", "/swagger/**", "/swagger-ui/**", "/swagger-ui.html/**",
-                        "/swagger-resources/**", "/auth/apple/callback").permitAll()
+                        "/swagger-resources/**", "/auth/apple/callback", "/api/token/re-issuance").permitAll()
                 .anyRequest().authenticated()
         .and()
                 .apply(new JwtSecurityConfig(jwtService));

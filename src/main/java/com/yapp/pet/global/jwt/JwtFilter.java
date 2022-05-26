@@ -24,11 +24,11 @@ public class JwtFilter extends OncePerRequestFilter {
 	private final JwtService jwtService;
 
 	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+	protected void doFilterInternal(HttpServletRequest httpRequest, HttpServletResponse response,
 									FilterChain filterChain) throws ServletException, IOException {
 
-		String jwt = resolveToken(request);
-		String requestURI = request.getRequestURI();
+		String jwt = resolveToken(httpRequest);
+		String requestURI = httpRequest.getRequestURI();
 
 		if (StringUtils.hasText(jwt) && jwtService.validateToken(jwt)) {
 			JwtAuthentication authentication = jwtService.getAuthentication(jwt);
@@ -39,7 +39,7 @@ public class JwtFilter extends OncePerRequestFilter {
 			log.debug("유효한 JWT 토큰이 없습니다, uri: {}", requestURI);
 		}
 
-		filterChain.doFilter(request, response);
+		filterChain.doFilter(httpRequest, response);
 	}
 
 	@Override
