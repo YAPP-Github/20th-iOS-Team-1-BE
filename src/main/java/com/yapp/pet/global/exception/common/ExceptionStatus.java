@@ -27,6 +27,7 @@ public enum ExceptionStatus{
 	EXPIRED_JWT_TOKEN_EXCEPTION(401, "만료된 JWT 토큰입니다.", UNAUTHORIZED),
 	UNSUPPORTED_JWT_TOKEN_EXCEPTION(401, "지원되지 않는 JWT 토큰입니다.", UNAUTHORIZED),
 	INVALID_JWT_TOKEN_EXCEPTION(401, "JWT 토큰이 잘못되었습니다.", UNAUTHORIZED),
+	NOT_REFRESH_TOKEN(401, "Refresh Token이 아닙니다.", UNAUTHORIZED),
 	;
 
 	private final int status;

@@ -5,7 +5,6 @@ import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.token.entity.Social;
 import com.yapp.pet.domain.token.entity.Token;
 import com.yapp.pet.domain.token.repository.TokenRepository;
-import com.yapp.pet.global.jwt.JwtAuthentication;
 import com.yapp.pet.global.jwt.JwtService;
 import com.yapp.pet.web.oauth.apple.model.TokenResponse;
 import lombok.RequiredArgsConstructor;
@@ -29,14 +28,13 @@ public class AccountService {
     public TokenResponse signIn(String idToken, Social social) {
         TokenResponse tokenResponse = new TokenResponse();
 
-        JwtAuthentication authentication = jwtService.getAuthentication(idToken);
-        String uniqueIdentifier = String.valueOf(authentication.getPrincipal());
+        String uniqueIdBySocial = jwtService.getSubject(idToken);
 
-        String accessToken = jwtService.createAccessToken(authentication);
-        String refreshToken = jwtService.createRefreshToken(authentication);
+        String accessToken = jwtService.createAccessToken(uniqueIdBySocial);
+        String refreshToken = jwtService.createRefreshToken(uniqueIdBySocial);
         tokenResponse.addToken(accessToken, refreshToken);
 
-        Optional<Token> findToken = tokenRepository.findByUniqueIdentifier(uniqueIdentifier);
+        Optional<Token> findToken = tokenRepository.findByUniqueIdBySocial(uniqueIdBySocial);
 
         findToken.ifPresentOrElse(token -> {
             log.info("social signIn - " + social.getValue());
@@ -48,7 +46,7 @@ public class AccountService {
 
             tokenResponse.setIsFirstAccount(Boolean.TRUE);
 
-            Token createToken = Token.of(uniqueIdentifier, social, refreshToken);
+            Token createToken = Token.of(uniqueIdBySocial, social, refreshToken);
             tokenRepository.save(createToken);
 
             Account createAccount = Account.of(createToken);

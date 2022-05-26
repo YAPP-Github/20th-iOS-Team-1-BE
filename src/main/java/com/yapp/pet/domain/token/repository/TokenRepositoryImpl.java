@@ -14,11 +14,11 @@ public class TokenRepositoryImpl implements TokenRepositoryCustom{
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Optional<Token> findByUniqueIdentifier(String uniqueIdentifier) {
+    public Optional<Token> findByUniqueIdBySocial(String uniqueIdBySocial) {
         return Optional.ofNullable(
                 queryFactory
                     .selectFrom(token)
-                    .where(token.uniqueIdentifier.eq(uniqueIdentifier))
+                    .where(token.uniqueIdBySocial.eq(uniqueIdBySocial))
                     .fetchOne()
         );
     }

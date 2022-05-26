@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface TokenRepositoryCustom {
 
-    Optional<Token> findByUniqueIdentifier(String uniqueIdentifier);
+    Optional<Token> findByUniqueIdBySocial(String uniqueIdBySocial);
 }

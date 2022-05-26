@@ -19,7 +19,7 @@ public class Token extends BaseEntity {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String uniqueIdentifier;
+    private String uniqueIdBySocial;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -28,15 +28,15 @@ public class Token extends BaseEntity {
     private String refreshToken;
 
     @Builder
-    public Token(String uniqueIdentifier, Social socialType, String refreshToken) {
-        this.uniqueIdentifier = uniqueIdentifier;
+    public Token(String uniqueIdBySocial, Social socialType, String refreshToken) {
+        this.uniqueIdBySocial = uniqueIdBySocial;
         this.socialType = socialType;
         this.refreshToken = refreshToken;
     }
 
-    public static Token of(String uniqueIdentifier, Social social, String refreshToken){
+    public static Token of(String uniqueIdBySocial, Social social, String refreshToken){
         return Token.builder()
-                .uniqueIdentifier(uniqueIdentifier)
+                .uniqueIdBySocial(uniqueIdBySocial)
                 .socialType(social)
                 .refreshToken(refreshToken)
                 .build();

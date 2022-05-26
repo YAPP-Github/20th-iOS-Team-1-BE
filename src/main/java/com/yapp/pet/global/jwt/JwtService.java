@@ -42,7 +42,7 @@ public class JwtService {
 		this.refreshTime = refreshTime;
 	}
 
-	public String createAccessToken(JwtAuthentication authentication) {
+	public String createAccessToken(String uniqueIdBySocial) {
 		long now = (new Date()).getTime();
 		Date issuedAt = new Date();
 		Date expiration = new Date(now + accessTime);
@@ -51,7 +51,7 @@ public class JwtService {
 				.signWith(key, SignatureAlgorithm.HS512)
 				.setHeaderParam(JWT_HEADER_PARAM_TYPE, headerType)
 				.setIssuer(issuer)
-				.setSubject(String.valueOf(authentication.getPrincipal()))
+				.setSubject(uniqueIdBySocial)
 				.setAudience(TokenType.ACCESS.toString())
 				.setExpiration(expiration)
 				.setIssuedAt(issuedAt)
@@ -59,7 +59,7 @@ public class JwtService {
 				.compact();
 	}
 
-	public String createRefreshToken(JwtAuthentication authentication) {
+	public String createRefreshToken(String uniqueIdBySocial) {
 		long now = (new Date()).getTime();
 		Date issuedAt = new Date();
 		Date expiration = new Date(now + refreshTime);
@@ -68,7 +68,7 @@ public class JwtService {
 				.signWith(key, SignatureAlgorithm.HS512)
 				.setHeaderParam(JWT_HEADER_PARAM_TYPE, headerType)
 				.setIssuer(issuer)
-				.setSubject(String.valueOf(authentication.getPrincipal()))
+				.setSubject(uniqueIdBySocial)
 				.setAudience(TokenType.REFRESH.toString())
 				.setExpiration(expiration)
 				.setIssuedAt(issuedAt)
@@ -78,17 +78,17 @@ public class JwtService {
 
 	public JwtAuthentication getAuthentication(String token) {
 		Claims claims = parseClaims(token);
-		String uniqueIdentifier = claims.getSubject();
+		String uniqueIdBySocial = claims.getSubject();
 
 		Collection<? extends GrantedAuthority> authorities =
 				Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
 						.map(SimpleGrantedAuthority::new)
 						.collect(Collectors.toList());
 
-		return new JwtAuthentication(uniqueIdentifier, "", authorities);
+		return new JwtAuthentication(uniqueIdBySocial, "", authorities);
 	}
 
-	private Claims parseClaims(String token) {
+	public Claims parseClaims(String token) {
 		try {
 			return Jwts.parserBuilder()
 					.setSigningKey(key)
@@ -100,14 +100,17 @@ public class JwtService {
 		}
 	}
 
-	public boolean isTokenExpired(Date tokenExpiredTime){
-		Date now = new Date();
-
-		if(now.after(tokenExpiredTime)){
-			return true;
+	public String getSubject(String token){
+		try {
+			return Jwts.parserBuilder()
+					.setSigningKey(key)
+					.build()
+					.parseClaimsJws(token)
+					.getBody()
+					.getSubject();
+		} catch (ExpiredJwtException e) {
+			throw new AuthorityInfoNotFoundException();
 		}
-
-		return false;
 	}
 
 	public boolean validateToken(String token){
