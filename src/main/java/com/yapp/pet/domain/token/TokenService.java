@@ -6,7 +6,7 @@ import com.yapp.pet.global.exception.jwt.InvalidJwtTokenException;
 import com.yapp.pet.global.exception.jwt.NotRefreshTokenException;
 import com.yapp.pet.global.jwt.JwtService;
 import com.yapp.pet.global.jwt.TokenType;
-import com.yapp.pet.web.oauth.apple.model.TokenResponse;
+import com.yapp.pet.web.token.model.TokenResponse;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

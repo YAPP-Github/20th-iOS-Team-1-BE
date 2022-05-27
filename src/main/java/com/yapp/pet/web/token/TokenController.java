@@ -1,7 +1,7 @@
 package com.yapp.pet.web.token;
 
 import com.yapp.pet.domain.token.TokenService;
-import com.yapp.pet.web.oauth.apple.model.TokenResponse;
+import com.yapp.pet.web.token.model.TokenResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -26,7 +26,7 @@ public class TokenController {
 
     private final TokenService tokenService;
 
-    @PostMapping("/token/re-issuance")
+    @PostMapping("/tokens/re-issuance")
     @Operation(summary = "access token 재발급", tags = "토큰",
             description = "access token 만료시, refresh token을 통해 재발급받습니다.")
     @ApiResponses(value = {
@@ -40,7 +40,7 @@ public class TokenController {
         return ResponseEntity.ok(tokenResponse);
     }
 
-    @DeleteMapping("/token/expire")
+    @DeleteMapping("/tokens/expire")
     @Operation(summary = "로그아웃", tags = "토큰",
             description = "refresh token 삭제를 통해 로그아웃 합니다.")
     @ApiResponses(value = {

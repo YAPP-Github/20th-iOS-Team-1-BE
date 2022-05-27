@@ -6,7 +6,7 @@ import com.yapp.pet.domain.token.entity.Social;
 import com.yapp.pet.domain.token.entity.Token;
 import com.yapp.pet.domain.token.repository.TokenRepository;
 import com.yapp.pet.global.jwt.JwtService;
-import com.yapp.pet.web.oauth.apple.model.TokenResponse;
+import com.yapp.pet.web.oauth.apple.model.SignInResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,26 +25,26 @@ public class AccountService {
     private final TokenRepository tokenRepository;
 
     @Transactional
-    public TokenResponse signIn(String idToken, Social social) {
-        TokenResponse tokenResponse = new TokenResponse();
+    public SignInResponse signIn(String idToken, Social social) {
+        SignInResponse signInResponse = new SignInResponse();
 
         String uniqueIdBySocial = jwtService.getSubject(idToken);
 
         String createAccessToken = jwtService.createAccessToken(uniqueIdBySocial);
         String createRefreshToken = jwtService.createRefreshToken(uniqueIdBySocial);
-        tokenResponse.addToken(createAccessToken, createRefreshToken);
+        signInResponse.addToken(createAccessToken, createRefreshToken);
 
         Optional<Token> findRefreshToken = tokenRepository.findByUniqueIdBySocial(uniqueIdBySocial);
 
         findRefreshToken.ifPresentOrElse(token -> {
             log.info("social signIn - " + social.getValue());
 
-            tokenResponse.setIsFirstAccount(Boolean.FALSE);
+            signInResponse.setIsFirstAccount(Boolean.FALSE);
             token.exchangeRefreshToken(createRefreshToken);
         }, () -> {
             log.info("social signUp - " + social.getValue());
 
-            tokenResponse.setIsFirstAccount(Boolean.TRUE);
+            signInResponse.setIsFirstAccount(Boolean.TRUE);
 
             Token createToken = Token.of(uniqueIdBySocial, social, createRefreshToken);
             tokenRepository.save(createToken);
@@ -53,7 +53,7 @@ public class AccountService {
             accountRepository.save(createAccount);
         });
 
-        return tokenResponse;
+        return signInResponse;
     }
 
 }

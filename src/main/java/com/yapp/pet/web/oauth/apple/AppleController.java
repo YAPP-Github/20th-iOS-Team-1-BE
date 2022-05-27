@@ -3,7 +3,7 @@ package com.yapp.pet.web.oauth.apple;
 import com.yapp.pet.domain.account.service.AccountService;
 import com.yapp.pet.domain.token.entity.Social;
 import com.yapp.pet.web.oauth.apple.model.CallbackResponseApple;
-import com.yapp.pet.web.oauth.apple.model.TokenResponse;
+import com.yapp.pet.web.oauth.apple.model.SignInResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -24,27 +24,28 @@ public class AppleController {
     private final AccountService accountService;
 
     @PostMapping("/auth/apple/callback")
-    @Operation(summary = "애플 콜백 API", tags = "소셜로그인",
-            description = "애플에서 Togaether 서버로 콜백하는 API 입니다. IOS에서 직접 호출하지는 않습니다.")
+    @Operation(summary = "애플 로그인 API", tags = "소셜로그인",
+            description = "IOS에서 애플 서버로 로그인 요청 시, 애플에서 Togaether 서버로 콜백 후, " +
+                    "회원가입 여부와 함께 토큰 값을 응답합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
-                content = @Content(schema = @Schema(implementation = TokenResponse.class)))
+                content = @Content(schema = @Schema(implementation = SignInResponse.class)))
     })
-    public ResponseEntity<TokenResponse> callbackOfApple(@RequestBody CallbackResponseApple callbackResponse){
-        TokenResponse tokenResponse = null;
+    public ResponseEntity<SignInResponse> callbackOfApple(@RequestBody CallbackResponseApple callbackResponse){
+        SignInResponse signInResponse = null;
 
         if (callbackResponse == null) {
             return null; // Todo 상세 처리 필요
         }
 
         try {
-            tokenResponse = accountService.signIn(callbackResponse.getIdToken(), Social.APPLE);
+            signInResponse = accountService.signIn(callbackResponse.getIdToken(), Social.APPLE);
 
         } catch (Exception e) {
             // Todo 예외 구체화
         }
 
-        return ResponseEntity.ok(tokenResponse);
+        return ResponseEntity.ok(signInResponse);
     }
 
 }
