@@ -36,6 +36,13 @@ public class Club extends BaseEntity {
     private Category category;
 
     @Column(nullable = false)
+    private String meetingPlace;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ClubStatus status;
+
+    @Column(nullable = false)
     private int maximumPeople;
 
     @Enumerated(EnumType.STRING)
@@ -66,12 +73,14 @@ public class Club extends BaseEntity {
 
     @Builder
     public Club(String title, String description,
-                Category category, int maximumPeople, EligibleSex eligibleSex,
+                Category category, String meetingPlace, int maximumPeople, EligibleSex eligibleSex,
                 Set<PetSizeType> eligiblePetSizeTypes, Set<EligibleBreed> eligibleBreeds,
                 ZonedDateTime startDate, ZonedDateTime endDate, Double latitude, Double longitude) {
         this.title = title;
         this.description = description;
         this.category = category;
+        this.meetingPlace = meetingPlace;
+        this.status = ClubStatus.AVAILABLE;
         this.maximumPeople = maximumPeople;
         this.eligibleSex = eligibleSex;
         this.eligiblePetSizeTypes = eligiblePetSizeTypes;
