@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -48,8 +49,14 @@ public class Account extends BaseEntity {
     }
 
     public static Account of(Token token) {
+        String temporaryNickname
+                = UUID.randomUUID().toString().substring(0, 8) + "_" + token.getSocialType().getValue();
+
         return Account.builder()
                 .token(token)
+                .nickname(temporaryNickname)
+                .age(0)
+                .sex(AccountSex.PRIVATE)
                 .build();
     }
 
