@@ -3,15 +3,14 @@ package com.yapp.pet.domain.club.entity;
 import com.yapp.pet.domain.accountclub.entity.AccountClub;
 import com.yapp.pet.domain.common.BaseEntity;
 import com.yapp.pet.domain.common.PetSizeType;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -37,6 +36,13 @@ public class Club extends BaseEntity {
     private Category category;
 
     @Column(nullable = false)
+    private String meetingPlace;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ClubStatus status;
+
+    @Column(nullable = false)
     private int maximumPeople;
 
     @Enumerated(EnumType.STRING)
@@ -46,12 +52,12 @@ public class Club extends BaseEntity {
     @Column(nullable = false)
     @ElementCollection
     @CollectionTable(name = "eligible_pet_size_types", joinColumns = @JoinColumn(name = "club_id"))
-    private List<PetSizeType> eligiblePetSizeTypes = new ArrayList<>();
+    private Set<PetSizeType> eligiblePetSizeTypes = new HashSet<>();
 
     @Column(nullable = false)
     @ElementCollection
-    @CollectionTable(name="eligible_breeds", joinColumns = @JoinColumn(name = "club_id"))
-    private List<EligibleBreed> eligibleBreeds = new ArrayList<>();
+    @CollectionTable(name = "eligible_breeds", joinColumns = @JoinColumn(name = "club_id"))
+    private Set<EligibleBreed> eligibleBreeds = new HashSet<>();
 
     @Column(nullable = false)
     private ZonedDateTime startDate;
@@ -66,14 +72,15 @@ public class Club extends BaseEntity {
     private Double longitude;
 
     @Builder
-    public Club(List<AccountClub> accountClubs, String title, String description,
-                Category category, int maximumPeople, EligibleSex eligibleSex,
-                List<PetSizeType> eligiblePetSizeTypes, List<EligibleBreed> eligibleBreeds,
+    public Club(String title, String description,
+                Category category, String meetingPlace, int maximumPeople, EligibleSex eligibleSex,
+                Set<PetSizeType> eligiblePetSizeTypes, Set<EligibleBreed> eligibleBreeds,
                 ZonedDateTime startDate, ZonedDateTime endDate, Double latitude, Double longitude) {
-        this.accountClubs = accountClubs;
         this.title = title;
         this.description = description;
         this.category = category;
+        this.meetingPlace = meetingPlace;
+        this.status = ClubStatus.AVAILABLE;
         this.maximumPeople = maximumPeople;
         this.eligibleSex = eligibleSex;
         this.eligiblePetSizeTypes = eligiblePetSizeTypes;
