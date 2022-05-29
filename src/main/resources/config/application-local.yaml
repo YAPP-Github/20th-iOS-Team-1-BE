@@ -1,4 +1,7 @@
 spring:
+  config:
+    activate:
+      on-profile: "local"
   datasource:
     url: jdbc:mysql://localhost:3306/pet?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
     username: root
@@ -7,10 +10,13 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     database: mysql
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL57Dialect
         naming:
           physical-strategy: org.hibernate.boot.model.naming.MySQL5InnoDBDialect
+        format_sql: true
+        show_sql: true
+        use_sql_comments: true

@@ -3,10 +3,7 @@ package com.yapp.pet.domain.accountclub.entity;
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.common.BaseEntity;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -16,7 +13,7 @@ import javax.persistence.*;
 public class AccountClub extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "account_club_id")
     private Long id;
 
@@ -27,6 +24,8 @@ public class AccountClub extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
     private Club club;
+
+    private boolean leader = false;
 
     @Builder
     private AccountClub(Account account, Club club) {
@@ -43,6 +42,9 @@ public class AccountClub extends BaseEntity {
 
     public void addClub(Club club) {
         this.club = club;
+        if(club.getAccountClubs().size() == 0){
+            leader = true;
+        }
         club.getAccountClubs().add(this);
     }
 
