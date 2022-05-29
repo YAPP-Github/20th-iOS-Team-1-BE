@@ -25,6 +25,7 @@ public class Token extends BaseEntity {
     @Column(nullable = false)
     private Social socialType;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String refreshToken;
 
     @Builder
