@@ -20,7 +20,7 @@ public class SignInResponse {
     private String refreshToken;
 
     @Schema(title = "계정 존재 여부", description = "이미 존재하는 회원인지 여부 확인", example = "true")
-    private Boolean isFirstAccount;
+    private Boolean firstAccount;
 
     public void addToken(String accessToken, String refreshToken){
         this.accessToken = accessToken;

@@ -109,7 +109,7 @@ public class JwtService {
 					.getBody()
 					.getSubject();
 		} catch (ExpiredJwtException e) {
-			throw new AuthorityInfoNotFoundException();
+			throw new ExpiredJwtTokenException();
 		}
 	}
 

@@ -1,6 +1,5 @@
-package com.yapp.pet.domain.account.service;
+package com.yapp.pet.domain.account;
 
-import com.yapp.pet.domain.account.AccountRepository;
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.token.entity.Social;
 import com.yapp.pet.domain.token.entity.Token;
@@ -13,6 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 
 @Slf4j
 @Service
@@ -39,12 +41,12 @@ public class AccountService {
         findRefreshToken.ifPresentOrElse(token -> {
             log.info("social signIn - " + social.getValue());
 
-            signInResponse.setIsFirstAccount(Boolean.FALSE);
+            signInResponse.setFirstAccount(FALSE);
             token.exchangeRefreshToken(createRefreshToken);
         }, () -> {
             log.info("social signUp - " + social.getValue());
 
-            signInResponse.setIsFirstAccount(Boolean.TRUE);
+            signInResponse.setFirstAccount(TRUE);
 
             Token createToken = Token.of(uniqueIdBySocial, social, createRefreshToken);
             tokenRepository.save(createToken);
