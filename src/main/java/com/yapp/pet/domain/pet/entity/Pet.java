@@ -1,7 +1,6 @@
 package com.yapp.pet.domain.pet.entity;
 
 import com.yapp.pet.domain.account.entity.Account;
-import com.yapp.pet.domain.breed.entity.Breed;
 import com.yapp.pet.domain.common.BaseEntity;
 import com.yapp.pet.domain.common.PetSizeType;
 import lombok.AccessLevel;
@@ -28,9 +27,7 @@ public class Pet extends BaseEntity {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "breed_id")
-    private Breed breed;
+    private String breed;
 
     @Column(length = 30, nullable = false)
     private String name;
@@ -50,7 +47,7 @@ public class Pet extends BaseEntity {
 
     @Builder
     public Pet(Account account, String name, Age age, PetSex sex, boolean neutering,
-               Breed breed, PetSizeType sizeType) {
+               String breed, PetSizeType sizeType) {
         this.account = account;
         this.name = name;
         this.age = age;
