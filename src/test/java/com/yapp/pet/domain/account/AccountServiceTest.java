@@ -11,6 +11,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -62,7 +63,8 @@ public class AccountServiceTest {
 
     @Test
     @Transactional
-    void 회원가입(){
+    @DisplayName("회원가입할 수 있다.")
+    void SignUp(){
         //when
         SignInResponse signInResponse = accountService.signIn(idToken, Social.APPLE);
 
@@ -73,7 +75,8 @@ public class AccountServiceTest {
     }
 
     @Test
-    void 로그인(){
+    @DisplayName("로그인할 수 있다.")
+    void SignIn(){
         //given
         String refreshToken = jwtService.createRefreshToken(UNIQUE_ID);
 

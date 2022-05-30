@@ -11,6 +11,7 @@ import io.jsonwebtoken.security.SignatureException;
 import io.jsonwebtoken.security.WeakKeyException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,7 +60,8 @@ public class JwtServiceTest {
     }
 
     @Test
-    void 토큰으로_세션에_담을_객체를_생성한다(){
+    @DisplayName("[성공] 토큰으로 세션에 담을 객체를 생성한다.")
+    void createJwtAuthentication(){
         //when
         JwtAuthentication authentication = jwtService.getAuthentication(accessToken);
 
@@ -69,7 +71,8 @@ public class JwtServiceTest {
     }
 
     @Test
-    void 토큰에서_sub_정보를_꺼낸다(){
+    @DisplayName("[성공] 토큰에서_sub_정보를_꺼낸다.")
+    void getSubFromToken(){
         //when
         String sub = jwtService.getSubject(accessToken);
 
@@ -78,7 +81,8 @@ public class JwtServiceTest {
     }
 
     @Test
-    void 토큰에서_sub를_가져올때_만료된_토큰은_예외가_발생한다(){
+    @DisplayName("[실패] 토큰에서 sub를 가져올때 만료된 토큰은 예외가 발생한다.")
+    void failureGetSubFromTokenByExpired(){
         //when
         String accessToken = createTestAccessToken(this.secret, new Date(1));
 
@@ -89,7 +93,8 @@ public class JwtServiceTest {
     }
 
     @Test
-    void 토큰에서_sub를_가져올때_secret이_다르면_예외가_발생한다(){
+    @DisplayName("[실패] 토큰에서 sub를 가져올때 secret이 다르면 예외가 발생한다.")
+    void failureGetSubFromTokenByNotEqualsSecret(){
         //given
         String secret = "sdjiocdjapjcicjsiod294hf7hf78sc687gs6" +
                 "dcg6dsg6c8gdcauysldj1ly3g78gta7sdgjk12hbe7uhd7hsufhdjsfh3729h729";
@@ -103,17 +108,8 @@ public class JwtServiceTest {
     }
 
     @Test
-    void access_token을_생성시_secret_길이가_짧으면_예외가_발생한다(){
-        //given
-        String secret = "acxvikobvjoif2s";
-
-        //when & then
-        assertThatExceptionOfType(WeakKeyException.class)
-                .isThrownBy(() -> createTestAccessToken(secret, new Date(999999999)));
-    }
-
-    @Test
-    void access_token을_생성한다(){
+    @DisplayName("[성공] access token을 생성한다")
+    void createAccessToken(){
         //when
         String accessToken = jwtService.createAccessToken(UNIQUE_ID);
         String sub = jwtService.getSubject(accessToken);
@@ -126,7 +122,19 @@ public class JwtServiceTest {
     }
 
     @Test
-    void refresh_token을_생성한다(){
+    @DisplayName("[실패] access_token을 생성시 secret 길이가 짧으면 예외가 발생한다.")
+    void failureGetSubFromTokenByTooShorSecret(){
+        //given
+        String secret = "acxvikobvjoif2s";
+
+        //when & then
+        assertThatExceptionOfType(WeakKeyException.class)
+                .isThrownBy(() -> createTestAccessToken(secret, new Date(999999999)));
+    }
+
+    @Test
+    @DisplayName("[성공] refresh token을 생성한다")
+    void createRefreshToken(){
         //when
         String refreshToken = jwtService.createRefreshToken(UNIQUE_ID);
         String sub = jwtService.getSubject(refreshToken);

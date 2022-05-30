@@ -11,6 +11,7 @@ import com.yapp.pet.global.jwt.TokenType;
 import com.yapp.pet.web.token.model.TokenResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +60,8 @@ public class TokenServiceTest {
 
     @Test
     @Transactional
-    void refresh_token이_DB에_존재하면_access_token과_refresh_token을_재발급_한다() throws InterruptedException {
+    @DisplayName("[성공] refresh token이 DB에 존재하면 access token과 refresh token을 재발급한다")
+    void reIssuanceToken() throws InterruptedException {
         //given
         when(mockedRequest.getHeader("Authorization"))
                 .thenReturn(AUTHORIZATION_HEADER_BEARER + refreshToken);
@@ -88,7 +90,8 @@ public class TokenServiceTest {
 
     @Test
     @Transactional
-    void refresh_token이_DB에_존재하지_않으면_예외가_발생한다(){
+    @DisplayName("[실패] refresh token이 DB에 존재하지 않으면 예외가 발생한다")
+    void failureReIssuanceTokenByNotFountRefreshToken(){
         //given
         String refreshToken = jwtService.createRefreshToken("anything");
         when(mockedRequest.getHeader("Authorization"))
@@ -102,7 +105,8 @@ public class TokenServiceTest {
 
     @Test
     @Transactional
-    void 토큰_재발급할때_refersh_token이_아니면_예외가_발생한다(){
+    @DisplayName("[실패] 토큰_재발급할때_refersh_token이_아니면_예외가_발생한다")
+    void failureReIssuanceTokenByNotRefreshToken(){
         //given
         String accessToken = jwtService.createAccessToken("anything");
         when(mockedRequest.getHeader("Authorization"))
@@ -116,7 +120,8 @@ public class TokenServiceTest {
 
     @Test
     @Transactional
-    void 존재하는_refresh_token을_삭제한다(){
+    @DisplayName("[성공]존재하는 refresh token을 삭제한다")
+    void deleteRefreshToken(){
         //given
         when(mockedRequest.getHeader("Authorization"))
                 .thenReturn(AUTHORIZATION_HEADER_BEARER + refreshToken);
@@ -131,7 +136,8 @@ public class TokenServiceTest {
 
     @Test
     @Transactional
-    void 존재하지_않는_refresh_token_삭제시_예외가_발생한다(){
+    @DisplayName("[실패]존재하지 않는 refresh token 삭제시 예외가 발생한다")
+    void failureDeleteRefreshTokenByNotFoundRefreshToken(){
         //given
         String refreshToken = jwtService.createRefreshToken("anything");
         when(mockedRequest.getHeader("Authorization"))
