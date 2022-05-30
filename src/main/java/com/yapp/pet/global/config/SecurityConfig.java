@@ -1,9 +1,9 @@
 package com.yapp.pet.global.config;
 
 import com.yapp.pet.global.jwt.ExceptionHandlerFilter;
-import com.yapp.pet.global.jwt.JwtService;
 import com.yapp.pet.global.jwt.JwtFilter;
 import com.yapp.pet.global.jwt.JwtSecurityConfig;
+import com.yapp.pet.global.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.filter.CorsFilter;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,7 +20,6 @@ import static org.springframework.http.HttpMethod.POST;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final CorsFilter corsFilter;
     private final JwtService jwtService;
     private final ExceptionHandlerFilter exceptionHandlerFilter;
     private final JwtFilter jwtFilter;
@@ -29,7 +27,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
                 .exceptionHandling()
                 .authenticationEntryPoint((request, response, authException) ->
                         response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
@@ -47,7 +44,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
                 .apply(new JwtSecurityConfig(jwtService));
 
-        http.addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(exceptionHandlerFilter, JwtFilter.class);
     }
