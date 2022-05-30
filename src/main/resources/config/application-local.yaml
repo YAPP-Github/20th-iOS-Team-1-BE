@@ -10,7 +10,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     database: mysql
     properties:
       hibernate:
@@ -33,3 +33,19 @@ jwt:
     access-time: 1800000 # 30분
     refresh-time: 604800016 # 7일
     issuer: yapp
+
+springdoc:
+  version: '1.0'
+  api-docs:
+    path: /api-docs
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  swagger-ui:
+    operations-sorter: alpha //method는 http method 순
+    tags-sorter: alpha
+    path: /swagger-ui
+    disable-swagger-default-url: true
+    display-query-params-without-oauth2: true
+    doc-expansion: none
+  paths-to-match:
+    - /api/**
