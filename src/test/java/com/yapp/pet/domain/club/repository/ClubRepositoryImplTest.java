@@ -56,8 +56,6 @@ class ClubRepositoryImplTest {
     void init() {
         queryFactory = new JPAQueryFactory(em);
         myAccount = Account.builder()
-                           .loginId("user1")
-                           .password("password")
                            .nickname("member")
                            .age(10)
                            .sex(AccountSex.MAN)
