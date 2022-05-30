@@ -51,7 +51,7 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build --stacktrace
 
       - name: Set up Docker Buildx # 도커 컨테이너 빌더 드라이버를 사용하여 빌더를 만들고 부팅. 필수는 아니지만 다중 플랫폼 이미지를 빌드하고 캐시를 내보는데 사용하는 것이 좋음
         uses: docker/setup-buildx-action@v1
