@@ -20,3 +20,19 @@ spring:
         format_sql: true
         show_sql: true
         use_sql_comments: true
+
+springdoc:
+  version: '1.0'
+  api-docs:
+    path: /api-docs
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  swagger-ui:
+    operations-sorter: alpha //method는 http method 순
+    tags-sorter: alpha
+    path: /swagger-ui
+    disable-swagger-default-url: true
+    display-query-params-without-oauth2: true
+    doc-expansion: none
+  paths-to-match:
+    - /api/**
