@@ -30,7 +30,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-@ActiveProfiles(value = "local")
 @Disabled
 class ClubServiceTest {
 
