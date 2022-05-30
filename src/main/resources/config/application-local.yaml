@@ -21,6 +21,19 @@ spring:
         show_sql: true
         use_sql_comments: true
 
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+
+jwt:
+  token:
+    header-type: JWT
+    header: Authorization
+    secret: ENC(96CvoYH1HnbpIxw7kLXaESwEcgB92xTiloPB5QoFCGFL4fWEIsCxbpoCYoqCxgSGp7Umj9C6mnUjh99cPEGM8RYzcVF5v+82G2Wos2xsyUtMZh/ZITZzh0R74NtoS6ma7G4UjHECfIfMdpiFQuDJMg1JKcXurOP2rSHGxdTTSFs=)
+    access-time: 1800000 # 30분
+    refresh-time: 604800016 # 7일
+    issuer: yapp
+
 springdoc:
   version: '1.0'
   api-docs:

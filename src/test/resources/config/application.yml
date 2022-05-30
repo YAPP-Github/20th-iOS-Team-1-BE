@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: ENC(LbJ/mHuNdf8ev0K55UK22Fu1IG78TZT6PPMNQTp3Qr8f6F6imvQ0WYkZNx2kkq3RWxkdviucv4dTVqRZ7zKFhAluy1tk4kO1xQvPk5L2/MvHXjR9MQykrbZkROeUz7Ue)
-    username: ENC(OTUfXu9X9QBk4lG0mm19+A==)
-    password: ENC(8d+CPaIyBQOntW/l/k6WlE9NqDqx5eoR)
+    url: jdbc:mysql://localhost:3306/pet?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: root
+    password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -18,22 +18,6 @@ spring:
 jasypt:
   encryptor:
     bean: jasyptStringEncryptor
-
-springdoc:
-  version: '1.0'
-  api-docs:
-    path: /api-docs
-  default-consumes-media-type: application/json
-  default-produces-media-type: application/json
-  swagger-ui:
-    operations-sorter: alpha
-    tags-sorter: alpha
-    path: /swagger-ui
-    disable-swagger-default-url: true
-    display-query-params-without-oauth2: true
-    doc-expansion: none
-  paths-to-match:
-    - /api/**
 
 jwt:
   token:

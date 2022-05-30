@@ -10,12 +10,33 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final JwtService jwtService;
+    private final ExceptionHandlerFilter exceptionHandlerFilter;
+    private final JwtFilter jwtFilter;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
+                .exceptionHandling()
+                .authenticationEntryPoint((request, response, authException) ->
+                                                  response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
+                .accessDeniedHandler((request, response, accessDeniedException) ->
+                                             response.sendError(HttpServletResponse.SC_FORBIDDEN))
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authorizeRequests()
-                .antMatchers("/", "/api-docs/**", "/swagger/**", "/swagger-ui/**", "/swagger-ui.html/**", "/swagger-resources/**").permitAll()
-                .anyRequest().authenticated();
+                .antMatchers(POST, "/test/**").permitAll()
+                .antMatchers("/", "/swagger/**", "/api-docs/**", "/swagger-ui/**", "/swagger-ui.html/**",
+                             "/swagger-resources/**", "/auth/apple/callback", "/api/token/re-issuance").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .apply(new JwtSecurityConfig(jwtService));
+
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(exceptionHandlerFilter, JwtFilter.class);
     }
 
     @Override

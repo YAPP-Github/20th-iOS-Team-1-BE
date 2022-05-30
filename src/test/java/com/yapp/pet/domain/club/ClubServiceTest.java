@@ -50,8 +50,6 @@ class ClubServiceTest {
     @BeforeEach
     void init() {
         myAccount = Account.builder()
-                           .loginId("user1")
-                           .password("password")
                            .nickname("member1")
                            .age(10)
                            .sex(AccountSex.MAN)
