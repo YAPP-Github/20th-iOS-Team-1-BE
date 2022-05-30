@@ -1,12 +1,16 @@
 package com.yapp.pet.domain.account.entity;
 
 import com.yapp.pet.domain.common.BaseEntity;
+import com.yapp.pet.domain.token.entity.Token;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.UUID;
+
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
@@ -18,11 +22,9 @@ public class Account extends BaseEntity {
     @Column(name = "account_id")
     private Long id;
 
-    @Column(nullable = false, length = 50)
-    private String loginId;
-
-    @Column(nullable = false, length = 100)
-    private String password;
+    @OneToOne(fetch = LAZY)
+    @JoinColumn(name = "token_id")
+    private Token token;
 
     @Column(nullable = false, length = 20, unique = true)
     private String nickname;
@@ -38,13 +40,24 @@ public class Account extends BaseEntity {
     private Address address;
 
     @Builder
-    public Account(String loginId, String password, String nickname,
-                   int age, AccountSex sex, Address address) {
-        this.loginId = loginId;
-        this.password = password;
+    public Account(Token token, String nickname, int age, AccountSex sex, Address address) {
+        this.token = token;
         this.nickname = nickname;
         this.age = age;
         this.sex = sex;
         this.address = address;
     }
+
+    public static Account of(Token token) {
+        String temporaryNickname
+                = UUID.randomUUID().toString().substring(0, 8) + "_" + token.getSocialType().getValue();
+
+        return Account.builder()
+                .token(token)
+                .nickname(temporaryNickname)
+                .age(0)
+                .sex(AccountSex.PRIVATE)
+                .build();
+    }
+
 }

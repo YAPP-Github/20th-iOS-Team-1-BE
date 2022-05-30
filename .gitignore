@@ -16,6 +16,8 @@ build/
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
+!**/src/main/java/com/yapp/pet/web/token/TokenTestController.java
+**/src/main/java/com/yapp/pet/web/token/TokenTestController.java
 
 ### IntelliJ IDEA ###
 .idea
