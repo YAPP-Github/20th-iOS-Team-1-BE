@@ -30,7 +30,7 @@ public class Account extends BaseEntity {
     private String nickname;
 
     @Column(nullable = false, length = 3)
-    private int age;
+    private Integer age;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -40,7 +40,7 @@ public class Account extends BaseEntity {
     private Address address;
 
     @Builder
-    public Account(Token token, String nickname, int age, AccountSex sex, Address address) {
+    public Account(Token token, String nickname, Integer age, AccountSex sex, Address address) {
         this.token = token;
         this.nickname = nickname;
         this.age = age;
