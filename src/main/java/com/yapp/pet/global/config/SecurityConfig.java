@@ -30,20 +30,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .exceptionHandling()
                 .authenticationEntryPoint((request, response, authException) ->
-                                                  response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
+                        response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
                 .accessDeniedHandler((request, response, accessDeniedException) ->
-                                             response.sendError(HttpServletResponse.SC_FORBIDDEN))
+                        response.sendError(HttpServletResponse.SC_FORBIDDEN))
                 .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests()
-                .antMatchers(POST, "/test/**").permitAll()
-                .antMatchers("/", "/swagger/**", "/api-docs/**", "/swagger-ui/**", "/swagger-ui.html/**",
-                             "/swagger-resources/**", "/auth/apple/callback", "/api/token/re-issuance").permitAll()
-                .anyRequest().authenticated()
+                    .authorizeRequests()
+                    .antMatchers(POST, "/test/**").permitAll()
+                    .antMatchers("/", "/swagger/**", "/api-docs/**", "/swagger-ui/**", "/swagger-ui.html/**",
+                                 "/swagger-resources/**", "/auth/apple/callback", "/api/token/re-issuance").permitAll()
+                    .anyRequest().authenticated()
                 .and()
-                .apply(new JwtSecurityConfig(jwtService));
+                    .apply(new JwtSecurityConfig(jwtService));
 
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(exceptionHandlerFilter, JwtFilter.class);

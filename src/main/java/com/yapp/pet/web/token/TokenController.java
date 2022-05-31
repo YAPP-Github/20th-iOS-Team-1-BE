@@ -1,6 +1,7 @@
 package com.yapp.pet.web.token;
 
 import com.yapp.pet.domain.token.TokenService;
+import com.yapp.pet.global.exception.common.response.ExceptionResponseInfo;
 import com.yapp.pet.web.token.model.TokenResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -32,7 +33,8 @@ public class TokenController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = @Content(schema = @Schema(implementation = TokenResponse.class))),
-            @ApiResponse(responseCode = "401", description = "잘못된 토큰인 경우")
+            @ApiResponse(responseCode = "401", description = "잘못된 토큰인 경우",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponseInfo.class)))
     })
     public ResponseEntity<TokenResponse> reIssuance(HttpServletRequest httpRequest) {
         TokenResponse tokenResponse = tokenService.reIssuance(httpRequest);
@@ -45,7 +47,8 @@ public class TokenController {
             description = "refresh token 삭제를 통해 로그아웃 합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "401", description = "잘못된 토큰인 경우")
+            @ApiResponse(responseCode = "401", description = "잘못된 토큰인 경우",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponseInfo.class)))
     })
     public ResponseEntity<HttpStatus> expireRefreshToken(HttpServletRequest httpRequest) {
         tokenService.expireRefreshToken(httpRequest);
