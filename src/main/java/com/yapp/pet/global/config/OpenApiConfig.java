@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 public class OpenApiConfig{
 
     @Bean
-    public OpenAPI openAPI(@Value("${springdoc.version}") String appVersion) {
-        Info info = new Info().title("YAPP20-BE-ToGaether API").version(appVersion)
+    public OpenAPI openAPI() {
+        Info info = new Info().title("YAPP20-BE-ToGaether API").version("1.0")
                               .description("모임 기반 플랫폼 ToGaether API 문서")
                               .license(new License().name("Apache License Version 2.0").url("[http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)"));
 

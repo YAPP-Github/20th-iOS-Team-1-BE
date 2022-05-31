@@ -1,10 +1,20 @@
 package com.yapp.pet.global.config;
 
+import com.yapp.pet.global.jwt.ExceptionHandlerFilter;
+import com.yapp.pet.global.jwt.JwtFilter;
+import com.yapp.pet.global.jwt.JwtSecurityConfig;
+import com.yapp.pet.global.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import javax.servlet.http.HttpServletResponse;
+
+import static org.springframework.http.HttpMethod.POST;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
