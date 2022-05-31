@@ -60,17 +60,6 @@ public class JwtServiceTest {
     }
 
     @Test
-    @DisplayName("[성공] 토큰으로 세션에 담을 객체를 생성한다.")
-    void createJwtAuthentication(){
-        //when
-        JwtAuthentication authentication = jwtService.getAuthentication(accessToken);
-
-        //then
-        assertThat(authentication.getPrincipal()).isNotNull();
-        assertThat(authentication.getPrincipal()).isEqualTo(UNIQUE_ID);
-    }
-
-    @Test
     @DisplayName("[성공] 토큰에서_sub_정보를_꺼낸다.")
     void getSubFromToken(){
         //when
