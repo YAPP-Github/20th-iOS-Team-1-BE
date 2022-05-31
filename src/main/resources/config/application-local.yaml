@@ -35,7 +35,6 @@ jwt:
     issuer: yapp
 
 springdoc:
-  version: '1.0'
   api-docs:
     path: /api-docs
   default-consumes-media-type: application/json
