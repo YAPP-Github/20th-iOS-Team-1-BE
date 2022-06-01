@@ -27,7 +27,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-@Disabled
 public class TokenServiceTest {
 
     @Autowired
