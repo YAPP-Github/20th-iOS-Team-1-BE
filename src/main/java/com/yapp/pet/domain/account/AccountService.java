@@ -1,6 +1,7 @@
 package com.yapp.pet.domain.account;
 
 import com.yapp.pet.domain.account.entity.Account;
+import com.yapp.pet.domain.account.repository.AccountRepository;
 import com.yapp.pet.domain.token.entity.Social;
 import com.yapp.pet.domain.token.entity.Token;
 import com.yapp.pet.domain.token.repository.TokenRepository;

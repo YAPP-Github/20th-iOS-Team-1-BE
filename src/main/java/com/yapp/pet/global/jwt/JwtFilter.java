@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.yapp.pet.global.TogaetherConstants.ALLOWED_URLS;
+
 @Component
 @Slf4j
 @RequiredArgsConstructor
@@ -37,8 +39,14 @@ public class JwtFilter extends OncePerRequestFilter {
 
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException{
-		String path = request.getRequestURI();
-		return path.equals("/auth/apple/callback");
+		boolean isPassFilter = ALLOWED_URLS.stream()
+										.anyMatch(url -> request.getRequestURI().contains(url));
+
+		if (isPassFilter) {
+			return true;
+		}
+
+		return false;
 	}
 
 }
