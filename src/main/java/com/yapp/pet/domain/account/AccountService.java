@@ -53,6 +53,8 @@ public class AccountService {
 
             Account createAccount = Account.of(createToken);
             accountRepository.save(createAccount);
+
+            createToken.addAccount(createAccount);
         });
 
         return signInResponse;

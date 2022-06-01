@@ -25,7 +25,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @SpringBootTest
-@Disabled
 public class JwtServiceTest {
 
     @Autowired
@@ -57,17 +56,6 @@ public class JwtServiceTest {
                 .setIssuedAt(new Date())
                 .claim(AUTHORITIES_KEY, ROLE)
                 .compact();
-    }
-
-    @Test
-    @DisplayName("[성공] 토큰으로 세션에 담을 객체를 생성한다.")
-    void createJwtAuthentication(){
-        //when
-        JwtAuthentication authentication = jwtService.getAuthentication(accessToken);
-
-        //then
-        assertThat(authentication.getPrincipal()).isNotNull();
-        assertThat(authentication.getPrincipal()).isEqualTo(UNIQUE_ID);
     }
 
     @Test

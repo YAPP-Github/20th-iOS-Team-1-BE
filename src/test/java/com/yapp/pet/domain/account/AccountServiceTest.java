@@ -25,7 +25,6 @@ import static com.yapp.pet.global.TogaetherConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@Disabled
 public class AccountServiceTest {
 
     @Autowired

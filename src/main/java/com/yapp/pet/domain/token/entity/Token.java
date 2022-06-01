@@ -1,5 +1,6 @@
 package com.yapp.pet.domain.token.entity;
 
+import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.common.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -7,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
@@ -17,6 +20,9 @@ public class Token extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "token_id")
     private Long id;
+
+    @OneToOne(fetch = LAZY, mappedBy = "token")
+    private Account account;
 
     @Column(nullable = false, unique = true)
     private String uniqueIdBySocial;
@@ -45,6 +51,10 @@ public class Token extends BaseEntity {
 
     public void exchangeRefreshToken(String refreshToken){
         this.refreshToken = refreshToken;
+    }
+
+    public void addAccount(Account account){
+        this.account = account;
     }
 
 }
