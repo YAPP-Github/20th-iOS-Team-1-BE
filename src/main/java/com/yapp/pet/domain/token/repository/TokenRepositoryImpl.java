@@ -1,6 +1,7 @@
 package com.yapp.pet.domain.token.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.yapp.pet.domain.account.entity.QAccount;
 import com.yapp.pet.domain.token.entity.Token;
 import lombok.RequiredArgsConstructor;
 
@@ -17,9 +18,10 @@ public class TokenRepositoryImpl implements TokenRepositoryCustom{
     public Optional<Token> findByUniqueIdBySocial(String uniqueIdBySocial) {
         return Optional.ofNullable(
                 queryFactory
-                    .selectFrom(token)
-                    .where(token.uniqueIdBySocial.eq(uniqueIdBySocial))
-                    .fetchOne()
+                        .selectFrom(token)
+                        .join(token.account, QAccount.account).fetchJoin()
+                        .where(token.uniqueIdBySocial.eq(uniqueIdBySocial))
+                        .fetchOne()
         );
     }
 

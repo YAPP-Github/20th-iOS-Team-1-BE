@@ -6,15 +6,10 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 import static com.yapp.pet.global.TogaetherConstants.*;
 
@@ -76,18 +71,6 @@ public class JwtService {
 				.compact();
 	}
 
-	public JwtAuthentication getAuthentication(String token) {
-		Claims claims = parseClaims(token);
-		String uniqueIdBySocial = claims.getSubject();
-
-		Collection<? extends GrantedAuthority> authorities =
-				Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-						.map(SimpleGrantedAuthority::new)
-						.collect(Collectors.toList());
-
-		return new JwtAuthentication(uniqueIdBySocial, "", authorities);
-	}
-
 	public Claims parseClaims(String token) {
 		try {
 			return Jwts.parserBuilder()
@@ -113,10 +96,12 @@ public class JwtService {
 		}
 	}
 
-	public boolean validateToken(String token){
+	public void validateToken(String token){
 		try {
-			Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-			return true;
+			Jwts.parserBuilder()
+					.setSigningKey(key)
+					.build()
+					.parseClaimsJws(token);
 		} catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
 			log.info("잘못된 JWT 서명입니다.");
 			throw new InvalidJwtSignatureException();
