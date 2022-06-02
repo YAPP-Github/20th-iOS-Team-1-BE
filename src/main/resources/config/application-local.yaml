@@ -48,3 +48,8 @@ springdoc:
     doc-expansion: none
   paths-to-match:
     - /api/**
+
+social:
+    kakao:
+      client-id: ENC(3eXLqoML65d+7ezHZVOy7qMtQXKnKv2QW9Wj1mlqQjC9xN2VDtl24v8qa9jyLjNj)
+      client-secret: ENC(0R1l0yX0YP1IyTGIRN8ONkKnlgLJyRMntgV5PLYdBhNwP/dCmTudb55tm49tGTvg)
