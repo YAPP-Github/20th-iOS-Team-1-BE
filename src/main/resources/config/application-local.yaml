@@ -48,6 +48,7 @@ springdoc:
     doc-expansion: none
   paths-to-match:
     - /api/**
+    - /auth/**
 
 social:
     kakao:
