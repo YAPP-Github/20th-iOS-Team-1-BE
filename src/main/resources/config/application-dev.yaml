@@ -34,6 +34,7 @@ springdoc:
     doc-expansion: none
   paths-to-match:
     - /api/**
+    - /auth/**
 
 jwt:
   token:
