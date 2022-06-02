@@ -1,5 +1,6 @@
 package com.yapp.pet.domain.token.repository;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.yapp.pet.domain.account.entity.QAccount;
 import com.yapp.pet.domain.token.entity.Token;
@@ -20,9 +21,13 @@ public class TokenRepositoryImpl implements TokenRepositoryCustom{
                 queryFactory
                         .selectFrom(token)
                         .join(token.account, QAccount.account).fetchJoin()
-                        .where(token.uniqueIdBySocial.eq(uniqueIdBySocial))
+                        .where(uniqueIdBySocialEq(uniqueIdBySocial))
                         .fetchOne()
         );
+    }
+
+    private BooleanExpression uniqueIdBySocialEq(String uniqueIdBySocial){
+        return uniqueIdBySocial != null ? token.uniqueIdBySocial.eq(uniqueIdBySocial) : null;
     }
 
 }
