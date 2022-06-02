@@ -32,17 +32,14 @@ public class AppleController {
                 content = @Content(schema = @Schema(implementation = SignInResponse.class)))
     })
     public ResponseEntity<SignInResponse> callbackOfApple(@RequestBody CallbackResponseApple callbackResponse){
-        SignInResponse signInResponse = null;
 
-        if (callbackResponse == null) {
-            return null; // Todo 상세 처리 필요
-        }
+        SignInResponse signInResponse;
 
         try {
             signInResponse = accountService.signIn(callbackResponse.getIdToken(), Social.APPLE);
-
         } catch (Exception e) {
-            // Todo 예외 구체화
+            e.printStackTrace();
+            throw e;
         }
 
         return ResponseEntity.ok(signInResponse);
