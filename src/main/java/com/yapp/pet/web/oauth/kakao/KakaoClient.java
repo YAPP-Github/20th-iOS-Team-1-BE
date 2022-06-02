@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(url = "https://kauth.kakao.com", name = "KakaoClient")
-@Component
 public interface KakaoClient {
 
     @PostMapping(value = "/oauth/token", consumes = "application/json")
