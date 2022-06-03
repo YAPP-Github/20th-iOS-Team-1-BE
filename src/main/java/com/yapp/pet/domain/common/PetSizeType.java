@@ -7,7 +7,8 @@ public enum PetSizeType {
 
     LARGE("대형견"),
     MEDIUM("중형견"),
-    SMALL("소형견");
+    SMALL("소형견"),
+    ALL("상관없음");
 
     private final String value;
 
