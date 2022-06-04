@@ -8,17 +8,19 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.yapp.pet.web.club.model.SearchingClubDto.*;
+
 @Service
 @RequiredArgsConstructor
 public class ClubService {
 
     private final ClubRepository clubRepository;
 
-    public List<SearchingClubDto> searchingClub(String searchingWord, Double userLatitude, Double userLongitude, int page, String SearchingType) {
+    public List<SearchingClubDto> searchingClub(SearchingRequest searchingRequest, String SearchingType) {
         if (SearchingType.equals("word")) {
-            return clubRepository.searchClubByWord(searchingWord, userLatitude, userLongitude, page);
+            return clubRepository.searchClubByWord(searchingRequest);
         }
 
-        return clubRepository.searchClubByCategory(Category.valueOf(searchingWord), userLatitude, userLongitude, page);
+        return clubRepository.searchClubByCategory(searchingRequest);
     }
 }

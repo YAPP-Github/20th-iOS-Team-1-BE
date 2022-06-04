@@ -90,9 +90,15 @@ class ClubServiceTest {
     @Test
     @DisplayName("검색 타입이 카테고리일 경우 카테고리가 같은 모임 중에 사용자로부터 가까운 모임 10개를 조회한다")
     void searchingClubByCategory() throws Exception {
+        //given
+        SearchingClubDto.SearchingRequest request = new SearchingClubDto.SearchingRequest();
+
+        request.setCategory(Category.WALK);
+        request.setStartLatitude(23D);
+        request.setStartLongitude(24D);
+
         //when
-        List<SearchingClubDto> result = clubService.searchingClub(Category.WALK.toString(), 123.123, 1253.123, 4,
-                                                                    "category");
+        List<SearchingClubDto> result = clubService.searchingClub(request, "category");
 
         //then
         assertThat(result.size()).isEqualTo(10);
@@ -104,9 +110,15 @@ class ClubServiceTest {
     @Test
     @DisplayName("검색 타입이 검색어일 경우 모임 이름 중 검색어가 포함된 모임 중에 사용자로부터 가까운 모임 10개를 조회한다")
     void searchingClubByWord() throws Exception {
+        //given
+        SearchingClubDto.SearchingRequest request = new SearchingClubDto.SearchingRequest();
+
+        request.setSearchingWord("산책");
+        request.setStartLatitude(23D);
+        request.setStartLongitude(24D);
+
         //when
-        List<SearchingClubDto> result = clubService.searchingClub("산책", 123.123, 1253.123, 4,
-                                                                    "word");
+        List<SearchingClubDto> result = clubService.searchingClub(request, "word");
 
         //then
         assertThat(result.size()).isEqualTo(10);
