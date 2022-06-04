@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.BooleanPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.yapp.pet.domain.club.entity.Category;
+import com.yapp.pet.domain.club.entity.ClubStatus;
 import com.yapp.pet.domain.club.entity.EligibleBreed;
 import com.yapp.pet.domain.club.entity.EligibleSex;
 import com.yapp.pet.domain.common.PetSizeType;
@@ -34,7 +35,9 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
     public List<SearchingClubDto> searchClubByWord(SearchingRequest searchingRequest) {
 
         return queryFactory.select(
-                                   Projections.constructor(SearchingClubDto.class, accountClub.club, accountClub.account.nickname,
+                                   Projections.constructor(SearchingClubDto.class,
+                                                           accountClub.club,
+                                                           accountClub.account.nickname,
                                                            accountClub.club.accountClubs.size()))
                            .from(accountClub)
                            .join(accountClub.club, club)
@@ -42,6 +45,7 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
                            .where(isLeader(accountClub.leader))
                            .where(clubNameContains(searchingRequest.getSearchingWord()))
                            .where(clubCategoryEq(searchingRequest.getCategory()))
+                           .where(clubStatusEq(searchingRequest.getStatus()))
                            .where(clubPetTypeExist(searchingRequest.getEligibleBreed()))
                            .where(clubPetSizeTypeExist(searchingRequest.getPetSizeType()))
                            .where(clubEligibleSexEq(searchingRequest.getEligibleSex()))
@@ -80,6 +84,7 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
                            .join(accountClub.account, account)
                            .where(isLeader(accountClub.leader))
                            .where(clubCategoryEq(Category.valueOf(searchingRequest.getSearchingWord())))
+                           .where(clubStatusEq(searchingRequest.getStatus()))
                            .where(clubPetTypeExist(searchingRequest.getEligibleBreed()))
                            .where(clubPetSizeTypeExist(searchingRequest.getPetSizeType()))
                            .where(clubEligibleSexEq(searchingRequest.getEligibleSex()))
@@ -141,6 +146,10 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
         }
 
         return club.accountClubs.size().between(min, max);
+    }
+
+    private BooleanExpression clubStatusEq(ClubStatus clubStatus) {
+        return clubStatus == null ? null : club.status.eq(clubStatus);
     }
 
     private Predicate clubEligibleSexEq(EligibleSex eligibleSex) {
