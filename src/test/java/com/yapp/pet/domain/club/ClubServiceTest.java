@@ -6,27 +6,26 @@ import com.yapp.pet.domain.account.entity.Address;
 import com.yapp.pet.domain.accountclub.entity.AccountClub;
 import com.yapp.pet.domain.club.entity.Category;
 import com.yapp.pet.domain.club.entity.Club;
+import com.yapp.pet.domain.club.entity.ClubStatus;
 import com.yapp.pet.domain.club.entity.EligibleBreed;
 import com.yapp.pet.domain.club.entity.EligibleSex;
 import com.yapp.pet.domain.club.repository.ClubRepository;
 import com.yapp.pet.domain.common.PetSizeType;
 import com.yapp.pet.web.club.model.SearchingClubDto;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -65,7 +64,8 @@ class ClubServiceTest {
                          .description("설명")
                          .category(Category.WALK)
                          .startDate(ZonedDateTime.now())
-                         .endDate(ZonedDateTime.now())
+                         .endDate(ZonedDateTime.of(2021, 5, 21, 19, 30, 0, 0,
+                                                   ZoneId.of("Asia/Seoul")))
                          .maximumPeople(10 + i)
                          .meetingPlace("서울시")
                          .eligibleSex(EligibleSex.MAN)
@@ -128,4 +128,15 @@ class ClubServiceTest {
         }
     }
 
+    @Test
+    @DisplayName("스케줄러가 실행될 경우 club의 상태가 END로 변경되어야한다")
+    void convertStatusAvailableToEnd() throws Exception {
+        //when
+        List<Club> savedClubs = clubService.exceedTimeClub();
+
+        //then
+        for (Club savedClub : savedClubs) {
+            assertThat(savedClub.getStatus()).isEqualTo(ClubStatus.END);
+        }
+    }
 }

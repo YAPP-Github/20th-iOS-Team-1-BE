@@ -3,18 +3,22 @@ package com.yapp.pet.domain.club.repository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.*;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.BooleanPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.account.entity.AccountSex;
 import com.yapp.pet.domain.account.entity.Address;
 import com.yapp.pet.domain.accountclub.entity.AccountClub;
-import com.yapp.pet.domain.club.entity.*;
+import com.yapp.pet.domain.club.entity.Category;
+import com.yapp.pet.domain.club.entity.Club;
+import com.yapp.pet.domain.club.entity.ClubStatus;
+import com.yapp.pet.domain.club.entity.EligibleBreed;
+import com.yapp.pet.domain.club.entity.EligibleSex;
 import com.yapp.pet.domain.common.PetSizeType;
 import com.yapp.pet.global.util.DistanceUtil;
 import com.yapp.pet.web.club.model.SearchingClubDto;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +27,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
-
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.yapp.pet.domain.account.entity.QAccount.*;
-import static com.yapp.pet.domain.accountclub.entity.QAccountClub.*;
+import static com.yapp.pet.domain.account.entity.QAccount.account;
+import static com.yapp.pet.domain.accountclub.entity.QAccountClub.accountClub;
 import static com.yapp.pet.domain.club.entity.QClub.club;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -506,6 +510,23 @@ class ClubRepositoryImplTest {
 
         //then
         assertThat(result.size()).isEqualTo(10);
+    }
+
+    @Test
+    @DisplayName("모임 종료 시간이 지났는데 현재 상태가 AVAILABLE한 모임을 조회한다")
+    void exceedTimeClub() throws Exception {
+        List<Club> result = queryFactory.selectFrom(club)
+                                       .where(clubStatusEq(ClubStatus.AVAILABLE).and(
+                                               club.endDate.after(
+                                                       ZonedDateTime.of(2021, 5, 21, 19, 30, 0, 0,
+                                                                        ZoneId.of("Asia/Seoul")))))
+                                       .fetch();
+
+        assertThat(result.size()).isEqualTo(100);
+    }
+
+    private BooleanExpression clubStatusEq(ClubStatus clubStatus) {
+        return clubStatus == null ? null : club.status.eq(clubStatus);
     }
 }
 

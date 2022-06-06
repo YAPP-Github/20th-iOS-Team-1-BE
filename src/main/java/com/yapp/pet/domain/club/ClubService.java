@@ -1,6 +1,6 @@
 package com.yapp.pet.domain.club;
 
-import com.yapp.pet.domain.club.entity.Category;
+import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.club.repository.ClubRepository;
 import com.yapp.pet.web.club.model.SearchingClubDto;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.yapp.pet.web.club.model.SearchingClubDto.*;
+import static com.yapp.pet.web.club.model.SearchingClubDto.SearchingRequest;
 
 @Service
 @RequiredArgsConstructor
@@ -22,5 +22,9 @@ public class ClubService {
         }
 
         return clubRepository.searchClubByCategory(searchingRequest);
+    }
+
+    public List<Club> exceedTimeClub() {
+        return clubRepository.findExceedTimeClub();
     }
 }

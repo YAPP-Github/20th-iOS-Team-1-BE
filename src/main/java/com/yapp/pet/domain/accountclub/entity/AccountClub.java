@@ -25,6 +25,7 @@ public class AccountClub extends BaseEntity {
     @JoinColumn(name = "club_id")
     private Club club;
 
+    @Column(columnDefinition = "TINYINT(1) UNSIGNED DEFAULT 0")
     private boolean leader = false;
 
     @Builder
