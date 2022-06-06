@@ -90,4 +90,8 @@ public class Club extends BaseEntity {
         this.latitude = latitude;
         this.longitude = longitude;
     }
+
+    public void updateStatus(ClubStatus status) {
+        this.status = status;
+    }
 }

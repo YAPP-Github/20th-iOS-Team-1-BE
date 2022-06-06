@@ -2,6 +2,7 @@ package com.yapp.pet.web.club.model;
 
 import com.yapp.pet.domain.club.entity.Category;
 import com.yapp.pet.domain.club.entity.Club;
+import com.yapp.pet.domain.club.entity.ClubStatus;
 import com.yapp.pet.domain.club.entity.EligibleBreed;
 import com.yapp.pet.domain.club.entity.EligibleSex;
 import com.yapp.pet.domain.common.PetSizeType;
@@ -32,6 +33,7 @@ public class SearchingClubDto {
     private int maximumPeople;
     private int participants;
     private String leaderName;
+
     private String imagePath;
     private Double latitude;
     private Double longitude;
@@ -83,6 +85,8 @@ public class SearchingClubDto {
 
         @Schema(description = "사용자 경도")
         private Double startLongitude;
+
+        private ClubStatus status;
     }
 
     @Getter

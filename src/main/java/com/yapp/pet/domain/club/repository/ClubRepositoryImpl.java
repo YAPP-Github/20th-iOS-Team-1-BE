@@ -7,6 +7,8 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.BooleanPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.yapp.pet.domain.club.entity.Category;
+import com.yapp.pet.domain.club.entity.Club;
+import com.yapp.pet.domain.club.entity.ClubStatus;
 import com.yapp.pet.domain.club.entity.EligibleBreed;
 import com.yapp.pet.domain.club.entity.EligibleSex;
 import com.yapp.pet.domain.common.PetSizeType;
@@ -15,13 +17,14 @@ import com.yapp.pet.web.club.model.SearchingClubDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.yapp.pet.domain.account.entity.QAccount.account;
 import static com.yapp.pet.domain.accountclub.entity.QAccountClub.accountClub;
 import static com.yapp.pet.domain.club.entity.QClub.club;
-import static com.yapp.pet.web.club.model.SearchingClubDto.*;
+import static com.yapp.pet.web.club.model.SearchingClubDto.SearchingRequest;
 
 @RequiredArgsConstructor
 public class ClubRepositoryImpl implements ClubRepositoryCustom{
@@ -34,7 +37,9 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
     public List<SearchingClubDto> searchClubByWord(SearchingRequest searchingRequest) {
 
         return queryFactory.select(
-                                   Projections.constructor(SearchingClubDto.class, accountClub.club, accountClub.account.nickname,
+                                   Projections.constructor(SearchingClubDto.class,
+                                                           accountClub.club,
+                                                           accountClub.account.nickname,
                                                            accountClub.club.accountClubs.size()))
                            .from(accountClub)
                            .join(accountClub.club, club)
@@ -42,6 +47,7 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
                            .where(isLeader(accountClub.leader))
                            .where(clubNameContains(searchingRequest.getSearchingWord()))
                            .where(clubCategoryEq(searchingRequest.getCategory()))
+                           .where(clubStatusEq(searchingRequest.getStatus()))
                            .where(clubPetTypeExist(searchingRequest.getEligibleBreed()))
                            .where(clubPetSizeTypeExist(searchingRequest.getPetSizeType()))
                            .where(clubEligibleSexEq(searchingRequest.getEligibleSex()))
@@ -80,6 +86,7 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
                            .join(accountClub.account, account)
                            .where(isLeader(accountClub.leader))
                            .where(clubCategoryEq(Category.valueOf(searchingRequest.getSearchingWord())))
+                           .where(clubStatusEq(searchingRequest.getStatus()))
                            .where(clubPetTypeExist(searchingRequest.getEligibleBreed()))
                            .where(clubPetSizeTypeExist(searchingRequest.getPetSizeType()))
                            .where(clubEligibleSexEq(searchingRequest.getEligibleSex()))
@@ -105,6 +112,14 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
                                    }
                            )
                            .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Club> findExceedTimeClub() {
+        return queryFactory.selectFrom(club)
+                           .where(clubStatusEq(ClubStatus.AVAILABLE).and(
+                                   club.endDate.after(ZonedDateTime.now())))
+                           .fetch();
     }
 
     private BooleanExpression clubNameContains(String searchingWord) {
@@ -141,6 +156,10 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
         }
 
         return club.accountClubs.size().between(min, max);
+    }
+
+    private BooleanExpression clubStatusEq(ClubStatus clubStatus) {
+        return clubStatus == null ? null : club.status.eq(clubStatus);
     }
 
     private Predicate clubEligibleSexEq(EligibleSex eligibleSex) {
