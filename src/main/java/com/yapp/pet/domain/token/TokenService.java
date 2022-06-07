@@ -1,8 +1,9 @@
 package com.yapp.pet.domain.token;
 
+import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.token.entity.Token;
 import com.yapp.pet.domain.token.repository.TokenRepository;
-import com.yapp.pet.global.exception.jwt.InvalidJwtTokenException;
+import com.yapp.pet.global.exception.jwt.NotFoundTokenException;
 import com.yapp.pet.global.exception.jwt.NotRefreshTokenException;
 import com.yapp.pet.global.jwt.JwtService;
 import com.yapp.pet.global.jwt.TokenType;
@@ -11,13 +12,6 @@ import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.Optional;
-
-import static com.yapp.pet.global.TogaetherConstants.AUTHORIZATION_HEADER;
-import static com.yapp.pet.global.TogaetherConstants.AUTHORIZATION_HEADER_BEARER;
 
 @Service
 @RequiredArgsConstructor
@@ -28,57 +22,43 @@ public class TokenService {
     private final TokenRepository tokenRepository;
 
     @Transactional
-    public TokenResponse reIssuance(HttpServletRequest httpRequest){
+    public TokenResponse reIssuance(Account account){
         TokenResponse tokenResponse = new TokenResponse();
 
-        String requestRefreshToken = getAndValidRefreshToken(httpRequest);
+        Token token = getAndValidToken(account);
+        String uniqueIdBySocial = jwtService.getSubject(token.getRefreshToken());
 
-        String uniqueIdBySocial = jwtService.getSubject(requestRefreshToken);
+        String createAccessToken = jwtService.createAccessToken(uniqueIdBySocial);
+        String createRefreshToken = jwtService.createRefreshToken(uniqueIdBySocial);
 
-        Optional<Token> findRefreshToken = tokenRepository.findByUniqueIdBySocial(uniqueIdBySocial);
+        token.exchangeRefreshToken(createRefreshToken);
 
-        findRefreshToken.ifPresentOrElse(token -> {
-            String createAccessToken = jwtService.createAccessToken(uniqueIdBySocial);
-            String createRefreshToken = jwtService.createRefreshToken(uniqueIdBySocial);
-
-            token.exchangeRefreshToken(createRefreshToken);
-
-            tokenResponse.addToken(createAccessToken, createRefreshToken);
-        }, () -> {
-            throw new InvalidJwtTokenException();
-        });
+        tokenResponse.addToken(createAccessToken, createRefreshToken);
 
         return tokenResponse;
     }
 
     @Transactional
-    public void expireRefreshToken(HttpServletRequest httpRequest){
-        String requestRefreshToken = getAndValidRefreshToken(httpRequest);
+    public void expireRefreshToken(Account account){
+        Token token = getAndValidToken(account);
 
-        String uniqueIdBySocial = jwtService.getSubject(requestRefreshToken);
-
-        Optional<Token> findRefreshToken = tokenRepository.findByUniqueIdBySocial(uniqueIdBySocial);
-
-        findRefreshToken.ifPresentOrElse(tokenRepository::delete, () -> {
-            throw new InvalidJwtTokenException();
-        });
+        tokenRepository.delete(token);
+        account.deleteToken();
     }
 
-    private String getAndValidRefreshToken(HttpServletRequest httpRequest){
-        final String bearerToken = httpRequest.getHeader(AUTHORIZATION_HEADER);
-
-        if (!(StringUtils.hasText(bearerToken) && bearerToken.startsWith(AUTHORIZATION_HEADER_BEARER))) {
-            throw new InvalidJwtTokenException();
+    private Token getAndValidToken(Account account){
+        if (account.getToken() == null) {
+            throw new NotFoundTokenException();
         }
 
-        String refreshToken = bearerToken.substring(AUTHORIZATION_HEADER_BEARER.length());
+        String refreshToken = account.getToken().getRefreshToken();
         Claims claims = jwtService.parseClaims(refreshToken);
 
         if(!TokenType.isRefreshToken(claims.getAudience())){
             throw new NotRefreshTokenException();
         }
 
-        return refreshToken;
+        return account.getToken();
     }
 
 }

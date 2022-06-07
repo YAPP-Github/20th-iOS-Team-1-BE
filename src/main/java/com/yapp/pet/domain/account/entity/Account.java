@@ -60,4 +60,8 @@ public class Account extends BaseEntity {
                 .build();
     }
 
+    public void deleteToken(){
+        this.token = null;
+    }
+
 }

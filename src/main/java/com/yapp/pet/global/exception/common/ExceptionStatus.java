@@ -26,13 +26,13 @@ public enum ExceptionStatus{
 	INVALID_JWT_SIGNATURE_EXCEPTION(401,"잘못된 JWT 서명입니다.", UNAUTHORIZED),
 	EXPIRED_JWT_TOKEN_EXCEPTION(401, "만료된 JWT 토큰입니다.", UNAUTHORIZED),
 	UNSUPPORTED_JWT_TOKEN_EXCEPTION(401, "지원되지 않는 JWT 토큰입니다.", UNAUTHORIZED),
-	INVALID_JWT_TOKEN_EXCEPTION(401, "JWT 토큰이 잘못되었습니다.", UNAUTHORIZED),
-	NOT_REFRESH_TOKEN(401, "Refresh Token이 아닙니다.", UNAUTHORIZED),
+	INVALID_JWT_TOKEN_EXCEPTION(401, "JWT 토큰이 잘못되었습니다. 토큰 존재 여부 및 타입을 확인하세요.", UNAUTHORIZED),
+	NOT_REFRESH_TOKEN_EXCEPTION(401, "Refresh Token이 아닙니다.", UNAUTHORIZED),
+	NOT_FOUND_TOKEN_EXCEPTION(401, "Token이 존재하지 않습니다.", UNAUTHORIZED)
 	;
 
 	private final int status;
 	private final String message;
 	private final HttpStatus httpStatus;
-
 
 }
