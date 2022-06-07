@@ -1,17 +1,20 @@
 package com.yapp.pet.domain.account;
 
 import com.yapp.pet.domain.account.entity.Account;
+import com.yapp.pet.domain.account.entity.AccountSex;
 import com.yapp.pet.domain.account.repository.AccountRepository;
 import com.yapp.pet.domain.token.entity.Social;
 import com.yapp.pet.domain.token.repository.TokenRepository;
 import com.yapp.pet.global.jwt.JwtService;
 import com.yapp.pet.global.jwt.TokenType;
+import com.yapp.pet.web.account.model.AccountSignUpRequest;
 import com.yapp.pet.web.account.model.AccountValidationResponse;
 import com.yapp.pet.web.oauth.apple.model.SignInResponse;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +49,20 @@ public class AccountServiceTest {
     @Value("${jwt.token.secret}")
     String secret;
 
+    Account accountWithToken;
+    Account accountWithoutToken;
+
+    @BeforeEach
+    void init(){
+        accountWithToken = accountRepository.findById(1L).get();
+
+        accountWithoutToken = Account.builder()
+                .age(10)
+                .sex(AccountSex.MAN)
+                .nickname("test")
+                .build();
+    }
+
     String createIdToken(String uniqueId){
         long now = (new Date()).getTime();
         Date expiration = new Date(now + 1800000);
@@ -65,8 +82,8 @@ public class AccountServiceTest {
     }
 
     @Test
-    @DisplayName("회원가입할 수 있다.")
-    void SignUp(){
+    @DisplayName("회원가입 - 첫 서비스 접근 시 Account 저장")
+    void signUp(){
         //given
         String idToken = createIdToken("newUniqueId");
 
@@ -80,8 +97,32 @@ public class AccountServiceTest {
     }
 
     @Test
+    @DisplayName("회원가입 - 추가 정보 입력")
+    void signUpAddInfo(){
+        //given
+        AccountSignUpRequest req = new AccountSignUpRequest();
+
+        req.setAge(25);
+        req.setCity("서울시 강남구");
+        req.setDetail("테헤란로 910");
+        req.setNickname("nick");
+        req.setSex(AccountSex.MAN);
+
+        //when
+        Long accountId = accountService.signUp(accountWithoutToken, req);
+
+        //then
+        assertThat(accountId).isEqualTo(accountWithoutToken.getId());
+        assertThat(req.getAge()).isEqualTo(accountWithoutToken.getAge());
+        assertThat(req.getCity()).isEqualTo(accountWithoutToken.getAddress().getCity());
+        assertThat(req.getDetail()).isEqualTo(accountWithoutToken.getAddress().getDetail());
+        assertThat(req.getNickname()).isEqualTo(accountWithoutToken.getNickname());
+        assertThat(req.getSex()).isEqualTo(accountWithoutToken.getSex());
+    }
+
+    @Test
     @DisplayName("로그인할 수 있다.")
-    void SignIn(){
+    void signIn(){
         //given
         Account account = accountRepository.findById(1L).get();
         String refreshToken = account.getToken().getRefreshToken();
