@@ -3,10 +3,10 @@ package com.yapp.pet.global.exception.jwt;
 import com.yapp.pet.global.exception.common.BusinessException;
 import com.yapp.pet.global.exception.common.ExceptionStatus;
 
-public class NotRefreshTokenException extends BusinessException {
+public class NotFoundTokenException extends BusinessException {
 
-    public NotRefreshTokenException() {
-        super(ExceptionStatus.NOT_REFRESH_TOKEN_EXCEPTION);
+    public NotFoundTokenException() {
+        super(ExceptionStatus.NOT_FOUND_TOKEN_EXCEPTION);
     }
 
 }

@@ -1,6 +1,8 @@
 package com.yapp.pet.web.token;
 
+import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.token.TokenService;
+import com.yapp.pet.global.annotation.AuthAccount;
 import com.yapp.pet.global.exception.common.response.ExceptionResponseInfo;
 import com.yapp.pet.web.token.model.TokenResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,8 +18,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api")
@@ -36,8 +36,8 @@ public class TokenController {
             @ApiResponse(responseCode = "401", description = "잘못된 토큰인 경우",
                     content = @Content(schema = @Schema(implementation = ExceptionResponseInfo.class)))
     })
-    public ResponseEntity<TokenResponse> reIssuance(HttpServletRequest httpRequest) {
-        TokenResponse tokenResponse = tokenService.reIssuance(httpRequest);
+    public ResponseEntity<TokenResponse> reIssuance(@AuthAccount Account account) {
+        TokenResponse tokenResponse = tokenService.reIssuance(account);
 
         return ResponseEntity.ok(tokenResponse);
     }
@@ -50,8 +50,8 @@ public class TokenController {
             @ApiResponse(responseCode = "401", description = "잘못된 토큰인 경우",
                     content = @Content(schema = @Schema(implementation = ExceptionResponseInfo.class)))
     })
-    public ResponseEntity<HttpStatus> expireRefreshToken(HttpServletRequest httpRequest) {
-        tokenService.expireRefreshToken(httpRequest);
+    public ResponseEntity<HttpStatus> expireRefreshToken(@AuthAccount Account account) {
+        tokenService.expireRefreshToken(account);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -9,7 +9,6 @@ import com.yapp.pet.global.exception.jwt.InvalidJwtTokenException;
 import com.yapp.pet.global.exception.jwt.UnsupportedJwtTokenException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -34,18 +33,10 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
 
 		try {
 			filterChain.doFilter(request, response);
-		} catch (InvalidJwtSignatureException e) {
-			sendErrorMessage(response, e);
-		} catch (ExpiredJwtTokenException e) {
-			sendErrorMessage(response, e);
-		} catch (UnsupportedJwtTokenException e) {
-			sendErrorMessage(response, e);
-		} catch (InvalidJwtTokenException e) {
-			sendErrorMessage(response, e);
-		} catch (RuntimeException e) {
+		} catch (InvalidJwtSignatureException | ExpiredJwtTokenException | UnsupportedJwtTokenException
+				| InvalidJwtTokenException e) {
 			sendErrorMessage(response, e);
 		}
-
 	}
 
 	private void sendErrorMessage(HttpServletResponse response, BusinessException e) throws IOException {
@@ -53,15 +44,6 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
 		response.setContentType(CONTENT_TYPE);
 		response.setStatus(e.getHttpStatus().value());
 		response.getWriter().write(objectMapper.writeValueAsString(ExceptionResponseInfo.from(e)));
-
-		log.error(ERROR_LOG_MESSAGE, e.getClass().getSimpleName(), e.getLocalizedMessage());
-	}
-
-	private void sendErrorMessage(HttpServletResponse response, RuntimeException e) throws IOException {
-		response.setCharacterEncoding(CHARACTER_ENCODING);
-		response.setContentType(CONTENT_TYPE);
-		response.setStatus(HttpStatus.BAD_REQUEST.value());
-		response.getWriter().write("토큰이 존재하지 않습니다.");
 
 		log.error(ERROR_LOG_MESSAGE, e.getClass().getSimpleName(), e.getLocalizedMessage());
 	}
