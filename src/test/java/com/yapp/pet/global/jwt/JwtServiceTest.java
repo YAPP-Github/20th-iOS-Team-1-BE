@@ -2,6 +2,7 @@ package com.yapp.pet.global.jwt;
 
 import com.yapp.pet.global.exception.common.ExceptionStatus;
 import com.yapp.pet.global.exception.jwt.ExpiredJwtTokenException;
+import com.yapp.pet.global.exception.jwt.InvalidJwtTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -10,7 +11,6 @@ import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import io.jsonwebtoken.security.WeakKeyException;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +69,7 @@ public class JwtServiceTest {
     }
 
     @Test
-    @DisplayName("[실패] 토큰에서 sub를 가져올때 만료된 토큰은 예외가 발생한다.")
+    @DisplayName("[예외] 토큰에서 sub를 가져올때 만료된 토큰은 예외가 발생한다.")
     void failureGetSubFromTokenByExpired(){
         //when
         String accessToken = createTestAccessToken(this.secret, new Date(1));
@@ -81,7 +81,7 @@ public class JwtServiceTest {
     }
 
     @Test
-    @DisplayName("[실패] 토큰에서 sub를 가져올때 secret이 다르면 예외가 발생한다.")
+    @DisplayName("[예외] 토큰에서 sub를 가져올때 secret이 다르면 예외가 발생한다.")
     void failureGetSubFromTokenByNotEqualsSecret(){
         //given
         String secret = "sdjiocdjapjcicjsiod294hf7hf78sc687gs6" +
@@ -110,7 +110,7 @@ public class JwtServiceTest {
     }
 
     @Test
-    @DisplayName("[실패] access_token을 생성시 secret 길이가 짧으면 예외가 발생한다.")
+    @DisplayName("[예외] access_token을 생성시 secret 길이가 짧으면 예외가 발생한다.")
     void failureGetSubFromTokenByTooShorSecret(){
         //given
         String secret = "acxvikobvjoif2s";
@@ -132,6 +132,20 @@ public class JwtServiceTest {
         assertThat(refreshToken).isNotNull().isNotEmpty();
         assertThat(sub).isEqualTo(UNIQUE_ID);
         assertThat(claims.getAudience()).isEqualTo(TokenType.REFRESH.toString());
+    }
+
+    @Test
+    @DisplayName("[예외] 토큰이 존재하지 않으면 예외가 발생한다.")
+    void notExistToken(){
+
+        //when & then
+        assertThatExceptionOfType(InvalidJwtTokenException.class)
+                .isThrownBy(() -> jwtService.validateToken(null))
+                .withMessageMatching(ExceptionStatus.INVALID_JWT_TOKEN_EXCEPTION.getMessage());
+
+        assertThatExceptionOfType(InvalidJwtTokenException.class)
+                .isThrownBy(() -> jwtService.validateToken(""))
+                .withMessageMatching(ExceptionStatus.INVALID_JWT_TOKEN_EXCEPTION.getMessage());
     }
 
 }

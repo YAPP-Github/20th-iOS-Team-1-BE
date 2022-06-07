@@ -1,32 +1,33 @@
 package com.yapp.pet.domain.token;
 
+import com.yapp.pet.domain.account.entity.Account;
+import com.yapp.pet.domain.account.entity.AccountSex;
+import com.yapp.pet.domain.account.repository.AccountRepository;
 import com.yapp.pet.domain.token.entity.Social;
 import com.yapp.pet.domain.token.entity.Token;
 import com.yapp.pet.domain.token.repository.TokenRepository;
 import com.yapp.pet.global.exception.common.ExceptionStatus;
-import com.yapp.pet.global.exception.jwt.InvalidJwtTokenException;
+import com.yapp.pet.global.exception.jwt.NotFoundTokenException;
 import com.yapp.pet.global.exception.jwt.NotRefreshTokenException;
 import com.yapp.pet.global.jwt.JwtService;
 import com.yapp.pet.global.jwt.TokenType;
 import com.yapp.pet.web.token.model.TokenResponse;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.NoSuchElementException;
 
-import static com.yapp.pet.global.TogaetherConstants.AUTHORIZATION_HEADER_BEARER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
+@Transactional
+@Sql({"/data.sql"})
 public class TokenServiceTest {
 
     @Autowired
@@ -38,39 +39,34 @@ public class TokenServiceTest {
     @Autowired
     TokenRepository tokenRepository;
 
-    @Mock
-    HttpServletRequest mockedRequest;
+    @Autowired
+    AccountRepository accountRepository;
 
-    final String UNIQUE_ID = "uniqueIdBySocial";
-    String refreshToken;
+    final String UNIQUE_ID = "unique1";
+
+    Account accountWithToken;
+    Account accountWithoutToken;
 
     @BeforeEach
     void init(){
-        refreshToken = jwtService.createRefreshToken(UNIQUE_ID);
+        accountWithToken = accountRepository.findById(1L).get();
 
-        Token token = Token.builder()
-                .uniqueIdBySocial(UNIQUE_ID)
-                .refreshToken(refreshToken)
-                .socialType(Social.APPLE)
+        accountWithoutToken = Account.builder()
+                .age(10)
+                .sex(AccountSex.MAN)
+                .nickname("test")
                 .build();
-
-        tokenRepository.save(token);
     }
 
     @Test
-    @Transactional
     @DisplayName("[성공] refresh token이 DB에 존재하면 access token과 refresh token을 재발급한다")
-    void reIssuanceToken() throws InterruptedException {
-        //given
-        when(mockedRequest.getHeader("Authorization"))
-                .thenReturn(AUTHORIZATION_HEADER_BEARER + refreshToken);
+    void reIssuanceToken() {
 
-        // refreshToken 생성 직후, refreshToken을 다시 생성하면, 같은 refreshToken 값이 나오는걸 방지(Date로 인해)
-        // 실제로 이런 케이스는 없으므로, 테스트에서는 sleep으로 처리
-        Thread.sleep(2000L);
+        //given
+        String beforeRefreshToken = accountWithToken.getToken().getRefreshToken();
 
         //when
-        TokenResponse tokenResponse = tokenService.reIssuance(mockedRequest);
+        TokenResponse tokenResponse = tokenService.reIssuance(accountWithToken);
         String reAccessToken = tokenResponse.getAccessToken();
         String reRefreshToken = tokenResponse.getRefreshToken();
         Token findToken = tokenRepository.findByUniqueIdBySocial(UNIQUE_ID).get();
@@ -80,7 +76,7 @@ public class TokenServiceTest {
         assertThat(jwtService.parseClaims(reAccessToken).getAudience())
                 .isEqualTo(TokenType.ACCESS.toString());
 
-        assertThat(reRefreshToken).isNotEqualTo(refreshToken);
+        assertThat(reRefreshToken).isNotEqualTo(beforeRefreshToken);
         assertThat(jwtService.parseClaims(reRefreshToken).getAudience())
                 .isEqualTo(TokenType.REFRESH.toString());
 
@@ -88,45 +84,42 @@ public class TokenServiceTest {
     }
 
     @Test
-    @Transactional
-    @DisplayName("[실패] refresh token이 DB에 존재하지 않으면 예외가 발생한다")
+    @DisplayName("[예외] refresh token이 DB에 존재하지 않으면 예외가 발생한다")
     void failureReIssuanceTokenByNotFountRefreshToken(){
-        //given
-        String refreshToken = jwtService.createRefreshToken("anything");
-        when(mockedRequest.getHeader("Authorization"))
-                .thenReturn(AUTHORIZATION_HEADER_BEARER + refreshToken);
 
         //when & then
-        assertThatExceptionOfType(InvalidJwtTokenException.class)
-                .isThrownBy(() -> tokenService.reIssuance(mockedRequest))
-                .withMessageMatching(ExceptionStatus.INVALID_JWT_TOKEN_EXCEPTION.getMessage());
+        assertThatExceptionOfType(NotFoundTokenException.class)
+                .isThrownBy(() -> tokenService.reIssuance(accountWithoutToken))
+                .withMessageMatching(ExceptionStatus.NOT_FOUND_TOKEN_EXCEPTION.getMessage());
     }
 
     @Test
-    @Transactional
-    @DisplayName("[실패] 토큰_재발급할때_refersh_token이_아니면_예외가_발생한다")
+    @DisplayName("[예외] 토큰 재발급시 refersh token이 아니면 예외가 발생한다")
     void failureReIssuanceTokenByNotRefreshToken(){
+
         //given
-        String accessToken = jwtService.createAccessToken("anything");
-        when(mockedRequest.getHeader("Authorization"))
-                .thenReturn(AUTHORIZATION_HEADER_BEARER + accessToken);
+        String accessToken = jwtService.createAccessToken("test");
+
+        Token token = Token.builder()
+                .socialType(Social.APPLE)
+                .uniqueIdBySocial("test")
+                .refreshToken(accessToken)
+                .build();
+
+        Account account = Account.of(token);
 
         //when & then
         assertThatExceptionOfType(NotRefreshTokenException.class)
-                .isThrownBy(() -> tokenService.reIssuance(mockedRequest))
-                .withMessageMatching(ExceptionStatus.NOT_REFRESH_TOKEN.getMessage());
+                .isThrownBy(() -> tokenService.reIssuance(account))
+                .withMessageMatching(ExceptionStatus.NOT_REFRESH_TOKEN_EXCEPTION.getMessage());
     }
 
     @Test
-    @Transactional
-    @DisplayName("[성공]존재하는 refresh token을 삭제한다")
+    @DisplayName("[성공] 존재하는 refresh token을 삭제한다")
     void deleteRefreshToken(){
-        //given
-        when(mockedRequest.getHeader("Authorization"))
-                .thenReturn(AUTHORIZATION_HEADER_BEARER + refreshToken);
 
         //when
-        tokenService.expireRefreshToken(mockedRequest);
+        tokenService.expireRefreshToken(accountWithToken);
 
         //then
         assertThatExceptionOfType(NoSuchElementException.class)
@@ -134,17 +127,13 @@ public class TokenServiceTest {
     }
 
     @Test
-    @Transactional
-    @DisplayName("[실패]존재하지 않는 refresh token 삭제시 예외가 발생한다")
+    @DisplayName("[예외] 존재하지 않는 refresh token 삭제시 예외가 발생한다")
     void failureDeleteRefreshTokenByNotFoundRefreshToken(){
-        //given
-        String refreshToken = jwtService.createRefreshToken("anything");
-        when(mockedRequest.getHeader("Authorization"))
-                .thenReturn(AUTHORIZATION_HEADER_BEARER + refreshToken);
 
         //when & then
-        assertThatExceptionOfType(InvalidJwtTokenException.class)
-                .isThrownBy(() -> tokenService.expireRefreshToken(mockedRequest));
+        assertThatExceptionOfType(NotFoundTokenException.class)
+                .isThrownBy(() -> tokenService.expireRefreshToken(accountWithoutToken))
+                .withMessageMatching(ExceptionStatus.NOT_FOUND_TOKEN_EXCEPTION.getMessage());
     }
 
 }
