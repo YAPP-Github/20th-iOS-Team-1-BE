@@ -96,12 +96,12 @@ public class JwtService {
 		}
 	}
 
-	public void validateToken(String token){
+	public void validateToken(String jwt){
 		try {
 			Jwts.parserBuilder()
 					.setSigningKey(key)
 					.build()
-					.parseClaimsJws(token);
+					.parseClaimsJws(jwt);
 		} catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
 			log.info("잘못된 JWT 서명입니다.");
 			throw new InvalidJwtSignatureException();
