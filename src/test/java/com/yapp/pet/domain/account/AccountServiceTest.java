@@ -6,6 +6,7 @@ import com.yapp.pet.domain.token.entity.Social;
 import com.yapp.pet.domain.token.repository.TokenRepository;
 import com.yapp.pet.global.jwt.JwtService;
 import com.yapp.pet.global.jwt.TokenType;
+import com.yapp.pet.web.account.model.AccountValidationResponse;
 import com.yapp.pet.web.oauth.apple.model.SignInResponse;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -93,6 +94,48 @@ public class AccountServiceTest {
         assertThat(signInResponse.getAccessToken()).isNotNull().isNotEmpty();
         assertThat(signInResponse.getRefreshToken()).isNotNull().isNotEmpty();
         assertThat(signInResponse.getRefreshToken()).isNotEqualTo(refreshToken);
+    }
+
+    @Test
+    @DisplayName("[성공] 닉네임 검증 로직 통과 - 중복되지 않고 2글자~10글자인 닉네임")
+    void successValidateNickname(){
+        //given
+        String nickname = "투개더";
+
+        //when
+        AccountValidationResponse response = accountService.validateNickname(nickname);
+
+        //then
+        assertThat(response.isSatisfyLengthCondition()).isTrue();
+        assertThat(response.isUnique()).isTrue();
+    }
+
+    @Test
+    @DisplayName("닉네임 검증 - 닉네임이 중복되는 경우")
+    void duplicateNickname(){
+        //given
+        String nickname = "재롱잔치";
+
+        //when
+        AccountValidationResponse response = accountService.validateNickname(nickname);
+
+        //then
+        assertThat(response.isSatisfyLengthCondition()).isTrue();
+        assertThat(response.isUnique()).isFalse();
+    }
+
+    @Test
+    @DisplayName("닉네임 검증 - 닉네임의 길이는 2글자~10글자가 아닌 경우")
+    void notSatisfyLengthConditionNickname(){
+        //given
+        String nickname = "yapp-togaether";
+
+        //when
+        AccountValidationResponse response = accountService.validateNickname(nickname);
+
+        //then
+        assertThat(response.isSatisfyLengthCondition()).isFalse();
+        assertThat(response.isUnique()).isTrue();
     }
 
 }
