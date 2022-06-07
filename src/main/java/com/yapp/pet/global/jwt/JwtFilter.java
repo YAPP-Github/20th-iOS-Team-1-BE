@@ -4,7 +4,6 @@ import com.yapp.pet.global.util.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -28,10 +27,6 @@ public class JwtFilter extends OncePerRequestFilter {
 
 		String jwt = JwtUtils.resolveToken(httpRequest);
 
-		if (!StringUtils.hasText(jwt)) {
-			throw new RuntimeException();
-		}
-
 		jwtService.validateToken(jwt);
 
 		filterChain.doFilter(httpRequest, response);
@@ -40,7 +35,7 @@ public class JwtFilter extends OncePerRequestFilter {
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException{
 		boolean isPassFilter = ALLOWED_URLS.stream()
-										.anyMatch(url -> request.getRequestURI().contains(url));
+				.anyMatch(url -> request.getRequestURI().contains(url));
 
 		if (isPassFilter) {
 			return true;
