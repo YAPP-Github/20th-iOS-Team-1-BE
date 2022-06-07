@@ -6,6 +6,7 @@ import com.yapp.pet.domain.token.entity.Social;
 import com.yapp.pet.domain.token.entity.Token;
 import com.yapp.pet.domain.token.repository.TokenRepository;
 import com.yapp.pet.global.jwt.JwtService;
+import com.yapp.pet.web.account.model.AccountValidationResponse;
 import com.yapp.pet.web.oauth.apple.model.SignInResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ import static java.lang.Boolean.TRUE;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AccountService {
 
     private final JwtService jwtService;
@@ -59,6 +61,24 @@ public class AccountService {
         });
 
         return signInResponse;
+    }
+
+    public AccountValidationResponse validateNickname(String nickname){
+
+        AccountValidationResponse response = new AccountValidationResponse();
+
+        response.setUnique(isUnique(nickname));
+        response.setSatisfyLengthCondition(isSatisfyLengthCondition(nickname));
+
+        return response;
+    }
+
+    private boolean isSatisfyLengthCondition(String nickname){
+        return 2 <= nickname.length() && nickname.length() <= 10;
+    }
+
+    private boolean isUnique(String nickname){
+        return accountRepository.findByNickname(nickname).isEmpty();
     }
 
 }
