@@ -6,6 +6,8 @@ import com.yapp.pet.domain.token.entity.Social;
 import com.yapp.pet.domain.token.entity.Token;
 import com.yapp.pet.domain.token.repository.TokenRepository;
 import com.yapp.pet.global.jwt.JwtService;
+import com.yapp.pet.web.account.mapper.AccountMapper;
+import com.yapp.pet.web.account.model.AccountSignUpRequest;
 import com.yapp.pet.web.account.model.AccountValidationResponse;
 import com.yapp.pet.web.oauth.apple.model.SignInResponse;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,8 @@ import static java.lang.Boolean.TRUE;
 public class AccountService {
 
     private final JwtService jwtService;
+
+    private final AccountMapper accountMapper;
 
     private final AccountRepository accountRepository;
     private final TokenRepository tokenRepository;
@@ -79,6 +83,15 @@ public class AccountService {
 
     private boolean isUnique(String nickname){
         return accountRepository.findByNickname(nickname).isEmpty();
+    }
+
+    @Transactional
+    public Long signUp(Account account, AccountSignUpRequest signUpRequest){
+        Account updateAccount = accountMapper.toEntity(signUpRequest);
+
+        account.signUp(updateAccount);
+
+        return account.getId();
     }
 
 }

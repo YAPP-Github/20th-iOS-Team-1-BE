@@ -59,6 +59,13 @@ public class Account extends BaseEntity {
                 .build();
     }
 
+    public void signUp(Account account){
+        this.nickname = account.getNickname();
+        this.age = account.getAge();
+        this.sex = account.getSex();
+        this.address = account.getAddress();
+    }
+
     public void deleteToken(){
         this.token = null;
     }

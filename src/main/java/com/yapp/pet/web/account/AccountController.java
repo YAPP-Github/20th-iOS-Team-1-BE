@@ -1,6 +1,9 @@
 package com.yapp.pet.web.account;
 
 import com.yapp.pet.domain.account.AccountService;
+import com.yapp.pet.domain.account.entity.Account;
+import com.yapp.pet.global.annotation.AuthAccount;
+import com.yapp.pet.web.account.model.AccountSignUpRequest;
 import com.yapp.pet.web.account.model.AccountValidationResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -10,9 +13,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,7 +44,27 @@ public class AccountController {
         }
 
         return ResponseEntity.ok(response);
+    }
 
+    @PostMapping("/accounts/sign-up")
+    @Operation(summary = "회원가입", tags = "계정",
+            description = "회원가입을 진행합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK")
+    })
+    public ResponseEntity<Long> signUp(@AuthAccount Account account,
+                                       @Valid @RequestBody AccountSignUpRequest accountSignUpRequest){
+
+        Long accountId;
+
+        try {
+            accountId = accountService.signUp(account, accountSignUpRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+        return ResponseEntity.ok(accountId);
     }
 
 }
