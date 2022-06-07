@@ -26,7 +26,7 @@ public class Account extends BaseEntity {
     @JoinColumn(name = "token_id")
     private Token token;
 
-    @Column(nullable = false, length = 20, unique = true)
+    @Column(nullable = false, length = 10, unique = true)
     private String nickname;
 
     @Column(nullable = false, length = 3)
@@ -49,8 +49,7 @@ public class Account extends BaseEntity {
     }
 
     public static Account of(Token token) {
-        String temporaryNickname
-                = UUID.randomUUID().toString().substring(0, 8) + "_" + token.getSocialType().getValue();
+        String temporaryNickname = UUID.randomUUID().toString().substring(0, 8);
 
         return Account.builder()
                 .token(token)
