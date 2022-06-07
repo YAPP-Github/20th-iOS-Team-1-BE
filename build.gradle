@@ -42,6 +42,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.8'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 	// querydsl
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
