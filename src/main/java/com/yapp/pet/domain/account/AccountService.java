@@ -2,6 +2,7 @@ package com.yapp.pet.domain.account;
 
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.account.repository.AccountRepository;
+import com.yapp.pet.domain.account_image.AccountImageService;
 import com.yapp.pet.domain.token.entity.Social;
 import com.yapp.pet.domain.token.entity.Token;
 import com.yapp.pet.domain.token.repository.TokenRepository;
@@ -14,7 +15,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 import static java.lang.Boolean.FALSE;
@@ -27,6 +31,7 @@ import static java.lang.Boolean.TRUE;
 public class AccountService {
 
     private final JwtService jwtService;
+    private final AccountImageService accountImageService;
 
     private final AccountMapper accountMapper;
 
@@ -86,10 +91,15 @@ public class AccountService {
     }
 
     @Transactional
-    public Long signUp(Account account, AccountSignUpRequest signUpRequest){
+    public Long signUp(Account account, AccountSignUpRequest signUpRequest, MultipartFile imageFile) {
+
         Account updateAccount = accountMapper.toEntity(signUpRequest);
 
         account.signUp(updateAccount);
+
+        if(imageFile != null){
+            accountImageService.createAccountImages(account, List.of(imageFile));
+        }
 
         return account.getId();
     }

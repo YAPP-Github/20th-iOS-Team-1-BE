@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -48,17 +49,18 @@ public class AccountController {
 
     @PostMapping("/accounts/sign-up")
     @Operation(summary = "회원가입", tags = "계정",
-            description = "회원가입을 진행합니다.")
+            description = "회원가입을 진행합니다. 계정의 고유 id값(pk)을 응답합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK")
     })
     public ResponseEntity<Long> signUp(@AuthAccount Account account,
-                                       @Valid @RequestBody AccountSignUpRequest accountSignUpRequest){
+                                       @RequestPart(value = "imageFile", required = false) MultipartFile imageFile,
+                                       @Valid @RequestPart AccountSignUpRequest accountSignUpRequest) {
 
         Long accountId;
 
         try {
-            accountId = accountService.signUp(account, accountSignUpRequest);
+            accountId = accountService.signUp(account, accountSignUpRequest, imageFile);
         } catch (Exception e) {
             e.printStackTrace();
             throw e;

@@ -1,4 +1,4 @@
-package com.yapp.pet.domain.account_image.entity;
+package com.yapp.pet.domain.account_image;
 
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.common.BaseEntity;
