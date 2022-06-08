@@ -213,15 +213,6 @@ components:
           type: string
         message:
           type: string
-    CallbackResponseApple:
-      type: object
-      properties:
-        state:
-          type: string
-        code:
-          type: string
-        id_token:
-          type: string
     SignInResponse:
       type: object
       properties:
@@ -315,70 +306,67 @@ components:
             - PERSONNEL_FULL
             - END
       description: 모임 조회 및 필터링 요청 API
-    SearchingClubDto:
-      type: object
-      properties:
-        category:
-          type: string
-          enum:
-            - WALK
-            - DOG_CAFE
-        title:
-          type: string
-        startDate:
-          type: string
-          format: date-time
-        endDate:
-          type: string
-          format: date-time
-        eligiblePetSizeTypes:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-            enum:
-              - LARGE
-              - MEDIUM
-              - SMALL
-              - ALL
-        eligibleBreeds:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-            enum:
-              - MALTESE
-              - WELSH_CORGI
-              - RETRIEVER
-              - ALL
-        eligibleSex:
-          type: string
-          enum:
-            - MAN
-            - WOMAN
-            - ALL
-        maximumPeople:
-          type: integer
-          format: int32
-        participants:
-          type: integer
-          format: int32
-        leaderName:
-          type: string
-        imagePath:
-          type: string
-        latitude:
-          type: number
-          format: double
-        longitude:
-          type: number
-          format: double
-        meetingPlace:
-          type: string
     SearchingResponse:
       type: object
       properties:
         searchingClubDto:
           type: array
           items:
-            $ref: '#/components/schemas/SearchingClubDto'
+            properties:
+              category:
+                type: string
+                enum:
+                  - WALK
+                  - DOG_CAFE
+              title:
+                type: string
+              startDate:
+                type: string
+                format: date-time
+              endDate:
+                type: string
+                format: date-time
+              eligiblePetSizeTypes:
+                uniqueItems: true
+                type: array
+                items:
+                  type: string
+                  enum:
+                    - LARGE
+                    - MEDIUM
+                    - SMALL
+                    - ALL
+              eligibleBreeds:
+                uniqueItems: true
+                type: array
+                items:
+                  type: string
+                  enum:
+                    - MALTESE
+                    - WELSH_CORGI
+                    - RETRIEVER
+                    - ALL
+              eligibleSex:
+                type: string
+                enum:
+                  - MAN
+                  - WOMAN
+                  - ALL
+              maximumPeople:
+                type: integer
+                format: int32
+              participants:
+                type: integer
+                format: int32
+              leaderName:
+                type: string
+              imagePath:
+                type: string
+              latitude:
+                type: number
+                format: double
+              longitude:
+                type: number
+                format: double
+              meetingPlace:
+                type: string
