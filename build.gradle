@@ -73,6 +73,9 @@ dependencies {
 	annotationProcessor "org.mapstruct:mapstruct-processor:1.4.2.Final"
 	annotationProcessor "org.projectlombok:lombok-mapstruct-binding:0.2.0"
 
+	// AWS S3
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
 	// test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
