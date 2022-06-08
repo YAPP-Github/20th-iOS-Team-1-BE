@@ -1,0 +1,384 @@
+openapi: 3.0.1
+
+info:
+  title: YAPP20-BE-ToGaether API
+  description: 모임 기반 플랫폼 ToGaether API 문서
+  license:
+    name: Apache License Version 2.0
+    url: '[http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)'
+  version: '1.0'
+servers:
+  - url: https://yapp-togather.com
+tags:
+  - name: 모임
+    description: 모임 검색 및 필터링을 진행합니다
+  - name: 소셜로그인
+    description: 애플 또는 카카오를 통해 로그인 및 회원가입을 진행합니다.
+  - name: 토큰
+    description: 토큰 관련 API를 제공합니다.
+
+paths:
+  /auth/apple/callback:
+    post:
+      tags:
+        - 소셜로그인
+      summary: 애플 로그인 API
+      description: IOS에서 애플 서버로 로그인 요청 시, 애플에서 Togaether 서버로 콜백 후, 회원가입 여부와 함께 토큰 값을 응답합니다.
+      operationId: callbackOfApple
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignInResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+  /auth/kakao/callback:
+    get:
+      tags:
+        - 소셜로그인
+      summary: 카카오 로그인 API
+      description: IOS에서 카카오 서버로 로그인 요청 시, 카카오에서 Togaether 서버로 콜백 후, 회원가입 여부와 함께 토큰 값을 응답합니다.
+      operationId: callbackOfKakao
+      parameters:
+        - name: code
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignInResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+
+  /api/tokens/re-issuance:
+    post:
+      tags:
+        - 토큰
+      summary: access token 재발급
+      description: access token 만료시, refresh token을 통해 재발급받습니다.
+      operationId: reIssuance
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+        '401':
+          description: 잘못된 토큰인 경우
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseInfo'
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+  /api/tokens/expire:
+    delete:
+      tags:
+        - 토큰
+      summary: 로그아웃
+      description: refresh token 삭제를 통해 로그아웃 합니다.
+      operationId: expireRefreshToken
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+                enum:
+                  - 200 OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+        '401':
+          description: 잘못된 토큰인 경우
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseInfo'
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+
+  /api/clubs/search:
+    get:
+      tags:
+        - 모임
+      summary: 모임 검색 및 필터링
+      description: Query String을 통해 데이터를 요청받고, 조건에 맞는 모임을 반환합니다.
+      operationId: searchingByWord
+      parameters:
+        - name: request
+          in: query
+          description: SearchingRequest
+          required: true
+          schema:
+            $ref: '#/components/schemas/SearchingRequest'
+        - name: searchingType
+          in: query
+          description: 검색어를 통한 검색은 word, 카테고리 검색은 category
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchingResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+
+components:
+  schemas:
+    ExceptionDetailResponse:
+      type: object
+      properties:
+        field:
+          type: string
+        value:
+          type: string
+        reason:
+          type: string
+    ExceptionResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        status:
+          type: string
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExceptionDetailResponse'
+    ExceptionResponseInfo:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    CallbackResponseApple:
+      type: object
+      properties:
+        state:
+          type: string
+        code:
+          type: string
+        id_token:
+          type: string
+    SignInResponse:
+      type: object
+      properties:
+        accessToken:
+          title: access token
+          type: string
+          description: 인증 토큰
+          example: eyhidfuiiasdjivxJasiC.etjvcxJxodfo93fjixCVKcfkld.RKOFD045fdBkzls3Q
+        refreshToken:
+          title: refresh token
+          type: string
+          description: access token 재발급을 위한 토큰
+          example: fdsdfu9fjcXjivxJasiC.ezZFD5nopjJ453fxfji6FCjVKcfkld.fC2dFD04kzls4V
+        firstAccount:
+          title: 계정 존재 여부
+          type: boolean
+          description: 이미 존재하는 회원인지 여부 확인
+          example: true
+      description: 소셜 로그인 응답 객체
+    TokenResponse:
+      type: object
+      properties:
+        accessToken:
+          title: access token
+          type: string
+          description: 인증 토큰
+          example: eyhidfuiiasdjivxJasiC.etjvcxJxodfo93fjixCVKcfkld.RKOFD045fdBkzls3Q
+        refreshToken:
+          title: refresh token
+          type: string
+          description: access token 재발급을 위한 토큰
+          example: fdsdfu9fjcXjivxJasiC.ezZFD5nopjJ453fxfji6FCjVKcfkld.fC2dFD04kzls4V
+      description: 토큰 응답 객체
+    SearchingRequest:
+      type: object
+      properties:
+        searchingWord:
+          title: 검색어
+          type: string
+          description: 카테고리를 통한 검색일 경우, 해당 값은 null
+        category:
+          type: string
+          enum:
+            - WALK
+            - DOG_CAFE
+        eligibleBreed:
+          type: string
+          enum:
+            - MALTESE
+            - WELSH_CORGI
+            - RETRIEVER
+            - ALL
+        petSizeType:
+          type: string
+          enum:
+            - LARGE
+            - MEDIUM
+            - SMALL
+            - ALL
+        eligibleSex:
+          type: string
+          enum:
+            - MAN
+            - WOMAN
+            - ALL
+        participateMin:
+          title: 최소 참여 인원 필터링
+          type: integer
+          description: 3명 이하일 경우 해당 값은 0으로 전송
+          format: int32
+        participateMax:
+          title: 최대 참여 인원 필터링
+          type: integer
+          format: int32
+        page:
+          type: integer
+          description: 몇 번째 게시물인지 나타낸다
+          format: int32
+        startLatitude:
+          type: number
+          description: 사용자 위도
+          format: double
+        startLongitude:
+          type: number
+          description: 사용자 경도
+          format: double
+        status:
+          type: string
+          enum:
+            - AVAILABLE
+            - PERSONNEL_FULL
+            - END
+      description: 모임 조회 및 필터링 요청 API
+    SearchingClubDto:
+      type: object
+      properties:
+        category:
+          type: string
+          enum:
+            - WALK
+            - DOG_CAFE
+        title:
+          type: string
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        eligiblePetSizeTypes:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+              - LARGE
+              - MEDIUM
+              - SMALL
+              - ALL
+        eligibleBreeds:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+              - MALTESE
+              - WELSH_CORGI
+              - RETRIEVER
+              - ALL
+        eligibleSex:
+          type: string
+          enum:
+            - MAN
+            - WOMAN
+            - ALL
+        maximumPeople:
+          type: integer
+          format: int32
+        participants:
+          type: integer
+          format: int32
+        leaderName:
+          type: string
+        imagePath:
+          type: string
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        meetingPlace:
+          type: string
+    SearchingResponse:
+      type: object
+      properties:
+        searchingClubDto:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchingClubDto'

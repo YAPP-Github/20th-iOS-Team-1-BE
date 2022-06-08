@@ -17,7 +17,7 @@ public final class TogaetherConstants {
 
     public static final List<String> ALLOWED_URLS
             = List.of("/health-check", "/test",
-            "swagger", "/api-docs",
+            "swagger", "/api-docs", "/openapi.yml", "swagger-ui",
             "/auth/apple/callback", "/auth/kakao/callback");
 
     public static final String KAKAO_CONTENT_TYPE = "application/x-www-form-urlencoded;charset=utf-8";
