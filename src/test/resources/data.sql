@@ -9,13 +9,13 @@ ALTER table token auto_increment = 1;
 delete from club;
 ALTER table club auto_increment = 1;
 
-insert into token (refresh_token, social_type, unique_id_by_social) values ('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJ5YXBwIiwic3ViIjoidW5pcXVlMSIsImF1ZCI6IlJFRlJFU0giLCJleHAiOjE2NTUxOTExMDMsImlhdCI6MTY1NDU4NjMwMywiYXV0aCI6IlVTRVIifQ.Tzbbr-wgN-ZZubtNjLAijPBJHdGON-PJkLNgejpyNceANk6m3YigBqNiQtAn8BUzgsiyn1iTRBZj7G7RzTAlFQ', 'KAKAO', 'unique1');
-insert into token (refresh_token, social_type, unique_id_by_social) values ('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJ5YXBwIiwic3ViIjoidW5pcXVlMiIsImF1ZCI6IlJFRlJFU0giLCJleHAiOjE2NTUxOTExMzEsImlhdCI6MTY1NDU4NjMzMSwiYXV0aCI6IlVTRVIifQ._R5djBprrbqZMpqxv7RZVHO_gLFGlyhVNYeRa5Nbfv2YkQENZ71-mjmIlsM0V8NItMs4VsC77QBIuB-ye2Kq2A', 'APPLE', 'unique2');
-insert into token (refresh_token, social_type, unique_id_by_social) values ('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJ5YXBwIiwic3ViIjoidW5pcXVlMyIsImF1ZCI6IlJFRlJFU0giLCJleHAiOjE2NTUxOTExNDcsImlhdCI6MTY1NDU4NjM0NywiYXV0aCI6IlVTRVIifQ.6iUkhRoI9l2lOsKiMc6CxLylzjWdMpnQB_RyihL4drwVpfGWLlyESLB9UC44V5diQ5vBNkSA-NZPCcLkpYJ3fw', 'KAKAO', 'unique3');
+insert into token (refresh_token, social_type, unique_id_by_social) values ('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJ5YXBwIiwic3ViIjoidW5pcXVlMSIsImF1ZCI6IlJFRlJFU0giLCJleHAiOjE2Njc5MjUwODEsImlhdCI6MTY1NDc4NTA4MSwiYXV0aCI6IlVTRVIifQ.-CF4LjgOrevjUMyyFG6VxoM6t5DX2-GGDpolaclLSHb46FmTAJRhTfAqaWZwh_VSZgI7CezrreRqfL9yUNayqA', 'KAKAO', 'unique1');
+insert into token (refresh_token, social_type, unique_id_by_social) values ('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJ5YXBwIiwic3ViIjoidW5pcXVlMiIsImF1ZCI6IlJFRlJFU0giLCJleHAiOjE2Njc5MjUyMTEsImlhdCI6MTY1NDc4NTIxMSwiYXV0aCI6IlVTRVIifQ.ooSfHxIEfxMF8J5go2Uo0tFZFN233FIRxnfXMAQbkESpOXZ0LFUfs3Znii8KjeZsCGJOcHrMg_uHOalTcsQghg', 'APPLE', 'unique2');
+insert into token (refresh_token, social_type, unique_id_by_social) values ('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJ5YXBwIiwic3ViIjoidW5pcXVlMyIsImF1ZCI6IlJFRlJFU0giLCJleHAiOjE2Njc5MjUyMzEsImlhdCI6MTY1NDc4NTIzMSwiYXV0aCI6IlVTRVIifQ.d9D7d5pw7mvSFqFTU6H2YpMSmDP35ZZDPfsQhFpDESmBqtclTT3qtRgygLZOefkB_CJVip_DabaW-amdlBWqzw', 'KAKAO', 'unique3');
 
 insert into account (age, nickname, sex, token_id) values (10, '재롱잔치', 'MAN', 1);
 insert into account (age, nickname, sex, token_id) values (20, '밀란이네 시트콤', 'WOMAN', 2);
-insert into account (age, nickname, sex, token_id) values (30, 'yapp', 'ALL', 3);
+insert into account (age, nickname, sex, token_id) values (30, 'yapp', 'PRIVATE', 3);
 
 insert into club (category, description, title, meeting_place, status, maximum_people, eligible_sex, start_date, end_date, latitude, longitude)
 values ('WALK', 'des', 'title', 'place', 'AVAILABLE', 2, 'MAN', '2021-01-01', '2021-01-02', 2, 3);
