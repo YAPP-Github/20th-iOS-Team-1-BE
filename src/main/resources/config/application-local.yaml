@@ -42,6 +42,7 @@ jwt:
 springdoc:
   api-docs:
     path: /api-docs
+    enabled: false
   default-consumes-media-type: application/json
   default-produces-media-type: application/json
   swagger-ui:
@@ -51,6 +52,7 @@ springdoc:
     disable-swagger-default-url: true
     display-query-params-without-oauth2: true
     doc-expansion: none
+    url: /openapi.yml
   paths-to-match:
     - /api/**
     - /auth/**

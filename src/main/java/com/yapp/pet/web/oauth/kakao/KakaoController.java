@@ -20,7 +20,6 @@ import static com.yapp.pet.global.TogaetherConstants.*;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "소셜로그인", description = "애플 또는 카카오를 통해 로그인 및 회원가입을 진행합니다.")
 public class KakaoController {
 
     private final KakaoClient kakaoClient;
@@ -34,13 +33,6 @@ public class KakaoController {
     private String clientSecret;
 
     @GetMapping("/auth/kakao/callback")
-    @Operation(summary = "카카오 로그인 API", tags = "소셜로그인",
-            description = "IOS에서 카카오 서버로 로그인 요청 시, 카카오에서 Togaether 서버로 콜백 후, " +
-                    "회원가입 여부와 함께 토큰 값을 응답합니다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK",
-                    content = @Content(schema = @Schema(implementation = SignInResponse.class)))
-    })
     public ResponseEntity<SignInResponse> callbackOfKakao(String code){
         SignInResponse signInResponse;
 

@@ -1,17 +1,8 @@
 package com.yapp.pet.web.club.model;
 
-import com.yapp.pet.domain.club.entity.Category;
-import com.yapp.pet.domain.club.entity.Club;
-import com.yapp.pet.domain.club.entity.ClubStatus;
-import com.yapp.pet.domain.club.entity.EligibleBreed;
-import com.yapp.pet.domain.club.entity.EligibleSex;
+import com.yapp.pet.domain.club.entity.*;
 import com.yapp.pet.domain.common.PetSizeType;
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -58,9 +49,7 @@ public class SearchingClubDto {
 
     @Getter
     @Setter
-    @Schema(description = "모임 조회 및 필터링 요청 API")
     public static class SearchingRequest{
-        @Schema(title = "검색어", description = "카테고리를 통한 검색일 경우, 해당 값은 null")
         private String searchingWord;
 
         private Category category;
@@ -71,19 +60,14 @@ public class SearchingClubDto {
 
         private EligibleSex eligibleSex;
 
-        @Schema(title = "최소 참여 인원 필터링", description = "3명 이하일 경우 해당 값은 0으로 전송")
         private Integer participateMin;
 
-        @Schema(title = "최대 참여 인원 필터링")
         private Integer participateMax;
 
-        @Schema(description = "몇 번째 게시물인지 나타낸다")
         private int page;
 
-        @Schema(description = "사용자 위도")
         private Double startLatitude;
 
-        @Schema(description = "사용자 경도")
         private Double startLongitude;
 
         private ClubStatus status;
