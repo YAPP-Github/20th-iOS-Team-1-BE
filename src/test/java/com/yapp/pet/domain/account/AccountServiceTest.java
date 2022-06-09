@@ -93,7 +93,7 @@ public class AccountServiceTest {
                 .compact();
     }
 
-    List<MultipartFile> createMockimageFiles() throws IOException {
+    List<MultipartFile> createMockImageFiles() throws IOException {
         List<MultipartFile> mockFiles = new ArrayList<>();
 
         MockMultipartFile mockMultipartFile1 = new MockMultipartFile(
@@ -164,7 +164,7 @@ public class AccountServiceTest {
         req.setNickname("nick");
         req.setSex(AccountSex.MAN);
 
-        List<MultipartFile> imageFiles = createMockimageFiles();
+        List<MultipartFile> imageFiles = createMockImageFiles();
 
         //when
         Long accountId = accountService.signUp(accountWithoutToken, req, imageFiles.get(0));
