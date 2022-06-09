@@ -115,7 +115,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    @DisplayName("[회원가입 - 첫 서비스 접근 시 Account 저장")
+    @DisplayName("회원가입 - 첫 서비스 접근 시 Account 저장")
     void signUp(){
         //given
         String idToken = createIdToken("newUniqueId");
