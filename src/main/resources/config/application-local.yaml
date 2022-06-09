@@ -7,6 +7,11 @@ spring:
     username: root
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+      enabled: true
 
   jpa:
     hibernate:
@@ -30,8 +35,8 @@ jwt:
     header-type: JWT
     header: Authorization
     secret: ENC(96CvoYH1HnbpIxw7kLXaESwEcgB92xTiloPB5QoFCGFL4fWEIsCxbpoCYoqCxgSGp7Umj9C6mnUjh99cPEGM8RYzcVF5v+82G2Wos2xsyUtMZh/ZITZzh0R74NtoS6ma7G4UjHECfIfMdpiFQuDJMg1JKcXurOP2rSHGxdTTSFs=)
-    access-time: 1800000 # 30분
-    refresh-time: 604800016 # 7일
+    access-time: 86400000 # 1일
+    refresh-time: 604800016 # 7일, 2419000000(한달)
     issuer: yapp
 
 springdoc:
@@ -56,3 +61,16 @@ social:
     kakao:
       client-id: ENC(3eXLqoML65d+7ezHZVOy7qMtQXKnKv2QW9Wj1mlqQjC9xN2VDtl24v8qa9jyLjNj)
       client-secret: ENC(0R1l0yX0YP1IyTGIRN8ONkKnlgLJyRMntgV5PLYdBhNwP/dCmTudb55tm49tGTvg)
+
+cloud:
+  aws:
+    s3:
+      bucket: togaether
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+    credentials:
+      instance-profile: true
+      access-key: ENC(SyQn0StyUrPZlDyfMv2oRmhwu+aXPfu0jLZ4+Yn+1n0=)
+      secret-key: ENC(Ynei80LW10nIFe4iuc9MI+xGiGsW5MyVI1Zvb51yzYs0UnxktFIgVd0KNpY8fo7hTjXQvRwPr9E=)
