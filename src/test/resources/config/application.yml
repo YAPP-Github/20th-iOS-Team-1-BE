@@ -26,6 +26,10 @@ spring:
         show_sql: true
         use_sql_comments: true
 
+springdoc:
+  api-docs:
+    enabled: false
+
 jasypt:
   encryptor:
     bean: jasyptStringEncryptor
