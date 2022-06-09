@@ -25,4 +25,5 @@ public final class TogaetherConstants {
     public static final String LOCAL_REDIRECT_URI = "http://localhost:8080/auth/kakao/callback";
     public static final String DEV_REDIRECT_URI = "https://yapp-togather.com:443/auth/kakao/callback";
 
+    public static final String S3_ACCOUNT_DIR_NAME = "account";
 }

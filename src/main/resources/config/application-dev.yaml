@@ -4,6 +4,11 @@ spring:
     username: ENC(OTUfXu9X9QBk4lG0mm19+A==)
     password: ENC(8d+CPaIyBQOntW/l/k6WlE9NqDqx5eoR)
     driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+      enabled: true
 
   jpa:
     hibernate:
@@ -51,3 +56,16 @@ social:
   kakao:
     client-id: ENC(3eXLqoML65d+7ezHZVOy7qMtQXKnKv2QW9Wj1mlqQjC9xN2VDtl24v8qa9jyLjNj)
     client-secret: ENC(0R1l0yX0YP1IyTGIRN8ONkKnlgLJyRMntgV5PLYdBhNwP/dCmTudb55tm49tGTvg)
+
+cloud:
+  aws:
+    s3:
+      bucket: togaether
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+    credentials:
+      instance-profile: true
+      access-key: ENC(SyQn0StyUrPZlDyfMv2oRmhwu+aXPfu0jLZ4+Yn+1n0=)
+      secret-key: ENC(Ynei80LW10nIFe4iuc9MI+xGiGsW5MyVI1Zvb51yzYs0UnxktFIgVd0KNpY8fo7hTjXQvRwPr9E=)

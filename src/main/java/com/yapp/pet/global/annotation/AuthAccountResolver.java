@@ -3,7 +3,7 @@ package com.yapp.pet.global.annotation;
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.token.entity.Token;
 import com.yapp.pet.domain.token.repository.TokenRepository;
-import com.yapp.pet.global.exception.Account.AccountNotFoundException;
+import com.yapp.pet.global.exception.account.AccountNotFoundException;
 import com.yapp.pet.global.jwt.JwtService;
 import com.yapp.pet.global.util.JwtUtils;
 import lombok.RequiredArgsConstructor;

@@ -42,6 +42,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.8'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 	// querydsl
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
@@ -65,6 +66,15 @@ dependencies {
 
 	// feign
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
+	//mapstruct
+	implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+	implementation 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+	annotationProcessor "org.mapstruct:mapstruct-processor:1.4.2.Final"
+	annotationProcessor "org.projectlombok:lombok-mapstruct-binding:0.2.0"
+
+	// AWS S3
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
 	// test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

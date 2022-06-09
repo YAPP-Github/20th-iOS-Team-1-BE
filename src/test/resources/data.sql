@@ -1,5 +1,7 @@
 delete from account_club;
 ALTER table account_club auto_increment = 1;
+delete from account_image;
+ALTER table account_image auto_increment = 1;
 delete from account;
 ALTER table account auto_increment = 1;
 delete from token;

@@ -1,4 +1,4 @@
-package com.yapp.pet.global.exception.Account;
+package com.yapp.pet.global.exception.account;
 
 import com.yapp.pet.global.exception.common.BusinessException;
 import com.yapp.pet.global.exception.common.ExceptionStatus;
