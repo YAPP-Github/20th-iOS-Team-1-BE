@@ -34,6 +34,10 @@ jasypt:
   encryptor:
     bean: jasyptStringEncryptor
 
+springdoc:
+  api-docs:
+    enabled: false
+
 jwt:
   token:
     header-type: JWT

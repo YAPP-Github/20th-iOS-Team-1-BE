@@ -7,8 +7,8 @@ public enum Category {
 
     // 추가 필요
     WALK("산책"),
-    DOG_CAFE("애견 카페");
-
+    DOG_CAFE("애견 카페"),
+    PLAY_GROUND("놀이터");
 
     private final  String value;
 

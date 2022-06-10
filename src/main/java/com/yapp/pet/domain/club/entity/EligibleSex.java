@@ -7,7 +7,7 @@ public enum EligibleSex {
 
     MAN("남자"),
     WOMAN("여자"),
-    ALL("비공개");
+    ALL("상관 없음");
 
     private final String value;
 
