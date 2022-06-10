@@ -10,21 +10,23 @@ info:
 servers:
   - url: https://yapp-togather.com
 tags:
-  - name: 모임
-    description: 모임 검색 및 필터링을 진행합니다
-  - name: 소셜로그인
-    description: 애플 또는 카카오를 통해 로그인 및 회원가입을 진행합니다.
-  - name: 토큰
+  - name: 계정 (Account)
+    description: 소셜 로그인 및 계정 관련 API를 제공합니다.
+  - name: 모임 (Club)
+    description: 모임 관련 API를 제공합니다.
+  - name: 토큰 (Token)
     description: 토큰 관련 API를 제공합니다.
 
 paths:
+
+  ############################################# Account #############################################
+
   /auth/apple/callback:
     post:
       tags:
-        - 소셜로그인
+        - 계정 (Account)
       summary: 애플 로그인 API
       description: IOS에서 애플 서버로 로그인 요청 시, 애플에서 Togaether 서버로 콜백 후, 회원가입 여부와 함께 토큰 값을 응답합니다.
-      operationId: callbackOfApple
       responses:
         '200':
           description: OK
@@ -32,25 +34,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SignInResponse'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ExceptionResponse'
-        '405':
-          description: Method Not Allowed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+
   /auth/kakao/callback:
     get:
       tags:
-        - 소셜로그인
+        - 계정 (Account)
       summary: 카카오 로그인 API
       description: IOS에서 카카오 서버로 로그인 요청 시, 카카오에서 Togaether 서버로 콜백 후, 회원가입 여부와 함께 토큰 값을 응답합니다.
-      operationId: callbackOfKakao
       parameters:
         - name: code
           in: query
@@ -64,26 +54,96 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SignInResponse'
+
+  /api/accounts/sign-up:
+    post:
+      tags:
+        - 계정 (Account)
+      summary: 회원가입
+      description: 회원가입을 진행합니다.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                nickname:
+                  type: string
+                  description: 닉네임
+                imageFile:
+                  type: object
+                  description: 이미지 파일(필수 값 아님)
+                age:
+                  type: integer
+                  description: 나이
+                sex:
+                  type: string
+                  description: 성별(MAN, WOMAN, PRIVATE 중 하나)
+                city:
+                  type: string
+                  description: 시/도
+                detail:
+                  type: string
+                  description: 시/군/구
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+                description: 회원 고유 id 값입니다. (pk)
+                example: 3
         '400':
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExceptionResponse'
-        '405':
-          description: Method Not Allowed
+        '401':
+          description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: '#/components/schemas/ExceptionResponseInfo'
+
+
+  /api/accounts/validate-nickname/{nickname}:
+    get:
+      tags:
+        - 계정 (Account)
+      summary: 닉네임 검사
+      description: 닉네임 중복 , 길이를 검사합니다.
+      parameters:
+        - in: path
+          name: nickname
+          required: true
+          schema:
+            type: string
+            example: 재롱잔치
+          description: 사용자가 입력한 nickname
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountValidationResponse'
+        '401':
+          description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseInfo'
+
+  ############################################# Token #############################################
 
   /api/tokens/re-issuance:
     post:
       tags:
-        - 토큰
-      summary: access token 재발급
-      description: access token 만료시, refresh token을 통해 재발급받습니다.
-      operationId: reIssuance
+        - 토큰 (Token)
+      summary: 토큰 재발급
+      description: access token 만료시, refresh token을 통해 재발급받습니다. (access, refresh 두 토큰 모두 재발급 됩니다.)
       responses:
         '200':
           description: OK
@@ -91,66 +151,37 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TokenResponse'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ExceptionResponse'
         '401':
-          description: 잘못된 토큰인 경우
+          description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExceptionResponseInfo'
-        '405':
-          description: Method Not Allowed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+
   /api/tokens/expire:
     delete:
       tags:
-        - 토큰
+        - 토큰 (Token)
       summary: 로그아웃
-      description: refresh token 삭제를 통해 로그아웃 합니다.
-      operationId: expireRefreshToken
+      description: 서버에서 refresh token을 삭제합니다. (클라이언트에서는 access,  refresh 토큰 모두 폐기)
       responses:
         '200':
           description: OK
-          content:
-            application/json:
-              schema:
-                type: string
-                enum:
-                  - 200 OK
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ExceptionResponse'
         '401':
-          description: 잘못된 토큰인 경우
+          description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExceptionResponseInfo'
-        '405':
-          description: Method Not Allowed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+
+  ############################################# Club #############################################
 
   /api/clubs/search:
     get:
       tags:
-        - 모임
+        - 모임 (Club)
       summary: 모임 검색 및 필터링
       description: Query String을 통해 데이터를 요청받고, 조건에 맞는 모임을 반환합니다.
-      operationId: searchingByWord
       parameters:
         - name: request
           in: query
@@ -171,23 +202,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SearchingResponse'
-        '400':
-          description: Bad Request
+        '401':
+          description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
-        '405':
-          description: Method Not Allowed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: '#/components/schemas/ExceptionResponseInfo'
   /api/clubs/search/range:
     get:
       tags:
-        - 모임
-      summary: 주어진 범위 내에 있는 모임 조
+        - 모임 (Club)
+      summary: 주어진 범위 내에 있는 모임 조회
       description: 좌상단, 우하단 위도 경도를 통해 해당 범위 내에 있는 모임을 조회합니다
       operationId: searchingWithinRange
       parameters:
@@ -219,33 +244,44 @@ paths:
 
 components:
   schemas:
-    ExceptionDetailResponse:
-      type: object
-      properties:
-        field:
-          type: string
-        value:
-          type: string
-        reason:
-          type: string
+
+    ############################################# Exception #############################################
+
     ExceptionResponse:
       type: object
       properties:
         message:
           type: string
+          example: 유효하지 않은 입력 값입니다.
         status:
           type: string
+          example: 400
         errors:
           type: array
           items:
-            $ref: '#/components/schemas/ExceptionDetailResponse'
+            properties:
+              field:
+                type: string
+                example: 필드 이름
+              value:
+                type: string
+                example: 클라리언트가 보낸 값
+              reason:
+                type: string
+                example: 에러 이유
     ExceptionResponseInfo:
       type: object
       properties:
         status:
           type: string
+          example: 401
         message:
           type: string
+          example: 만료된 JWT토큰입니다.
+
+
+    ############################################# Account #############################################
+
     SignInResponse:
       type: object
       properties:
@@ -265,64 +301,36 @@ components:
           description: 이미 존재하는 회원인지 여부 확인
           example: true
       description: 소셜 로그인 응답 객체
+
+    AccountValidationResponse:
+      type: object
+      properties:
+        unique:
+          type: boolean
+          description: 중복 검사 결과 (중복되지 않으면 true)
+        satisfyLengthCondition:
+          type: boolean
+          description: 길이 만족 여부 결과 (길이 만족하면 true)
+      description: nickname 검사 결과 (두 필드 모두 true이면 통과)
+
+    ############################################# Token #############################################
+
     TokenResponse:
       type: object
       properties:
         accessToken:
-          title: access token
           type: string
           description: 인증 토큰
           example: eyhidfuiiasdjivxJasiC.etjvcxJxodfo93fjixCVKcfkld.RKOFD045fdBkzls3Q
         refreshToken:
-          title: refresh token
           type: string
           description: access token 재발급을 위한 토큰
           example: fdsdfu9fjcXjivxJasiC.ezZFD5nopjJ453fxfji6FCjVKcfkld.fC2dFD04kzls4V
       description: 토큰 응답 객체
-    SearchingWithinRangeClubRequest:
-      type: object
-      properties:
-        upperLeftLatitude:
-          title: 좌상단 위도
-          type: number
-          format: double
-        upperLeftLongitude:
-          title: 좌상단 경도
-          type: number
-          format: double
-        bottomRightLatitude:
-          title: 우하단 위도
-          type: number
-          format: double
-        bottomRightLongitude:
-          title: 우하단 경도
-          type: number
-          format: double
-    SearchingWithinRangeClubResponse:
-      type: object
-      properties:
-        SearchingWithinRangeClubDto:
-          type: array
-          items:
-            properties:
-              clubId:
-                type: integer
-                description: 모임 식별자 값
-                format: int64
-              clubStatus:
-                type: string
-                enum:
-                  - AVAILABLE
-                  - PERSONNEL_FULL
-                  - END
-              clubLatitude:
-                title: 모임 위도
-                type: number
-                format: double
-              clubLongitude:
-                title: 모임 경도
-                type: number
-                format: double
+
+
+    ############################################# Club #############################################
+
     SearchingRequest:
       type: object
       properties:
@@ -397,6 +405,7 @@ components:
                   - DOG_CAFE
               title:
                 type: string
+                example: "산책할사람!"
               startDate:
                 type: string
                 format: date-time
@@ -404,46 +413,86 @@ components:
                 type: string
                 format: date-time
               eligiblePetSizeTypes:
-                uniqueItems: true
                 type: array
                 items:
                   type: string
-                  enum:
-                    - LARGE
-                    - MEDIUM
-                    - SMALL
-                    - ALL
+                example:
+                  - LARGE
+                  - MEDIUM
               eligibleBreeds:
-                uniqueItems: true
                 type: array
                 items:
                   type: string
-                  enum:
-                    - MALTESE
-                    - WELSH_CORGI
-                    - RETRIEVER
-                    - ALL
+                example:
+                  - MALTESE
+                  - WELSH_CORGI
+                  - RETRIEVER
               eligibleSex:
                 type: string
-                enum:
-                  - MAN
-                  - WOMAN
-                  - ALL
+                example: "ALL"
               maximumPeople:
                 type: integer
-                format: int32
+                example: "6"
               participants:
                 type: integer
-                format: int32
+                example: "5"
               leaderName:
                 type: string
+                example: "재롱잔치"
               imagePath:
                 type: string
+                example: "https://bucket.s3.amazonaws.com/folder/test.jpg"
               latitude:
                 type: number
                 format: double
+                example: "2,174"
               longitude:
                 type: number
                 format: double
+                example: "41,4033803"
               meetingPlace:
                 type: string
+                example: "서울 강남역 10번 출구"
+    SearchingWithinRangeClubRequest:
+      type: object
+      properties:
+        upperLeftLatitude:
+          title: 좌상단 위도
+          type: number
+          format: double
+        upperLeftLongitude:
+          title: 좌상단 경도
+          type: number
+          format: double
+        bottomRightLatitude:
+          title: 우하단 위도
+          type: number
+          format: double
+        bottomRightLongitude:
+          title: 우하단 경도
+          type: number
+          format: double
+    SearchingWithinRangeClubResponse:
+      type: object
+      properties:
+        SearchingWithinRangeClubDto:
+          type: array
+          items:
+            properties:
+              clubId:
+                type: integer
+                description: 모임 식별자 값
+                format: int64
+              category:
+                type: string
+                enum:
+                  - WALK
+                  - DOG_CAFE
+              clubLatitude:
+                title: 모임 위도
+                type: number
+                format: double
+              clubLongitude:
+                title: 모임 경도
+                type: number
+                format: double
