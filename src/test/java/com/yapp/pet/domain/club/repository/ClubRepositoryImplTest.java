@@ -330,7 +330,7 @@ class ClubRepositoryImplTest {
         //when
         List<SearchingWithinRangeClubDto> result = queryFactory.select(
                                                                       Projections.constructor(SearchingWithinRangeClubDto.class,
-                                                                                              club.id, club.status, club.latitude, club.longitude))
+                                                                                              club.id, club.category, club.latitude, club.longitude))
                                                               .from(club)
                                                               .where(clubWithinRange(upperLeftLatitude, upperLeftLongitude,
                                                                                      bottomRightLatitude,
@@ -360,7 +360,7 @@ class ClubRepositoryImplTest {
         //when
         List<SearchingWithinRangeClubDto> result = queryFactory.select(
                                                                        Projections.constructor(SearchingWithinRangeClubDto.class,
-                                                                                               club.id, club.status, club.latitude, club.longitude))
+                                                                                               club.id, club.category, club.latitude, club.longitude))
                                                                .from(club)
                                                                .where(clubWithinRange(upperLeftLatitude, upperLeftLongitude,
                                                                                       bottomRightLatitude,

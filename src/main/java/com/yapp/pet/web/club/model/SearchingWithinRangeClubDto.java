@@ -1,6 +1,6 @@
 package com.yapp.pet.web.club.model;
 
-import com.yapp.pet.domain.club.entity.ClubStatus;
+import com.yapp.pet.domain.club.entity.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,16 +16,16 @@ public class SearchingWithinRangeClubDto {
 
     private Long clubId;
 
-    private ClubStatus clubStatus;
+    private Category category;
 
     private Double clubLatitude;
 
     private Double clubLongitude;
 
     @Builder
-    public SearchingWithinRangeClubDto(Long clubId, ClubStatus clubStatus, Double clubLatitude, Double clubLongitude) {
+    public SearchingWithinRangeClubDto(Long clubId, Category category, Double clubLatitude, Double clubLongitude) {
         this.clubId = clubId;
-        this.clubStatus = clubStatus;
+        this.category = category;
         this.clubLatitude = clubLatitude;
         this.clubLongitude = clubLongitude;
     }

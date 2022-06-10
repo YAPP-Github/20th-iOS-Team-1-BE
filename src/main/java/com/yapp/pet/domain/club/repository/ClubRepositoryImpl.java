@@ -121,7 +121,7 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
 
         return queryFactory.select(
                                    Projections.constructor(SearchingWithinRangeClubDto.class,
-                                                           club.id, club.status, club.latitude, club.longitude))
+                                                           club.id, club.category, club.latitude, club.longitude))
                            .from(club)
                            .where(clubWithinRange(rangeRequest.getUpperLeftLatitude(),
                                                   rangeRequest.getUpperLeftLongitude(),
