@@ -5,6 +5,7 @@ import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.global.annotation.AuthAccount;
 import com.yapp.pet.web.account.model.AccountSignUpRequest;
 import com.yapp.pet.web.account.model.AccountValidationResponse;
+import com.yapp.pet.web.account.model.MyPageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,6 +50,21 @@ public class AccountController {
         }
 
         return ResponseEntity.ok(accountId);
+    }
+
+    @GetMapping("/accounts/my-page")
+    public ResponseEntity<MyPageResponse> myPage(@AuthAccount Account account){
+
+        MyPageResponse response;
+
+        try {
+            response = accountService.getMyPageInfo(account);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+        return ResponseEntity.ok(response);
     }
 
 }

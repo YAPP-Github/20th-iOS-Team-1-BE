@@ -7,4 +7,6 @@ import java.util.Optional;
 public interface AccountRepositoryCustom {
 
     Optional<Account> findByNickname(String nickname);
+
+    Account findAccount(String uniqueIdBySocial);
 }
