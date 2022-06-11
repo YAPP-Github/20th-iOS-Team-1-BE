@@ -14,6 +14,7 @@ import com.yapp.pet.domain.club.entity.EligibleSex;
 import com.yapp.pet.domain.common.PetSizeType;
 import com.yapp.pet.global.util.DistanceUtil;
 import com.yapp.pet.web.club.model.SearchingClubDto;
+import com.yapp.pet.web.club.model.SearchingWithinRangeClubDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
 
@@ -25,6 +26,7 @@ import static com.yapp.pet.domain.account.entity.QAccount.account;
 import static com.yapp.pet.domain.accountclub.entity.QAccountClub.accountClub;
 import static com.yapp.pet.domain.club.entity.QClub.club;
 import static com.yapp.pet.web.club.model.SearchingClubDto.SearchingRequest;
+import static com.yapp.pet.web.club.model.SearchingWithinRangeClubDto.*;
 
 @RequiredArgsConstructor
 public class ClubRepositoryImpl implements ClubRepositoryCustom{
@@ -115,6 +117,20 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
     }
 
     @Override
+    public List<SearchingWithinRangeClubDto> searchClubByWithinRange(SearchingWithinRangeClubRequest rangeRequest) {
+
+        return queryFactory.select(
+                                   Projections.constructor(SearchingWithinRangeClubDto.class,
+                                                           club.id, club.category, club.latitude, club.longitude))
+                           .from(club)
+                           .where(clubWithinRange(rangeRequest.getUpperLeftLatitude(),
+                                                  rangeRequest.getUpperLeftLongitude(),
+                                                  rangeRequest.getBottomRightLatitude(),
+                                                  rangeRequest.getBottomRightLongitude()))
+                           .fetch();
+    }
+
+    @Override
     public List<Club> findExceedTimeClub() {
         return queryFactory.selectFrom(club)
                            .where(clubStatusEq(ClubStatus.AVAILABLE).and(
@@ -180,5 +196,12 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
         BooleanBuilder clubEligibleSexEqFilter = new BooleanBuilder(club.eligibleSex.ne(EligibleSex.ALL)).and(club.eligibleSex.eq(eligibleSex));
 
         return new BooleanBuilder(clubEligibleSexAll).or(clubEligibleSexEqFilter);
+    }
+
+    private BooleanExpression clubWithinRange(Double upperLeftLatitude, Double upperLeftLongitude,
+                                              Double bottomRightLatitude, Double bottomRightLongitude) {
+
+        return club.latitude.between(bottomRightLatitude, upperLeftLatitude)
+                            .and(club.longitude.between(upperLeftLongitude, bottomRightLongitude));
     }
 }

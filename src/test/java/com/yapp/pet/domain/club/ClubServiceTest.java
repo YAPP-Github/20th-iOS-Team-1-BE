@@ -12,11 +12,13 @@ import com.yapp.pet.domain.club.entity.EligibleSex;
 import com.yapp.pet.domain.club.repository.ClubRepository;
 import com.yapp.pet.domain.common.PetSizeType;
 import com.yapp.pet.web.club.model.SearchingClubDto;
+import com.yapp.pet.web.club.model.SearchingWithinRangeClubDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -25,10 +27,14 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Set;
 
+import static com.yapp.pet.web.club.model.SearchingWithinRangeClubDto.SearchingWithinRangeClubRequest;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Transactional
+@Sql({"/data.sql"})
 class ClubServiceTest {
 
     @Autowired
@@ -138,5 +144,31 @@ class ClubServiceTest {
         for (Club savedClub : savedClubs) {
             assertThat(savedClub.getStatus()).isEqualTo(ClubStatus.END);
         }
+    }
+
+    @Test
+    @DisplayName("좌상단, 우하단 위도 경도가 주어질 시 그 범위 내에 있는 모임들이 조회된다")
+    void searchingClubWithinRange() throws Exception {
+        //given
+        Double upperLeftLatitude = 37.528176;
+        Double upperLeftLongitude = 126.953678;
+        Double bottomRightLatitude = 37.503199;
+        Double bottomRightLongitude = 126.991272;
+
+        SearchingWithinRangeClubRequest request = new SearchingWithinRangeClubRequest(
+                upperLeftLatitude, upperLeftLongitude, bottomRightLatitude, bottomRightLongitude
+        );
+
+        //when
+        List<SearchingWithinRangeClubDto> result = clubService.searchingRangeClub(request);
+        SearchingWithinRangeClubDto firstResult = result.get(0);
+
+        //then
+        assertAll(
+                () -> assertTrue(firstResult.getClubLatitude() >= bottomRightLatitude &&
+                                         firstResult.getClubLatitude() <= upperLeftLatitude),
+                () -> assertTrue(firstResult.getClubLongitude() >= upperLeftLongitude &&
+                                         firstResult.getClubLongitude() <= bottomRightLongitude)
+        );
     }
 }

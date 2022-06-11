@@ -208,6 +208,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExceptionResponseInfo'
+  /api/clubs/search/range:
+    get:
+      tags:
+        - 모임 (Club)
+      summary: 주어진 범위 내에 있는 모임 조회
+      description: 좌상단, 우하단 위도 경도를 통해 해당 범위 내에 있는 모임을 조회합니다
+      operationId: searchingWithinRange
+      parameters:
+        - name: request
+          in: query
+          description: SearchingWithinRangeClubRequest
+          required: true
+          schema:
+            $ref: '#/components/schemas/SearchingWithinRangeClubRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchingWithinRangeClubResponse'
+        '401':
+          description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseInfo'
 
 
 components:
@@ -421,3 +448,46 @@ components:
               meetingPlace:
                 type: string
                 example: "서울 강남역 10번 출구"
+    SearchingWithinRangeClubRequest:
+      type: object
+      properties:
+        upperLeftLatitude:
+          title: 좌상단 위도
+          type: number
+          format: double
+        upperLeftLongitude:
+          title: 좌상단 경도
+          type: number
+          format: double
+        bottomRightLatitude:
+          title: 우하단 위도
+          type: number
+          format: double
+        bottomRightLongitude:
+          title: 우하단 경도
+          type: number
+          format: double
+    SearchingWithinRangeClubResponse:
+      type: object
+      properties:
+        SearchingWithinRangeClubDto:
+          type: array
+          items:
+            properties:
+              clubId:
+                type: integer
+                description: 모임 식별자 값
+                format: int64
+              category:
+                type: string
+                enum:
+                  - WALK
+                  - DOG_CAFE
+              clubLatitude:
+                title: 모임 위도
+                type: number
+                format: double
+              clubLongitude:
+                title: 모임 경도
+                type: number
+                format: double
