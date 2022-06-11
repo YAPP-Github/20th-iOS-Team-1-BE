@@ -9,7 +9,7 @@ import com.yapp.pet.domain.token.entity.Social;
 import com.yapp.pet.domain.token.entity.Token;
 import com.yapp.pet.domain.token.repository.TokenRepository;
 import com.yapp.pet.global.jwt.JwtService;
-import com.yapp.pet.web.account.mapper.AccountMapper;
+import com.yapp.pet.global.mapper.AccountMapper;
 import com.yapp.pet.web.account.model.AccountSignUpRequest;
 import com.yapp.pet.web.account.model.AccountValidationResponse;
 import com.yapp.pet.web.account.model.MyPageResponse;

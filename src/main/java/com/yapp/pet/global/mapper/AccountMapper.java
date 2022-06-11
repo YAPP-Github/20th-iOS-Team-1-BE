@@ -1,4 +1,4 @@
-package com.yapp.pet.web.account.mapper;
+package com.yapp.pet.global.mapper;
 
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.web.account.model.AccountSignUpRequest;
