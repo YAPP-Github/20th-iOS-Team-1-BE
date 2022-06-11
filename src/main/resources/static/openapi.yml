@@ -229,18 +229,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SearchingWithinRangeClubResponse'
-        '400':
-          description: Bad Request
+        '401':
+          description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SearchingWithinRangeClubResponse'
-        '405':
-          description: Method Not Allowed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SearchingWithinRangeClubResponse'
+                $ref: '#/components/schemas/ExceptionResponseInfo'
 
 components:
   schemas:
