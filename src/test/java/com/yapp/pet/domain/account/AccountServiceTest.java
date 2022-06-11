@@ -4,12 +4,14 @@ import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.account.entity.AccountSex;
 import com.yapp.pet.domain.account.repository.AccountRepository;
 import com.yapp.pet.domain.account_image.AccountImageRepository;
+import com.yapp.pet.domain.pet.entity.PetSex;
 import com.yapp.pet.domain.token.entity.Social;
 import com.yapp.pet.domain.token.repository.TokenRepository;
 import com.yapp.pet.global.jwt.JwtService;
 import com.yapp.pet.global.jwt.TokenType;
 import com.yapp.pet.web.account.model.AccountSignUpRequest;
 import com.yapp.pet.web.account.model.AccountValidationResponse;
+import com.yapp.pet.web.account.model.MyPageResponse;
 import com.yapp.pet.web.oauth.apple.model.SignInResponse;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -36,6 +38,8 @@ import java.util.Date;
 import java.util.List;
 
 import static com.yapp.pet.global.TogaetherConstants.*;
+import static com.yapp.pet.web.account.model.MyPageResponse.AccountInfoResponse;
+import static com.yapp.pet.web.account.model.MyPageResponse.PetInfoResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -237,6 +241,35 @@ public class AccountServiceTest {
         //then
         assertThat(response.isSatisfyLengthCondition()).isFalse();
         assertThat(response.isUnique()).isTrue();
+    }
+
+    @Test
+    @DisplayName("마이페이지를 조회할 수 있다.")
+    void getMyPageInfo(){
+        //when
+        MyPageResponse myPageInfo = accountService.getMyPageInfo(accountWithToken);
+
+        AccountInfoResponse accountInfo = myPageInfo.getAccountInfo();
+        List<PetInfoResponse> petInfos = myPageInfo.getPetInfos();
+
+        //then
+        assertThat(accountInfo.getNickname()).isEqualTo("재롱잔치");
+        assertThat(accountInfo.getAddress()).isEqualTo("인천광역시 남동구");
+        assertThat(accountInfo.getAge()).isEqualTo("10살");
+        assertThat(accountInfo.getSex()).isEqualTo(AccountSex.MAN);
+        assertThat(accountInfo.getSelfIntroduction()).isEqualTo("저는 재롱이 견주입니다.");
+        assertThat(accountInfo.getTags()).hasSize(2);
+        assertThat(accountInfo.getImageUrl()).isEqualTo("https://dasko.com");
+
+        assertThat(petInfos).hasSize(2);
+        PetInfoResponse petInfo = petInfos.get(0);
+
+        assertThat(petInfo.getNickname()).isEqualTo("재롱이");
+        assertThat(petInfo.getBreed()).isEqualTo("말티즈");
+        assertThat(petInfo.getAge()).isEqualTo("5");
+        assertThat(petInfo.getSex()).isEqualTo(PetSex.MALE);
+        assertThat(petInfo.getTags()).hasSize(3);
+        assertThat(petInfo.getImageUrl()).isEqualTo("httsp://pet.com");
     }
 
 }
