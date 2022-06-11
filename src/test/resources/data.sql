@@ -23,10 +23,14 @@ insert into account (age, nickname, sex, token_id) values (40, 'abcd', 'MAN', 4)
 
 insert into club (category, description, title, meeting_place, status, maximum_people, eligible_sex, start_date, end_date, latitude, longitude)
 values ('WALK', 'description', '쿄쿄량 산책할사람', 'place', 'AVAILABLE', 2, 'MAN', '2021-01-01', '2021-01-02', 2, 3);
+
+-- 국립중앙박물관 위도 경도
 insert into club (category, description, eligible_sex, end_date, latitude, longitude, maximum_people, meeting_place, start_date, status, title)
-values ('DOG_CAFE', 'description', 'WOMAN', '2022-02-05', 23, 24, 3, 'ㅁㄴㅇ', '2022-02-01', 'AVAILABLE', '산책할사람 코코랑');
+values ('DOG_CAFE', 'description', 'WOMAN', '2022-02-05', 37.523717, 126.981598, 3, 'ㅁㄴㅇ', '2022-02-01', 'AVAILABLE', '산책할사람 코코랑');
+
+-- 중앙대학교병원 위도 경도
 insert into club (category, description, eligible_sex, end_date, latitude, longitude, maximum_people, meeting_place, start_date, status, title)
-values ('PLAY_GROUND', 'description', 'ALL', '2022-01-05', 23, 24, 3, 'ㅁㄴㅇ', '2022-01-01', 'AVAILABLE', '코코랑 산책');
+values ('PLAY_GROUND', 'description', 'ALL', '2022-01-05', 37.506706, 126.961290, 3, 'ㅁㄴㅇ', '2022-01-01', 'AVAILABLE', '코코랑 산책');
 
 insert into account_club (leader, account_id, club_id) values (true, 1, 1);
 insert into account_club (leader, account_id, club_id) values (false , 2, 1);
