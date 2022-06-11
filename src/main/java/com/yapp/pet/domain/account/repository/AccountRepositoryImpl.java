@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.Optional;
 
 import static com.yapp.pet.domain.account.entity.QAccount.account;
+import static com.yapp.pet.domain.account_tag.QAccountTag.accountTag;
 import static com.yapp.pet.domain.token.entity.QToken.token;
 
 @RequiredArgsConstructor
@@ -24,4 +25,16 @@ public class AccountRepositoryImpl implements AccountRepositoryCustom{
                         .fetchOne()
         );
     }
+
+    @Override
+    public Account findAccount(String uniqueIdBySocial) {
+        return queryFactory
+                .selectFrom(account)
+                .distinct()
+                .join(account.token, token)
+                .leftJoin(account.tags, accountTag).fetchJoin()
+                .where(account.token.uniqueIdBySocial.eq(uniqueIdBySocial))
+                .fetchOne();
+    }
+
 }

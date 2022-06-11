@@ -3,7 +3,7 @@ package com.yapp.pet.domain.club;
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.account.entity.AccountSex;
 import com.yapp.pet.domain.account.entity.Address;
-import com.yapp.pet.domain.accountclub.entity.AccountClub;
+import com.yapp.pet.domain.accountclub.AccountClub;
 import com.yapp.pet.domain.club.entity.Category;
 import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.club.entity.ClubStatus;

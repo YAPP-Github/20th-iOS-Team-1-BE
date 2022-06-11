@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.yapp.pet.domain.account.entity.QAccount.account;
-import static com.yapp.pet.domain.accountclub.entity.QAccountClub.accountClub;
+import static com.yapp.pet.domain.accountclub.QAccountClub.accountClub;
 import static com.yapp.pet.domain.club.entity.QClub.club;
 import static com.yapp.pet.web.club.model.SearchingClubDto.SearchingRequest;
 import static com.yapp.pet.web.club.model.SearchingWithinRangeClubDto.*;

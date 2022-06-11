@@ -1,9 +1,12 @@
-package com.yapp.pet.domain.accountclub.entity;
+package com.yapp.pet.domain.accountclub;
 
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.common.BaseEntity;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
