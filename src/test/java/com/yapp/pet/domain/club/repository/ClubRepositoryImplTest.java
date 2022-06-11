@@ -29,7 +29,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 import static com.yapp.pet.domain.account.entity.QAccount.account;
-import static com.yapp.pet.domain.accountclub.entity.QAccountClub.accountClub;
+import static com.yapp.pet.domain.accountclub.QAccountClub.accountClub;
 import static com.yapp.pet.domain.club.entity.QClub.club;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;

@@ -6,7 +6,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AccountRepository extends JpaRepository<Account, Long>, AccountRepositoryCustom {
 
-    default Account findByIdWrapper(Long accountId){
-        return findById(accountId).orElseThrow(AccountNotFoundException::new);
-    }
 }

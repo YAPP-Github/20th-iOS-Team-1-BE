@@ -37,10 +37,14 @@ public class S3Utils {
                 .build();
     }
 
-    public List<String> uploadToS3(List<MultipartFile> uploadFile, String dirName) {
-        return uploadFile.stream()
+    public List<String> multiUploadToS3(List<MultipartFile> uploadFiles, String dirName) {
+        return uploadFiles.stream()
                 .map(file -> putS3(file, dirName))
                 .collect(Collectors.toList());
+    }
+
+    public String uploadToS3(MultipartFile uploadFile, String dirName) {
+        return putS3(uploadFile, dirName);
     }
 
     private String putS3(MultipartFile uploadFile, String dirName) {

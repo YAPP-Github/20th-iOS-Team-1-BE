@@ -3,12 +3,15 @@ package com.yapp.pet.domain.pet.entity;
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.common.BaseEntity;
 import com.yapp.pet.domain.common.PetSizeType;
+import com.yapp.pet.domain.pet_tag.PetTag;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.FetchType.LAZY;
@@ -27,6 +30,9 @@ public class Pet extends BaseEntity {
     @JoinColumn(name = "account_id")
     private Account account;
 
+    @OneToMany(mappedBy = "pet", fetch = LAZY)
+    private List<PetTag> tags = new ArrayList<>();
+
     private String breed;
 
     @Column(length = 30, nullable = false)
@@ -44,6 +50,8 @@ public class Pet extends BaseEntity {
     @Enumerated(STRING)
     @Column(nullable = false)
     private PetSizeType sizeType;
+
+    private String imageUrl;
 
     @Builder
     public Pet(Account account, String name, Age age, PetSex sex, boolean neutering,

@@ -59,7 +59,7 @@ paths:
     post:
       tags:
         - 계정 (Account)
-      summary: 회원가입
+      summary: 회원가입 API
       description: 회원가입을 진행합니다.
       requestBody:
         content:
@@ -112,7 +112,7 @@ paths:
     get:
       tags:
         - 계정 (Account)
-      summary: 닉네임 검사
+      summary: 닉네임 검사 API
       description: 닉네임 중복 , 길이를 검사합니다.
       parameters:
         - in: path
@@ -129,6 +129,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AccountValidationResponse'
+        '401':
+          description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseInfo'
+
+  /api/accounts/my-page:
+    get:
+      tags:
+        - 계정 (Account)
+      summary: 마이페이지 조회 API
+      description: 마이페이지 조회 시 견주와 강아지 정보를 응답합니다.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MyPageResponse'
         '401':
           description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
           content:
@@ -307,6 +327,59 @@ components:
           type: boolean
           description: 길이 만족 여부 결과 (길이 만족하면 true)
       description: nickname 검사 결과 (두 필드 모두 true이면 통과)
+
+    MyPageResponse:
+      type: object
+      properties:
+        accountInfo:
+          type: object
+          properties:
+            nickname:
+              type: string
+              example: 재롱잔치
+            address:
+              type: string
+              example: 서울시 강남구
+            age:
+              type: string
+              example: 10살
+            sex:
+              type: string
+              example: MAN
+            selfIntroduction:
+              type: string
+              example: 재롱이 견주입니다~
+            tags:
+              type: string
+              example:
+                - 활발함
+                - ENFP
+            imageUrl:
+              type: string
+              example: https://dasko.com
+        petInfos:
+          type: array
+          items:
+            type: object
+          example:
+            - nickname: 재롱이
+              breed: 말티즈
+              age: 3살
+              sex: MALE
+              tags:
+                - 소식
+                - 산책 좋아함
+                - 귀여움
+              imageUrl: https://pet.com
+            - nickname: 밀란이
+              breed: 리트리버
+              age: 4살
+              sex: FEMALE
+              tags:
+                - 대형견
+                - 산책 좋아함
+                - 간식 귀신
+              imageUrl: https://bvckpvck.com
 
     ############################################# Token #############################################
 
