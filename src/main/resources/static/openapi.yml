@@ -236,6 +236,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ExceptionResponseInfo'
 
+
 components:
   schemas:
 

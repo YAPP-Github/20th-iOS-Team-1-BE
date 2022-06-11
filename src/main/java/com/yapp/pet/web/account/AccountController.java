@@ -19,8 +19,8 @@ public class AccountController {
 
     private final AccountService accountService;
 
-    @GetMapping("/accounts/validate-nickname")
-    public ResponseEntity<AccountValidationResponse> validateNickname(String nickname){
+    @GetMapping("/accounts/validate-nickname/{nickname}")
+    public ResponseEntity<AccountValidationResponse> validateNickname(@PathVariable("nickname") String nickname){
 
         AccountValidationResponse response;
 
