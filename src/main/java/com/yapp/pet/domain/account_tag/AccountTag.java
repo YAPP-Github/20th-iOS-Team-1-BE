@@ -1,7 +1,5 @@
-package com.yapp.pet.domain.account_tag.entity;
+package com.yapp.pet.domain.account_tag;
 
-
-import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.common.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -9,12 +7,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-import static javax.persistence.FetchType.LAZY;
-
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "account_prefer_tag")
 public class AccountTag extends BaseEntity {
 
     @Id
@@ -25,16 +20,11 @@ public class AccountTag extends BaseEntity {
     @Column(nullable = false, length = 10)
     private String name;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "account_id")
-    private Account account;
-
-    private AccountTag(String name, Account account) {
+    private AccountTag(String name) {
         this.name = name;
-        this.account = account;
     }
 
-    public static AccountTag of(String name, Account account){
-        return new AccountTag(name, account);
+    public static AccountTag of(String name){
+        return new AccountTag(name);
     }
 }

@@ -1,5 +1,6 @@
 package com.yapp.pet.domain.account.entity;
 
+import com.yapp.pet.domain.account_tag.AccountTag;
 import com.yapp.pet.domain.common.BaseEntity;
 import com.yapp.pet.domain.token.entity.Token;
 import lombok.AccessLevel;
@@ -8,8 +9,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -26,6 +30,9 @@ public class Account extends BaseEntity {
     @JoinColumn(name = "token_id")
     private Token token;
 
+    @OneToMany(mappedBy = "account", cascade = ALL)
+    private List<AccountTag> tags = new ArrayList<>();
+
     @Column(nullable = false, length = 10, unique = true)
     private String nickname;
 
@@ -38,6 +45,11 @@ public class Account extends BaseEntity {
 
     @Embedded
     private Address address;
+
+    @Column(length = 200)
+    private String selfIntroduction;
+
+    private String imageUrl;
 
     @Builder
     public Account(Token token, String nickname, Integer age, AccountSex sex, Address address) {
@@ -68,6 +80,10 @@ public class Account extends BaseEntity {
 
     public void deleteToken(){
         this.token = null;
+    }
+
+    public void addImage(String url){
+        this.imageUrl = url;
     }
 
 }

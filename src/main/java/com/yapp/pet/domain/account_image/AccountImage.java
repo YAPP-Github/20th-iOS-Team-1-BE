@@ -1,6 +1,5 @@
 package com.yapp.pet.domain.account_image;
 
-import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.common.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -8,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
-import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
@@ -21,10 +18,6 @@ public class AccountImage extends BaseEntity {
     @Column(name = "account_image_id")
     private Long id;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "account_id")
-    private Account account;
-
     @Column(nullable = false)
     private String originName;
 
@@ -35,8 +28,7 @@ public class AccountImage extends BaseEntity {
     private String path;
 
     @Builder
-    public AccountImage(Account account, String originName, String name, String path) {
-        this.account = account;
+    public AccountImage(String originName, String name, String path) {
         this.originName = originName;
         this.name = name;
         this.path = path;

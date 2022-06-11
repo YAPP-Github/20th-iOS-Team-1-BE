@@ -17,8 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 import static java.lang.Boolean.FALSE;
@@ -98,7 +96,8 @@ public class AccountService {
         account.signUp(updateAccount);
 
         if(imageFile != null){
-            accountImageService.createAccountImages(account, List.of(imageFile));
+            String url = accountImageService.createAccountImage(imageFile);
+            account.addImage(url);
         }
 
         return account.getId();
