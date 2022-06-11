@@ -30,7 +30,7 @@ public class Account extends BaseEntity {
     @JoinColumn(name = "token_id")
     private Token token;
 
-    @OneToMany(mappedBy = "account", cascade = ALL)
+    @OneToMany(mappedBy = "account", fetch = LAZY)
     private List<AccountTag> tags = new ArrayList<>();
 
     @Column(nullable = false, length = 10, unique = true)

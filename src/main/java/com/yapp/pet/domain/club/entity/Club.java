@@ -1,6 +1,6 @@
 package com.yapp.pet.domain.club.entity;
 
-import com.yapp.pet.domain.accountclub.entity.AccountClub;
+import com.yapp.pet.domain.accountclub.AccountClub;
 import com.yapp.pet.domain.common.BaseEntity;
 import com.yapp.pet.domain.common.PetSizeType;
 import lombok.*;
