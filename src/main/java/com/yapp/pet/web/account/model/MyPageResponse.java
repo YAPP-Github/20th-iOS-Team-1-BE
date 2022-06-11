@@ -19,13 +19,13 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class MyPageResponse {
 
-    private AccountInfoResponse accountInfos;
+    private AccountInfoResponse accountInfo;
 
     private List<PetInfoResponse> petInfos;
 
     public MyPageResponse(Account account, List<Pet> pets) {
 
-        this.accountInfos = new AccountInfoResponse(account);
+        this.accountInfo = new AccountInfoResponse(account);
 
         this.petInfos = pets.stream()
                 .map(PetInfoResponse::new)
