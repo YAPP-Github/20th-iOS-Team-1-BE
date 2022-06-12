@@ -146,7 +146,7 @@ public class AccountServiceTest {
         req.setSex(AccountSex.MAN);
 
         //when
-        Long accountId = accountService.signUp(accountWithoutToken, req, null);
+        Long accountId = accountService.signUp(accountWithoutToken, req);
 
         //then
         assertThat(accountId).isEqualTo(accountWithoutToken.getId());
@@ -169,9 +169,10 @@ public class AccountServiceTest {
         req.setSex(AccountSex.MAN);
 
         List<MultipartFile> imageFiles = createMockImageFiles();
+        req.setImageFile(imageFiles.get(0));
 
         //when
-        Long accountId = accountService.signUp(accountWithoutToken, req, imageFiles.get(0));
+        Long accountId = accountService.signUp(accountWithoutToken, req);
 
         //then
         assertThat(accountId).isEqualTo(accountWithoutToken.getId());

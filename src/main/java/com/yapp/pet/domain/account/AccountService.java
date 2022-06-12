@@ -94,14 +94,14 @@ public class AccountService {
     }
 
     @Transactional
-    public Long signUp(Account account, AccountSignUpRequest signUpRequest, MultipartFile imageFile) {
+    public Long signUp(Account account, AccountSignUpRequest signUpRequest) {
 
         Account updateAccount = accountMapper.toEntity(signUpRequest);
 
         account.signUp(updateAccount);
 
-        if(imageFile != null){
-            String url = accountImageService.createAccountImage(imageFile);
+        if(signUpRequest.getImageFile() != null){
+            String url = accountImageService.createAccountImage(signUpRequest.getImageFile());
             account.addImage(url);
         }
 
