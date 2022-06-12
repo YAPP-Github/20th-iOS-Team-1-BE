@@ -2,7 +2,7 @@ package com.yapp.pet.web.account.model;
 
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.account.entity.AccountSex;
-import com.yapp.pet.domain.account_tag.AccountTag;
+import com.yapp.pet.domain.common.Category;
 import com.yapp.pet.domain.pet.entity.Pet;
 import com.yapp.pet.domain.pet.entity.PetSex;
 import com.yapp.pet.domain.pet_tag.PetTag;
@@ -51,7 +51,7 @@ public class MyPageResponse {
 
         private String selfIntroduction;
 
-        private List<String> tags = new ArrayList<>();
+        private List<String> interestCategories = new ArrayList<>();
 
         private String imageUrl;
 
@@ -62,8 +62,8 @@ public class MyPageResponse {
             this.sex = account.getSex();
             this.selfIntroduction = account.getSelfIntroduction();
 
-            this.tags.addAll(account.getTags().stream()
-                    .map(AccountTag::getName)
+            this.interestCategories.addAll(account.getInterestCategories().stream()
+                    .map(Category::getValue)
                     .collect(Collectors.toList()));
 
             this.imageUrl = account.getImageUrl();

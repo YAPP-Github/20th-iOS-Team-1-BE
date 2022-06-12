@@ -1,6 +1,10 @@
 package com.yapp.pet.web.club.model;
 
-import com.yapp.pet.domain.club.entity.*;
+import com.yapp.pet.domain.club.entity.Club;
+import com.yapp.pet.domain.club.entity.ClubStatus;
+import com.yapp.pet.domain.club.entity.EligibleBreed;
+import com.yapp.pet.domain.club.entity.EligibleSex;
+import com.yapp.pet.domain.common.Category;
 import com.yapp.pet.domain.common.PetSizeType;
 import lombok.*;
 
