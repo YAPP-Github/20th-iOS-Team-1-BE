@@ -13,6 +13,9 @@ alter table pet auto_increment = 1;
 delete from account;
 alter table account auto_increment = 1;
 
+delete from account_image;
+alter table account_image auto_increment = 1;
+
 delete from token;
 alter table token auto_increment = 1;
 
@@ -31,18 +34,21 @@ insert into token (refresh_token, social_type, unique_id_by_social) values ('eyJ
 insert into token (refresh_token, social_type, unique_id_by_social) values ('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJ5YXBwIiwic3ViIjoidW5pcXVlMyIsImF1ZCI6IlJFRlJFU0giLCJleHAiOjE2NTUxOTExNDcsImlhdCI6MTY1NDU4NjM0NywiYXV0aCI6IlVTRVIifQ.6iUkhRoI9l2lOsKiMc6CxLylzjWdMpnQB_RyihL4drwVpfGWLlyESLB9UC44V5diQ5vBNkSA-NZPCcLkpYJ3fw', 'KAKAO', 'unique3');
 insert into token (refresh_token, social_type, unique_id_by_social) values ('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJ5YXBwIiwic3ViIjoidW5pcXVlNCIsImF1ZCI6IlJFRlJFU0giLCJleHAiOjE2NTUzODcyMTAsImlhdCI6MTY1NDc4MjQxMCwiYXV0aCI6IlVTRVIifQ.LPcC3t4W6LF6cRed1YbcjjbY5PGk1nEkxPrXhG6vJyjOJSdWIIJHTadTl4UFjZdAKZ_5Ja3idgqi6Wn6f7C5og', 'KAKAO', 'unique4');
 
+insert into account_image (name, origin_name, path) values ('486421_이미지1', '이미지1', 'https://dasiopd.com');
+insert into account_image (name, origin_name, path) values ('486421_이미지2', '이미지2', 'https://vdfkopvd.com');
+insert into account_image (name, origin_name, path) values ('486421_이미지3', '이미지3', 'https://daskodpas.com');
 
-insert into account (age, nickname, sex, token_id, city, detail, image_url, self_introduction)
-values (10, '재롱잔치', 'MAN', 1, '인천광역시', '남동구', 'https://dasko.com', '저는 재롱이 견주입니다.');
+insert into account (age, nickname, sex, token_id, city, detail, self_introduction, account_image_id)
+values (10, '재롱잔치', 'MAN', 1, '인천광역시', '남동구', '저는 재롱이 견주입니다.', 1);
 
-insert into account (age, nickname, sex, token_id, city, detail, image_url)
-values (20, '밀란이네 시트콤', 'WOMAN', 2, '서울시', '강남구', 'https://asdija.com');
+insert into account (age, nickname, sex, token_id, city, detail, account_image_id)
+values (20, '밀란이네 시트콤', 'WOMAN', 2, '서울시', '강남구', 2);
 
-insert into account (age, nickname, sex, token_id, city, detail, image_url, self_introduction)
-values (30, 'yapp', 'PRIVATE', 3, '서울시', '강동구', 'https://vcxids.com', 'yapp 견주입니다~');
+insert into account (age, nickname, sex, token_id, city, detail, self_introduction, account_image_id)
+values (30, 'yapp', 'PRIVATE', 3, '서울시', '강동구', 'yapp 견주입니다~', 3);
 
-insert into account (age, nickname, sex, token_id, city, detail, image_url)
-values (40, 'abcd', 'MAN', 4, '서울시', '강서구', 'https://asjmc.com');
+insert into account (age, nickname, sex, token_id, city, detail)
+values (40, 'abcd', 'MAN', 4, '서울시', '강서구');
 
 insert into interest_categories (account_id, interest_categories) values (1, 'WALK');
 insert into interest_categories (account_id, interest_categories) values (1, 'DOG_CAFE');
@@ -75,10 +81,12 @@ insert into eligible_breeds (club_id, eligible_breeds) values (1, 'RETRIEVER');
 insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (1, 'LARGE');
 insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (1, 'MEDIUM');
 
-insert into pet (age, birth_month, birth_year, breed, name, neutering, sex, size_type, account_id, image_url)
-values (5, '2', '2', '말티즈', '재롱이', true, 'MALE', 'SMALL', 1, 'httsp://pet.com');
-insert into pet (age, birth_month, birth_year, breed, name, neutering, sex, size_type, account_id, image_url)
-values (4, '1', '1', '리트리버', '밀란', true, 'MALE', 'SMALL', 1, 'httsp://pet.com');
+insert into pet_image (name, origin_name, path) values ('90419_펫이미지1', '펫이미지1', 'https://acjic.com');
+
+insert into pet (age, birth_month, birth_year, breed, name, neutering, sex, size_type, account_id, pet_image_id)
+values (5, '2', '2', '말티즈', '재롱이', true, 'MALE', 'SMALL', 1, 1);
+insert into pet (age, birth_month, birth_year, breed, name, neutering, sex, size_type, account_id)
+values (4, '1', '1', '리트리버', '밀란', true, 'MALE', 'SMALL', 1);
 
 insert into pet_tag (name, pet_id) values ('tag1', 1);
 insert into pet_tag (name, pet_id) values ('tag2', 1);

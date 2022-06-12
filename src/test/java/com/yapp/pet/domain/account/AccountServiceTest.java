@@ -260,7 +260,7 @@ public class AccountServiceTest {
         assertThat(accountInfo.getSex()).isEqualTo(AccountSex.MAN);
         assertThat(accountInfo.getSelfIntroduction()).isEqualTo("저는 재롱이 견주입니다.");
         assertThat(accountInfo.getInterestCategories()).hasSize(3);
-        assertThat(accountInfo.getImageUrl()).isEqualTo("https://dasko.com");
+        assertThat(accountInfo.getImageUrl()).isEqualTo("https://dasiopd.com");
 
         assertThat(petInfos).hasSize(2);
         PetInfoResponse petInfo = petInfos.get(0);
@@ -270,7 +270,7 @@ public class AccountServiceTest {
         assertThat(petInfo.getAge()).isEqualTo("5");
         assertThat(petInfo.getSex()).isEqualTo(PetSex.MALE);
         assertThat(petInfo.getTags()).hasSize(3);
-        assertThat(petInfo.getImageUrl()).isEqualTo("httsp://pet.com");
+        assertThat(petInfo.getImageUrl()).isEqualTo("https://acjic.com");
     }
 
 }
