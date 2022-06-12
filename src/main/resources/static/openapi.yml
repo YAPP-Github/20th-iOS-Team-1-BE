@@ -349,11 +349,12 @@ components:
             selfIntroduction:
               type: string
               example: 재롱이 견주입니다~
-            tags:
+            interestCategories:
               type: string
               example:
-                - 활발함
-                - ENFP
+                - DOG_CAFE
+                - WALK
+                - PLAY_GROUND
             imageUrl:
               type: string
               example: https://dasko.com

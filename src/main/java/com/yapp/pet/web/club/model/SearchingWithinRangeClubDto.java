@@ -1,11 +1,7 @@
 package com.yapp.pet.web.club.model;
 
-import com.yapp.pet.domain.club.entity.Category;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.yapp.pet.domain.common.Category;
+import lombok.*;
 
 import java.util.List;
 

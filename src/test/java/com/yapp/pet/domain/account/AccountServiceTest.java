@@ -258,7 +258,7 @@ public class AccountServiceTest {
         assertThat(accountInfo.getAge()).isEqualTo("10살");
         assertThat(accountInfo.getSex()).isEqualTo(AccountSex.MAN);
         assertThat(accountInfo.getSelfIntroduction()).isEqualTo("저는 재롱이 견주입니다.");
-        assertThat(accountInfo.getTags()).hasSize(2);
+        assertThat(accountInfo.getInterestCategories()).hasSize(3);
         assertThat(accountInfo.getImageUrl()).isEqualTo("https://dasko.com");
 
         assertThat(petInfos).hasSize(2);

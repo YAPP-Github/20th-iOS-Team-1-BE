@@ -6,7 +6,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.BooleanPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.yapp.pet.domain.club.entity.Category;
+import com.yapp.pet.domain.common.Category;
 import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.club.entity.ClubStatus;
 import com.yapp.pet.domain.club.entity.EligibleBreed;
