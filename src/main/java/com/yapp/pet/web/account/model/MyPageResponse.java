@@ -61,8 +61,14 @@ public class MyPageResponse {
             this.age = account.getAge() + "살";
             this.sex = account.getSex();
             this.selfIntroduction = account.getSelfIntroduction();
-            this.interestCategories.addAll(account.getInterestCategories());
-            this.imageUrl = account.getImageUrl();
+
+            if (account.getInterestCategories() != null) {
+                this.interestCategories.addAll(account.getInterestCategories());
+            }
+
+            if (account.getAccountImage() != null) {
+                this.imageUrl = account.getAccountImage().getPath();
+            }
         }
 
     }
@@ -90,14 +96,17 @@ public class MyPageResponse {
             this.age = pet.getAge().getAge();
             this.sex = pet.getSex();
 
-            this.tags.addAll(pet.getTags().stream()
-                    .map(PetTag::getName)
-                    .collect(Collectors.toList()));
+            if (pet.getTags() != null && pet.getTags().size() != 0) {
+                this.tags.addAll(pet.getTags().stream()
+                        .map(PetTag::getName)
+                        .collect(Collectors.toList()));
+            }
 
-            this.imageUrl = pet.getImageUrl();
+            if (pet.getPetImage() != null) {
+                this.imageUrl = pet.getPetImage().getPath();
+            }
         }
 
     }
-
 
 }
