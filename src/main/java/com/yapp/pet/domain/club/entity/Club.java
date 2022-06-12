@@ -2,6 +2,7 @@ package com.yapp.pet.domain.club.entity;
 
 import com.yapp.pet.domain.accountclub.AccountClub;
 import com.yapp.pet.domain.common.BaseEntity;
+import com.yapp.pet.domain.common.Category;
 import com.yapp.pet.domain.common.PetSizeType;
 import lombok.*;
 
@@ -51,11 +52,13 @@ public class Club extends BaseEntity {
 
     @Column(nullable = false)
     @ElementCollection
+    @Enumerated(EnumType.STRING)
     @CollectionTable(name = "eligible_pet_size_types", joinColumns = @JoinColumn(name = "club_id"))
     private Set<PetSizeType> eligiblePetSizeTypes = new HashSet<>();
 
     @Column(nullable = false)
     @ElementCollection
+    @Enumerated(EnumType.STRING)
     @CollectionTable(name = "eligible_breeds", joinColumns = @JoinColumn(name = "club_id"))
     private Set<EligibleBreed> eligibleBreeds = new HashSet<>();
 

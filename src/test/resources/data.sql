@@ -1,8 +1,8 @@
 delete from account_club;
 alter table account_club auto_increment = 1;
 
-delete from account_tag;
-alter table account_tag auto_increment = 1;
+delete from interest_categories;
+alter table interest_categories auto_increment = 1;
 
 delete from pet_tag;
 alter table pet_tag auto_increment = 1;
@@ -44,6 +44,13 @@ values (30, 'yapp', 'PRIVATE', 3, '서울시', '강동구', 'https://vcxids.com'
 insert into account (age, nickname, sex, token_id, city, detail, image_url)
 values (40, 'abcd', 'MAN', 4, '서울시', '강서구', 'https://asjmc.com');
 
+insert into interest_categories (account_id, interest_categories) values (1, 'WALK');
+insert into interest_categories (account_id, interest_categories) values (1, 'DOG_CAFE');
+insert into interest_categories (account_id, interest_categories) values (1, 'PLAY_GROUND');
+insert into interest_categories (account_id, interest_categories) values (2, 'EXPOSITION');
+insert into interest_categories (account_id, interest_categories) values (2, 'DOG_FRIENDLY_RESTAURANT');
+insert into interest_categories (account_id, interest_categories) values (3, 'ETC');
+
 
 insert into club (category, description, title, meeting_place, status, maximum_people, eligible_sex, start_date, end_date, latitude, longitude)
 values ('WALK', 'description', '쿄쿄량 산책할사람', 'place', 'AVAILABLE', 2, 'MAN', '2021-01-01', '2021-01-02', 2, 3);
@@ -62,23 +69,16 @@ insert into account_club (leader, account_id, club_id) values (false , 2, 1);
 insert into account_club (leader, account_id, club_id) values (true, 3, 2);
 insert into account_club (leader, account_id, club_id) values (true, 4, 3);
 
-insert into eligible_breeds (club_id, eligible_breeds) values (1, 0);
-insert into eligible_breeds (club_id, eligible_breeds) values (1, 2);
+insert into eligible_breeds (club_id, eligible_breeds) values (1, 'MALTESE');
+insert into eligible_breeds (club_id, eligible_breeds) values (1, 'RETRIEVER');
 
-insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (1, 0);
-insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (1, 1);
+insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (1, 'LARGE');
+insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (1, 'MEDIUM');
 
 insert into pet (age, birth_month, birth_year, breed, name, neutering, sex, size_type, account_id, image_url)
 values (5, '2', '2', '말티즈', '재롱이', true, 'MALE', 'SMALL', 1, 'httsp://pet.com');
 insert into pet (age, birth_month, birth_year, breed, name, neutering, sex, size_type, account_id, image_url)
 values (4, '1', '1', '리트리버', '밀란', true, 'MALE', 'SMALL', 1, 'httsp://pet.com');
-
-
-insert into account_tag (name, account_id) values ('tag1', 1);
-insert into account_tag (name, account_id) values ('tag2', 1);
-insert into account_tag (name, account_id) values ('tag3', 2);
-insert into account_tag (name, account_id) values ('tag4', 3);
-
 
 insert into pet_tag (name, pet_id) values ('tag1', 1);
 insert into pet_tag (name, pet_id) values ('tag2', 1);
