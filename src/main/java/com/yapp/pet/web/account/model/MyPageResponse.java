@@ -51,7 +51,7 @@ public class MyPageResponse {
 
         private String selfIntroduction;
 
-        private List<String> interestCategories = new ArrayList<>();
+        private List<Category> interestCategories = new ArrayList<>();
 
         private String imageUrl;
 
@@ -61,11 +61,7 @@ public class MyPageResponse {
             this.age = account.getAge() + "살";
             this.sex = account.getSex();
             this.selfIntroduction = account.getSelfIntroduction();
-
-            this.interestCategories.addAll(account.getInterestCategories().stream()
-                    .map(Category::getValue)
-                    .collect(Collectors.toList()));
-
+            this.interestCategories.addAll(account.getInterestCategories());
             this.imageUrl = account.getImageUrl();
         }
 
