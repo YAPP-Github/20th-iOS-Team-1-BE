@@ -83,8 +83,8 @@ public class Account extends BaseEntity {
         this.token = null;
     }
 
-    public void addImage(String url){
-        this.imageUrl = url;
+    public void addImage(String imageUrl){
+        this.imageUrl = imageUrl;
     }
 
 }

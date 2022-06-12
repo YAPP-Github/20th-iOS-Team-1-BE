@@ -101,8 +101,8 @@ public class AccountService {
         account.signUp(updateAccount);
 
         if(signUpRequest.getImageFile() != null){
-            String url = accountImageService.createAccountImage(signUpRequest.getImageFile());
-            account.addImage(url);
+            String imageUrl = accountImageService.createAccountImage(signUpRequest.getImageFile());
+            account.addImage(imageUrl);
         }
 
         return account.getId();
