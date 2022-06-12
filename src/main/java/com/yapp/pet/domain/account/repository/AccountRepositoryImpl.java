@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.Optional;
 
 import static com.yapp.pet.domain.account.entity.QAccount.account;
+import static com.yapp.pet.domain.account_image.QAccountImage.accountImage;
 import static com.yapp.pet.domain.token.entity.QToken.token;
 
 @RequiredArgsConstructor
@@ -31,6 +32,7 @@ public class AccountRepositoryImpl implements AccountRepositoryCustom{
                 .selectFrom(account)
                 .distinct()
                 .join(account.token, token).fetchJoin()
+                .leftJoin(account.accountImage, accountImage).fetchJoin()
                 .where(account.token.uniqueIdBySocial.eq(uniqueIdBySocial))
                 .fetchOne();
     }

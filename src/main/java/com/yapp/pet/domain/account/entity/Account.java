@@ -1,5 +1,6 @@
 package com.yapp.pet.domain.account.entity;
 
+import com.yapp.pet.domain.account_image.AccountImage;
 import com.yapp.pet.domain.common.BaseEntity;
 import com.yapp.pet.domain.common.Category;
 import com.yapp.pet.domain.token.entity.Token;
@@ -25,9 +26,13 @@ public class Account extends BaseEntity {
     @Column(name = "account_id")
     private Long id;
 
-    @OneToOne(fetch = LAZY)
+    @OneToOne(fetch = LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "token_id")
     private Token token;
+
+    @OneToOne(fetch = LAZY, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "account_image_id")
+    private AccountImage accountImage;
 
     @ElementCollection
     @Enumerated(EnumType.STRING)
@@ -50,15 +55,17 @@ public class Account extends BaseEntity {
     @Column(length = 200)
     private String selfIntroduction;
 
-    private String imageUrl;
-
     @Builder
-    public Account(Token token, String nickname, Integer age, AccountSex sex, Address address) {
+    public Account(Long id, Token token, AccountImage accountImage, Set<Category> interestCategories,
+                   String nickname, Integer age, AccountSex sex, Address address, String selfIntroduction) {
         this.token = token;
+        this.accountImage = accountImage;
+        this.interestCategories = interestCategories;
         this.nickname = nickname;
         this.age = age;
         this.sex = sex;
         this.address = address;
+        this.selfIntroduction = selfIntroduction;
     }
 
     public static Account of(Token token) {
@@ -83,8 +90,8 @@ public class Account extends BaseEntity {
         this.token = null;
     }
 
-    public void addImage(String imageUrl){
-        this.imageUrl = imageUrl;
+    public void addImage(AccountImage accountImage){
+        this.accountImage = accountImage;
     }
 
 }

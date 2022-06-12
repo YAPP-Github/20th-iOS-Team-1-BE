@@ -2,6 +2,7 @@ package com.yapp.pet.domain.account;
 
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.account.repository.AccountRepository;
+import com.yapp.pet.domain.account_image.AccountImage;
 import com.yapp.pet.domain.account_image.AccountImageService;
 import com.yapp.pet.domain.pet.entity.Pet;
 import com.yapp.pet.domain.pet.repository.PetRepository;
@@ -18,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -101,8 +101,8 @@ public class AccountService {
         account.signUp(updateAccount);
 
         if(signUpRequest.getImageFile() != null){
-            String imageUrl = accountImageService.createAccountImage(signUpRequest.getImageFile());
-            account.addImage(imageUrl);
+            AccountImage accountImage = accountImageService.create(signUpRequest.getImageFile());
+            account.addImage(accountImage);
         }
 
         return account.getId();

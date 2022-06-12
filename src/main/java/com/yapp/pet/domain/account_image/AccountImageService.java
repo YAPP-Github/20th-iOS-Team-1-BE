@@ -17,10 +17,9 @@ public class AccountImageService {
     private final AccountImageRepository accountImageRepository;
 
     @Transactional
-    public String createAccountImage(MultipartFile imageFile) {
+    public AccountImage create(MultipartFile imageFile) {
 
         String imageUrl = s3Utils.uploadToS3(imageFile, S3_ACCOUNT_DIR_NAME);
-
         String origFilename = imageFile.getOriginalFilename();
         String filename = s3Utils.createFileName(origFilename);
 
@@ -32,7 +31,7 @@ public class AccountImageService {
 
         accountImageRepository.save(accountImage);
 
-        return imageUrl;
+        return accountImage;
     }
 
 }
