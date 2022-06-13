@@ -21,19 +21,54 @@ paths:
 
   ############################################# Account #############################################
 
-  /auth/apple/callback:
-    post:
+  /api/accounts/validate-nickname/{nickname}:
+    get:
       tags:
         - 계정 (Account)
-      summary: 애플 로그인 API
-      description: IOS에서 애플 서버로 로그인 요청 시, 애플에서 Togaether 서버로 콜백 후, 회원가입 여부와 함께 토큰 값을 응답합니다.
+      summary: 닉네임 검사 API
+      description: 닉네임 중복 , 길이를 검사합니다.
+      parameters:
+        - in: path
+          name: nickname
+          required: true
+          schema:
+            type: string
+            example: 재롱잔치
+          description: 사용자가 입력한 nickname
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SignInResponse'
+                $ref: '#/components/schemas/AccountValidationResponse'
+        '401':
+          description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseInfo'
+
+  /api/accounts/my-page:
+    get:
+      tags:
+        - 계정 (Account)
+      summary: 마이페이지 조회 API
+      description: 마이페이지 조회 시 견주와 강아지 정보를 응답합니다.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MyPageResponse'
+        '401':
+          description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseInfo'
+
 
   /auth/kakao/callback:
     get:
@@ -47,6 +82,20 @@ paths:
           required: true
           schema:
             type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignInResponse'
+
+  /auth/apple/callback:
+    post:
+      tags:
+        - 계정 (Account)
+      summary: 애플 로그인 API
+      description: IOS에서 애플 서버로 로그인 요청 시, 애플에서 Togaether 서버로 콜백 후, 회원가입 여부와 함께 토큰 값을 응답합니다.
       responses:
         '200':
           description: OK
@@ -100,55 +149,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExceptionResponse'
-        '401':
-          description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ExceptionResponseInfo'
-
-
-  /api/accounts/validate-nickname/{nickname}:
-    get:
-      tags:
-        - 계정 (Account)
-      summary: 닉네임 검사 API
-      description: 닉네임 중복 , 길이를 검사합니다.
-      parameters:
-        - in: path
-          name: nickname
-          required: true
-          schema:
-            type: string
-            example: 재롱잔치
-          description: 사용자가 입력한 nickname
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccountValidationResponse'
-        '401':
-          description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ExceptionResponseInfo'
-
-  /api/accounts/my-page:
-    get:
-      tags:
-        - 계정 (Account)
-      summary: 마이페이지 조회 API
-      description: 마이페이지 조회 시 견주와 강아지 정보를 응답합니다.
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MyPageResponse'
         '401':
           description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
           content:
