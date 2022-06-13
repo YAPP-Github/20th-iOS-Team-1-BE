@@ -3,6 +3,7 @@ package com.yapp.pet.domain.pet.entity;
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.common.BaseEntity;
 import com.yapp.pet.domain.common.PetSizeType;
+import com.yapp.pet.domain.pet_image.PetImage;
 import com.yapp.pet.domain.pet_tag.PetTag;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -30,6 +31,10 @@ public class Pet extends BaseEntity {
     @JoinColumn(name = "account_id")
     private Account account;
 
+    @OneToOne(fetch = LAZY, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "pet_image_id")
+    private PetImage petImage;
+
     @OneToMany(mappedBy = "pet", fetch = LAZY)
     private List<PetTag> tags = new ArrayList<>();
 
@@ -51,17 +56,17 @@ public class Pet extends BaseEntity {
     @Column(nullable = false)
     private PetSizeType sizeType;
 
-    private String imageUrl;
-
     @Builder
-    public Pet(Account account, String name, Age age, PetSex sex, boolean neutering,
-               String breed, PetSizeType sizeType) {
+    public Pet(Account account, PetImage petImage, List<PetTag> tags, String breed, String name, Age age,
+               PetSex sex, boolean neutering, PetSizeType sizeType) {
         this.account = account;
+        this.petImage = petImage;
+        this.tags = tags;
+        this.breed = breed;
         this.name = name;
         this.age = age;
         this.sex = sex;
         this.neutering = neutering;
-        this.breed = breed;
         this.sizeType = sizeType;
     }
 

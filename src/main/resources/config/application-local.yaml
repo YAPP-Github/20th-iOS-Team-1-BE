@@ -46,7 +46,7 @@ springdoc:
   default-consumes-media-type: application/json
   default-produces-media-type: application/json
   swagger-ui:
-    operations-sorter: alpha //method는 http method 순
+    operations-sorter: method // alpha or mehod
     tags-sorter: alpha
     path: /swagger-ui
     disable-swagger-default-url: true
@@ -74,3 +74,10 @@ cloud:
       instance-profile: true
       access-key: ENC(SyQn0StyUrPZlDyfMv2oRmhwu+aXPfu0jLZ4+Yn+1n0=)
       secret-key: ENC(Ynei80LW10nIFe4iuc9MI+xGiGsW5MyVI1Zvb51yzYs0UnxktFIgVd0KNpY8fo7hTjXQvRwPr9E=)
+
+logging:
+  level:
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: error

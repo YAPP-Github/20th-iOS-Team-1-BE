@@ -15,13 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class TokenService {
 
     private final JwtService jwtService;
 
     private final TokenRepository tokenRepository;
 
-    @Transactional
     public TokenResponse reIssuance(Account account){
         TokenResponse tokenResponse = new TokenResponse();
 
@@ -38,7 +38,6 @@ public class TokenService {
         return tokenResponse;
     }
 
-    @Transactional
     public void expireRefreshToken(Account account){
         Token token = getAndValidToken(account);
 

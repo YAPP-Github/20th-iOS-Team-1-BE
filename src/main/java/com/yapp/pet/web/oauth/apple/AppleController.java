@@ -1,6 +1,6 @@
 package com.yapp.pet.web.oauth.apple;
 
-import com.yapp.pet.domain.account.AccountService;
+import com.yapp.pet.domain.account.service.AccountService;
 import com.yapp.pet.domain.token.entity.Social;
 import com.yapp.pet.web.oauth.apple.model.CallbackResponseApple;
 import com.yapp.pet.web.oauth.apple.model.SignInResponse;
