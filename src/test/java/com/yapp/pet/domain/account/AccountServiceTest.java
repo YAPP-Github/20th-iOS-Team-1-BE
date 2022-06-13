@@ -3,6 +3,8 @@ package com.yapp.pet.domain.account;
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.account.entity.AccountSex;
 import com.yapp.pet.domain.account.repository.AccountRepository;
+import com.yapp.pet.domain.account.service.AccountQueryService;
+import com.yapp.pet.domain.account.service.AccountService;
 import com.yapp.pet.domain.account_image.AccountImageRepository;
 import com.yapp.pet.domain.common.Category;
 import com.yapp.pet.domain.pet.entity.PetSex;
@@ -52,6 +54,9 @@ public class AccountServiceTest {
 
     @Autowired
     AccountService accountService;
+
+    @Autowired
+    AccountQueryService accountQueryService;
 
     @Autowired
     JwtService jwtService;
@@ -232,7 +237,7 @@ public class AccountServiceTest {
         String nickname = "투개더";
 
         //when
-        AccountValidationResponse response = accountService.validateNickname(nickname);
+        AccountValidationResponse response = accountQueryService.validateNickname(nickname);
 
         //then
         assertThat(response.isSatisfyLengthCondition()).isTrue();
@@ -246,7 +251,7 @@ public class AccountServiceTest {
         String nickname = "재롱잔치";
 
         //when
-        AccountValidationResponse response = accountService.validateNickname(nickname);
+        AccountValidationResponse response = accountQueryService.validateNickname(nickname);
 
         //then
         assertThat(response.isSatisfyLengthCondition()).isTrue();
@@ -260,7 +265,7 @@ public class AccountServiceTest {
         String nickname = "yapp-togaether";
 
         //when
-        AccountValidationResponse response = accountService.validateNickname(nickname);
+        AccountValidationResponse response = accountQueryService.validateNickname(nickname);
 
         //then
         assertThat(response.isSatisfyLengthCondition()).isFalse();
@@ -271,7 +276,7 @@ public class AccountServiceTest {
     @DisplayName("마이페이지를 조회할 수 있다.")
     void getMyPageInfo(){
         //when
-        MyPageResponse myPageInfo = accountService.getMyPageInfo(accountWithTokenAndImage);
+        MyPageResponse myPageInfo = accountQueryService.getMyPageInfo(accountWithTokenAndImage);
 
         AccountInfoResponse accountInfo = myPageInfo.getAccountInfo();
         List<PetInfoResponse> petInfos = myPageInfo.getPetInfos();
