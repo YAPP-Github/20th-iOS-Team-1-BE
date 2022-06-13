@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static com.yapp.pet.web.club.model.SearchingClubDto.SearchingRequest;
+import static com.yapp.pet.web.club.model.SearchingSimpleClubDto.*;
 import static com.yapp.pet.web.club.model.SearchingWithinRangeClubDto.*;
 
 @Service
@@ -32,5 +33,9 @@ public class ClubService {
 
     public List<Club> exceedTimeClub() {
         return clubRepository.findExceedTimeClub();
+    }
+
+    public SearchingSimpleClubResponse searchingSimpleClub(SearchingSimpleClubRequest simpleRequest, Long clubId) {
+        return clubRepository.searchSimpleClubById(simpleRequest, clubId);
     }
 }

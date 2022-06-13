@@ -26,6 +26,7 @@ import static com.yapp.pet.domain.account.entity.QAccount.account;
 import static com.yapp.pet.domain.accountclub.QAccountClub.accountClub;
 import static com.yapp.pet.domain.club.entity.QClub.club;
 import static com.yapp.pet.web.club.model.SearchingClubDto.SearchingRequest;
+import static com.yapp.pet.web.club.model.SearchingSimpleClubDto.*;
 import static com.yapp.pet.web.club.model.SearchingWithinRangeClubDto.*;
 
 @RequiredArgsConstructor
@@ -131,6 +132,23 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
     }
 
     @Override
+    public SearchingSimpleClubResponse searchSimpleClubById(SearchingSimpleClubRequest simpleRequest, Long clubId) {
+        return queryFactory.select(
+                                   Projections.constructor(
+                                           SearchingSimpleClubResponse.class, accountClub.club,
+                                           accountClub.club.accountClubs.size()))
+                           .from(accountClub)
+                           .join(accountClub.club, club)
+                           .join(accountClub.account, account)
+                           .where(isLeader(accountClub.leader))
+                           .where(clubIdEq(clubId))
+                           .fetchOne()
+                           .getDistanceBetweenAccountAndClub(
+                                   simpleRequest.getUserLatitude(), simpleRequest.getUserLongitude());
+    }
+
+
+    @Override
     public List<Club> findExceedTimeClub() {
         return queryFactory.selectFrom(club)
                            .where(clubStatusEq(ClubStatus.AVAILABLE).and(
@@ -203,5 +221,9 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
 
         return club.latitude.between(bottomRightLatitude, upperLeftLatitude)
                             .and(club.longitude.between(upperLeftLongitude, bottomRightLongitude));
+    }
+
+    private BooleanExpression clubIdEq(Long clubId) {
+        return clubId == null ? null : club.id.eq(clubId);
     }
 }

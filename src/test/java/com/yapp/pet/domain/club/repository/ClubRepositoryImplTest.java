@@ -31,8 +31,10 @@ import java.util.List;
 import static com.yapp.pet.domain.account.entity.QAccount.account;
 import static com.yapp.pet.domain.accountclub.QAccountClub.accountClub;
 import static com.yapp.pet.domain.club.entity.QClub.club;
+import static com.yapp.pet.web.club.model.SearchingSimpleClubDto.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -371,6 +373,38 @@ class ClubRepositoryImplTest {
         assertThat(result).isEmpty();
     }
 
+    @Test
+    @DisplayName("모임 식별자 값이 주어질 경우 해당 모임의 간단한 정보를 조회할 수 있다")
+    void getSimpleClubById() throws Exception {
+        //given
+        long clubId = 1L;
+
+        Club savedClub = clubRepository.findById(clubId).get();
+
+        Double userLatitude = 37.528176;
+        Double userLongitude = 126.953678;
+
+        //when
+        SearchingSimpleClubResponse result = queryFactory.select(
+                                                                 Projections.constructor(
+                                                                         SearchingSimpleClubResponse.class, accountClub.club,
+                                                                         accountClub.club.accountClubs.size()))
+                                                         .from(accountClub)
+                                                         .join(accountClub.club, club)
+                                                         .join(accountClub.account, account)
+                                                         .where(isLeader(accountClub.leader))
+                                                         .where(clubIdEq(clubId))
+                                                         .fetchOne()
+                                                         .getDistanceBetweenAccountAndClub(
+                                                                 userLatitude, userLongitude);
+
+        //then
+        assertAll(
+                () ->assertEquals(savedClub.getLatitude(), result.getLatitude()),
+                () ->assertEquals(savedClub.getLongitude(), result.getLongitude())
+        );
+    }
+
     private BooleanExpression clubWithinRange(Double upperLeftLatitude, Double upperLeftLongitude,
                                               Double bottomRightLatitude, Double bottomRightLongitude) {
 
@@ -436,6 +470,10 @@ class ClubRepositoryImplTest {
         }
 
         return eligibleBreed == null ? null : club.eligibleBreeds.any().eq(eligibleBreed);
+    }
+
+    private BooleanExpression clubIdEq(Long clubId) {
+        return clubId == null ? null : club.id.eq(clubId);
     }
 }
 
