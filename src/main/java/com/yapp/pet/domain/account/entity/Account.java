@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -92,6 +93,33 @@ public class Account extends BaseEntity {
 
     public void addImage(AccountImage accountImage){
         this.accountImage = accountImage;
+    }
+
+    public void update(Account updateAccount){
+        if(StringUtils.hasText(updateAccount.getNickname())){
+            this.nickname = updateAccount.getNickname();
+        }
+
+        if (updateAccount.getAge() != null) {
+            this.age = updateAccount.getAge();
+        }
+
+        if (updateAccount.getSex() != null) {
+            this.sex = updateAccount.getSex();
+        }
+
+        if (updateAccount.getAddress() != null) {
+            this.address = updateAccount.getAddress();
+        }
+
+        if (StringUtils.hasText(updateAccount.getSelfIntroduction())) {
+            this.selfIntroduction = updateAccount.getSelfIntroduction();
+        }
+
+        if (updateAccount.getInterestCategories() != null && updateAccount.getInterestCategories().size() != 0) {
+            this.interestCategories.clear();
+            this.interestCategories.addAll(updateAccount.interestCategories);
+        }
     }
 
 }

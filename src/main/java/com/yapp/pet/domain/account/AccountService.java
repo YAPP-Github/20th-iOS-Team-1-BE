@@ -12,6 +12,7 @@ import com.yapp.pet.domain.token.repository.TokenRepository;
 import com.yapp.pet.global.jwt.JwtService;
 import com.yapp.pet.global.mapper.AccountMapper;
 import com.yapp.pet.web.account.model.AccountSignUpRequest;
+import com.yapp.pet.web.account.model.AccountUpdateRequest;
 import com.yapp.pet.web.account.model.AccountValidationResponse;
 import com.yapp.pet.web.account.model.MyPageResponse;
 import com.yapp.pet.web.oauth.apple.model.SignInResponse;
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -100,7 +102,7 @@ public class AccountService {
 
         account.signUp(updateAccount);
 
-        if(signUpRequest.getImageFile() != null){
+        if (hasImageFile(signUpRequest.getImageFile())) {
             AccountImage accountImage = accountImageService.create(signUpRequest.getImageFile());
             account.addImage(accountImage);
         }
@@ -115,6 +117,29 @@ public class AccountService {
         List<Pet> findPets = petRepository.findPetsByAccountId(account.getId());
 
         return MyPageResponse.of(findAccount, findPets);
+    }
+
+    @Transactional
+    public void updateAccount(Account account, AccountUpdateRequest request) {
+        AccountImage accountImage = account.getAccountImage();
+        MultipartFile imageFile = request.getImageFile();
+
+        if (hasImageFile(imageFile)) {
+            if (accountImage != null) {
+                accountImageService.delete(account);
+            }
+
+            AccountImage createAccountImage = accountImageService.create(imageFile);
+            account.addImage(createAccountImage);
+        }
+
+        Account updateAccount = accountMapper.toEntity(request);
+
+        account.update(updateAccount);
+    }
+
+    private boolean hasImageFile(MultipartFile imageFile){
+        return imageFile != null && !imageFile.isEmpty();
     }
 
 }

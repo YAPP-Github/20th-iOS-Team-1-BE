@@ -4,12 +4,13 @@ import com.yapp.pet.domain.account.AccountService;
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.global.annotation.AuthAccount;
 import com.yapp.pet.web.account.model.AccountSignUpRequest;
+import com.yapp.pet.web.account.model.AccountUpdateRequest;
 import com.yapp.pet.web.account.model.AccountValidationResponse;
 import com.yapp.pet.web.account.model.MyPageResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -37,7 +38,7 @@ public class AccountController {
 
     @PostMapping("/accounts/sign-up")
     public ResponseEntity<Long> signUp(@AuthAccount Account account,
-                                       @Valid @RequestPart AccountSignUpRequest accountSignUpRequest) {
+                                       @Valid @ModelAttribute AccountSignUpRequest accountSignUpRequest) {
 
         Long accountId;
 
@@ -64,6 +65,20 @@ public class AccountController {
         }
 
         return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/accounts")
+    public ResponseEntity<HttpStatus> updateAccount(@AuthAccount Account account,
+                                                    @ModelAttribute AccountUpdateRequest accountUpdateRequest){
+
+        try {
+            accountService.updateAccount(account, accountUpdateRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
