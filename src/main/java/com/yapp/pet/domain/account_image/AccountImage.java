@@ -25,12 +25,23 @@ public class AccountImage extends BaseEntity {
     private String name;
 
     @Column(nullable = false)
+    private String s3Key;
+
+    @Column(nullable = false)
     private String path;
 
     @Builder
-    public AccountImage(String originName, String name, String path) {
+    public AccountImage(String originName, String name, String s3Key, String path) {
         this.originName = originName;
         this.name = name;
+        this.s3Key = s3Key;
+        this.path = path;
+    }
+
+    public void update(String originName, String name, String s3Key, String path){
+        this.originName = originName;
+        this.name = name;
+        this.s3Key = s3Key;
         this.path = path;
     }
 

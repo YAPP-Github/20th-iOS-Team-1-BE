@@ -8,6 +8,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.yapp.pet.domain.account_image.AccountImage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -43,12 +44,16 @@ public class S3Utils {
                 .collect(Collectors.toList());
     }
 
+    public void deleteToS3(AccountImage accountImage){
+        amazonS3Client.deleteObject(s3Properties.getBucket(), accountImage.getS3Key());
+    }
+
     public String uploadToS3(MultipartFile uploadFile, String dirName) {
         return putS3(uploadFile, dirName);
     }
 
     private String putS3(MultipartFile uploadFile, String dirName) {
-        String key = createKey(uploadFile, dirName);
+        String s3Key = createS3Key(uploadFile, dirName);
 
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(MediaType.IMAGE_PNG_VALUE);
@@ -56,7 +61,7 @@ public class S3Utils {
 
         try {
             amazonS3Client.putObject(
-                    new PutObjectRequest(s3Properties.getBucket(), key, uploadFile.getInputStream(), metadata)
+                    new PutObjectRequest(s3Properties.getBucket(), s3Key, uploadFile.getInputStream(), metadata)
                             .withCannedAcl(CannedAccessControlList.PublicRead));
 
         } catch (IOException e){
@@ -64,11 +69,11 @@ public class S3Utils {
         }
 
         return amazonS3Client
-                .getUrl(s3Properties.getBucket(), key)
+                .getUrl(s3Properties.getBucket(), s3Key)
                 .toString();
     }
 
-    private String createKey(MultipartFile uploadFile, String dirName){
+    public String createS3Key(MultipartFile uploadFile, String dirName){
         StringBuilder sb = new StringBuilder();
 
         return sb.append(dirName)

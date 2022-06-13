@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 import static com.yapp.pet.domain.pet.entity.QPet.pet;
+import static com.yapp.pet.domain.pet_image.QPetImage.petImage;
 import static com.yapp.pet.domain.pet_tag.QPetTag.petTag;
 
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ public class PetRepositoryImpl implements PetRepositoryCustom{
                 .selectFrom(pet)
                 .distinct()
                 .leftJoin(pet.tags, petTag).fetchJoin()
+                .leftJoin(pet.petImage, petImage).fetchJoin()
                 .where(pet.account.id.eq(accountId))
                 .fetch();
     }
