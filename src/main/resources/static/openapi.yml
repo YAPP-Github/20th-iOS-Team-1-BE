@@ -313,7 +313,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExceptionResponseInfo'
-  /clubs/search/simple/{club-id}:
+  /api/clubs/search/simple/{club-id}:
     get:
       tags:
         - 모임 (Club)
