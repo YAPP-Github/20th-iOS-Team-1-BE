@@ -11,13 +11,13 @@ import static com.yapp.pet.global.TogaetherConstants.S3_ACCOUNT_DIR_NAME;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AccountImageService {
 
     private final S3Utils s3Utils;
 
     private final AccountImageRepository accountImageRepository;
 
-    @Transactional
     public AccountImage create(MultipartFile imageFile) {
 
         String origFilename = imageFile.getOriginalFilename();
@@ -37,7 +37,6 @@ public class AccountImageService {
         return accountImage;
     }
 
-    @Transactional
     public void delete(Account account){
         accountImageRepository.delete(account.getAccountImage());
 

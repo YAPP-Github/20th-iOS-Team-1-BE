@@ -1,6 +1,6 @@
 package com.yapp.pet.web.oauth.kakao;
 
-import com.yapp.pet.domain.account.AccountService;
+import com.yapp.pet.domain.account.service.AccountService;
 import com.yapp.pet.domain.token.entity.Social;
 import com.yapp.pet.web.oauth.apple.model.SignInResponse;
 import com.yapp.pet.web.oauth.kakao.model.KakaoTokenResponse;
