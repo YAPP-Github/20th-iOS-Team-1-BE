@@ -313,6 +313,39 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExceptionResponseInfo'
+  /clubs/search/simple/{club-id}:
+    get:
+      tags:
+        - 모임 (Club)
+      summary: FIN 클릭 시 간단한 모임 조회
+      description: 유저의 위도, 경도, 모임의 식별자 값을 통해 모임의 간단한 정보를 조회합니다
+      parameters:
+        - name: request
+          in: query
+          description: SearchingSimpleClubRequest
+          required: true
+          schema:
+            $ref: '#/components/schemas/SearchingSimpleClubRequest'
+        - name: club-id
+          in: path
+          description: 모임의 식별자 값
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchingSimpleClubResponse'
+        '401':
+          description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseInfo'
 
 
 components:
@@ -623,3 +656,67 @@ components:
                 title: 모임 경도
                 type: number
                 format: double
+    SearchingSimpleClubRequest:
+      type: object
+      properties:
+        userLatitude:
+          title: 유저 위도
+          type: number
+          format: double
+        userLongitude:
+          title: 유저 경도
+          type: number
+          format: double
+    SearchingSimpleClubResponse:
+      type: object
+      properties:
+        category:
+          type: string
+          enum:
+            - WALK
+            - DOG_CAFE
+        title:
+          type: string
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        eligiblePetSizeTypes:
+          type: array
+          items:
+            type: string
+          example:
+            - LARGE
+            - MEDIUM
+        eligibleBreeds:
+          type: array
+          items:
+            type: string
+          example:
+            - MALTESE
+            - WELSH_CORGI
+            - RETRIEVER
+        eligibleSex:
+          type: string
+        maximumPeople:
+          type: integer
+        participants:
+          type: integer
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        meetingPlace:
+          type: string
+        distance:
+          type: number
+          format: double
+        clubStatus:
+          type: string
+          enum:
+            - AVAILABLE
+            - END
