@@ -2,12 +2,8 @@ package com.yapp.pet.domain.account.service;
 
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.account.repository.AccountRepository;
-import com.yapp.pet.domain.account_image.AccountImageService;
 import com.yapp.pet.domain.pet.entity.Pet;
 import com.yapp.pet.domain.pet.repository.PetRepository;
-import com.yapp.pet.domain.token.repository.TokenRepository;
-import com.yapp.pet.global.jwt.JwtService;
-import com.yapp.pet.global.mapper.AccountMapper;
 import com.yapp.pet.web.account.model.AccountValidationResponse;
 import com.yapp.pet.web.account.model.MyPageResponse;
 import lombok.RequiredArgsConstructor;
@@ -23,13 +19,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class AccountQueryService {
 
-    private final JwtService jwtService;
-    private final AccountImageService accountImageService;
-
-    private final AccountMapper accountMapper;
-
     private final AccountRepository accountRepository;
-    private final TokenRepository tokenRepository;
     private final PetRepository petRepository;
 
     public MyPageResponse getMyPageInfo(Account account) {
