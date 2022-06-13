@@ -34,9 +34,9 @@ insert into token (refresh_token, social_type, unique_id_by_social) values ('eyJ
 insert into token (refresh_token, social_type, unique_id_by_social) values ('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJ5YXBwIiwic3ViIjoidW5pcXVlMyIsImF1ZCI6IlJFRlJFU0giLCJleHAiOjE2NTUxOTExNDcsImlhdCI6MTY1NDU4NjM0NywiYXV0aCI6IlVTRVIifQ.6iUkhRoI9l2lOsKiMc6CxLylzjWdMpnQB_RyihL4drwVpfGWLlyESLB9UC44V5diQ5vBNkSA-NZPCcLkpYJ3fw', 'KAKAO', 'unique3');
 insert into token (refresh_token, social_type, unique_id_by_social) values ('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJ5YXBwIiwic3ViIjoidW5pcXVlNCIsImF1ZCI6IlJFRlJFU0giLCJleHAiOjE2NTUzODcyMTAsImlhdCI6MTY1NDc4MjQxMCwiYXV0aCI6IlVTRVIifQ.LPcC3t4W6LF6cRed1YbcjjbY5PGk1nEkxPrXhG6vJyjOJSdWIIJHTadTl4UFjZdAKZ_5Ja3idgqi6Wn6f7C5og', 'KAKAO', 'unique4');
 
-insert into account_image (name, origin_name, path) values ('486421_이미지1', '이미지1', 'https://dasiopd.com');
-insert into account_image (name, origin_name, path) values ('486421_이미지2', '이미지2', 'https://vdfkopvd.com');
-insert into account_image (name, origin_name, path) values ('486421_이미지3', '이미지3', 'https://daskodpas.com');
+insert into account_image (name, origin_name, s3key, path) values ('1655044614407_cat.jpg', 'cat.jpg', '디렉터리1+파일명1', 'https://togaether.s3.ap-northeast-2.amazonaws.com/account/1655044614407_cat.jpg');
+insert into account_image (name, origin_name, s3key, path) values ('486421_이미지2', '이미지2', '디렉터리2+파일명2', 'https://vdfkopvd.com');
+insert into account_image (name, origin_name, s3key, path) values ('486421_이미지3', '이미지3', '디렉터리3+파일명3', 'https://daskodpas.com');
 
 insert into account (age, nickname, sex, token_id, city, detail, self_introduction, account_image_id)
 values (10, '재롱잔치', 'MAN', 1, '인천광역시', '남동구', '저는 재롱이 견주입니다.', 1);
