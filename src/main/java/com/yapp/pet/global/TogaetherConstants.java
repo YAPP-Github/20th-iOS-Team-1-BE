@@ -29,7 +29,7 @@ public final class TogaetherConstants {
 
     public static final String ELIGIBLE_BREEDS_ALL = "상관없음";
 
-    public static final double FEET_TO_METER = 304.8;
+    public static final double FEET_TO_METER = 1000;
 
     public static final int EARTH = 6371;
 }
