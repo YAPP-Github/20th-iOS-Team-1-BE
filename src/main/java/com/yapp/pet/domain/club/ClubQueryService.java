@@ -2,7 +2,6 @@ package com.yapp.pet.domain.club;
 
 import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.club.repository.ClubRepository;
-import com.yapp.pet.web.club.model.SearchingWithinRangeClubDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +48,10 @@ public class ClubQueryService {
     }
 
     public SearchingSimpleClubResponse searchingSimpleClub(SearchingSimpleClubRequest simpleRequest, Long clubId) {
-        return clubRepository.searchSimpleClubById(simpleRequest, clubId);
+        Club savedClub = clubRepository.findById(clubId)
+                                       .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 club"));
+
+        return new SearchingSimpleClubResponse(savedClub, savedClub.getAccountClubs().size())
+                .getDistanceBetweenAccountAndClub(simpleRequest.getUserLatitude(), simpleRequest.getUserLongitude());
     }
 }
