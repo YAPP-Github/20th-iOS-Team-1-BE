@@ -12,9 +12,6 @@ import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.club.entity.ClubStatus;
 import com.yapp.pet.domain.club.entity.EligibleSex;
 import com.yapp.pet.domain.common.PetSizeType;
-import com.yapp.pet.global.util.DistanceUtil;
-import com.yapp.pet.web.club.model.SearchingClubDto;
-import com.yapp.pet.web.club.model.SearchingWithinRangeClubDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
 
@@ -22,12 +19,10 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.yapp.pet.domain.account.entity.QAccount.account;
 import static com.yapp.pet.domain.accountclub.QAccountClub.accountClub;
 import static com.yapp.pet.domain.club.entity.QClub.club;
 import static com.yapp.pet.global.TogaetherConstants.ELIGIBLE_BREEDS_ALL;
 import static com.yapp.pet.web.club.model.SearchingClubDto.SearchingRequest;
-import static com.yapp.pet.web.club.model.SearchingSimpleClubDto.*;
 import static com.yapp.pet.web.club.model.SearchingWithinRangeClubDto.*;
 
 @RequiredArgsConstructor
@@ -93,24 +88,6 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
                                                   rangeRequest.getBottomRightLongitude()))
                            .fetch();
     }
-
-    @Override
-    public SearchingSimpleClubResponse searchSimpleClubById(SearchingSimpleClubRequest simpleRequest, Long clubId) {
-        return null;
-//        return queryFactory.select(
-//                                   Projections.constructor(
-//                                           SearchingSimpleClubResponse.class, accountClub.club,
-//                                           accountClub.club.accountClubs.size()))
-//                           .from(accountClub)
-//                           .join(accountClub.club, club)
-//                           .join(accountClub.account, account)
-//                           .where(isLeader(accountClub.leader))
-//                           .where(clubIdEq(clubId))
-//                           .fetchOne()
-//                           .getDistanceBetweenAccountAndClub(
-//                                   simpleRequest.getUserLatitude(), simpleRequest.getUserLongitude());
-    }
-
 
     @Override
     public List<Club> findExceedTimeClub() {
@@ -185,9 +162,5 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
 
         return club.latitude.between(bottomRightLatitude, upperLeftLatitude)
                             .and(club.longitude.between(upperLeftLongitude, bottomRightLongitude));
-    }
-
-    private BooleanExpression clubIdEq(Long clubId) {
-        return clubId == null ? null : club.id.eq(clubId);
     }
 }
