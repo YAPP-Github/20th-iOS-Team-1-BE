@@ -14,7 +14,7 @@ public interface ClubRepositoryCustom {
 
     List<Club> searchClubByCategory(SearchingRequest searchingRequest);
 
-    List<SearchingWithinRangeClubDto> searchClubByWithinRange(SearchingWithinRangeClubRequest rangeRequest);
+    List<SearchingWithinRangeClubResponse> searchClubByWithinRange(SearchingWithinRangeClubRequest rangeRequest);
 
     SearchingSimpleClubResponse searchSimpleClubById(SearchingSimpleClubRequest simpleRequest, Long clubId);
 

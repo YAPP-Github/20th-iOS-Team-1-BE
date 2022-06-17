@@ -81,10 +81,10 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
     }
 
     @Override
-    public List<SearchingWithinRangeClubDto> searchClubByWithinRange(SearchingWithinRangeClubRequest rangeRequest) {
+    public List<SearchingWithinRangeClubResponse> searchClubByWithinRange(SearchingWithinRangeClubRequest rangeRequest) {
 
         return queryFactory.select(
-                                   Projections.constructor(SearchingWithinRangeClubDto.class,
+                                   Projections.constructor(SearchingWithinRangeClubResponse.class,
                                                            club.id, club.category, club.latitude, club.longitude))
                            .from(club)
                            .where(clubWithinRange(rangeRequest.getUpperLeftLatitude(),

@@ -41,10 +41,10 @@ public class ClubController {
     }
 
     @GetMapping("/clubs/search/range")
-    public SearchingWithinRangeClubResponse searchingWithinRange(
+    public ResponseEntity<List<SearchingWithinRangeClubResponse>> searchingWithinRange(
             @ModelAttribute SearchingWithinRangeClubRequest request) {
 
-        return new SearchingWithinRangeClubResponse(clubQueryService.searchingRangeClub(request));
+        return ResponseEntity.ok(clubQueryService.searchingRangeClub(request));
     }
 
     @GetMapping("/clubs/search/simple/{club-id}")

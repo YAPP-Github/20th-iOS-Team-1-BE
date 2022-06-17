@@ -2,6 +2,7 @@ package com.yapp.pet.domain.club.repository;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.BooleanPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -11,6 +12,7 @@ import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.club.entity.ClubStatus;
 import com.yapp.pet.domain.club.entity.EligibleSex;
 import com.yapp.pet.domain.common.PetSizeType;
+import com.yapp.pet.web.club.model.SearchingWithinRangeClubDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
 
 import static com.yapp.pet.domain.accountclub.QAccountClub.accountClub;
 import static com.yapp.pet.domain.club.entity.QClub.club;
+import static com.yapp.pet.web.club.model.SearchingWithinRangeClubDto.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -299,6 +302,92 @@ class ClubRepositoryImplTest {
         assertThat(result).extracting("status")
                           .contains(ClubStatus.AVAILABLE);
     }
+
+    @Test
+    @DisplayName("좌상단, 우하단 위도 경도가 주어질 경우 그 범위 내에 있는 모임들이 모두 조회되어야한다")
+    void withinRangeClub() throws Exception {
+        //given
+        Double upperLeftLatitude = 37.528176;
+        Double upperLeftLongitude = 126.953678;
+        Double bottomRightLatitude = 37.503199;
+        Double bottomRightLongitude = 126.991272;
+
+        //when
+        List<SearchingWithinRangeClubResponse> result = queryFactory.select(Projections.constructor(
+                                                                            SearchingWithinRangeClubResponse.class,
+                                                                            club.id, club.category, club.latitude, club.longitude))
+                                                                    .from(club)
+                                                                    .where(clubWithinRange(upperLeftLatitude,
+                                                                                           upperLeftLongitude,
+                                                                                           bottomRightLatitude,
+                                                                                           bottomRightLongitude))
+                                                                    .fetch();
+
+        SearchingWithinRangeClubResponse firstResult = result.get(0);
+        //then
+
+        assertAll(
+                () -> assertTrue(firstResult.getClubLatitude() >= bottomRightLatitude &&
+                                         firstResult.getClubLatitude() <= upperLeftLatitude),
+                () -> assertTrue(firstResult.getClubLongitude() >= upperLeftLongitude &&
+                                         firstResult.getClubLongitude() <= bottomRightLongitude)
+        );
+    }
+
+    @Test
+    @DisplayName("좌상단, 우하단 위도 경도가 주어질 경우 그 범위 내에 없는 모임들은 조회되지 않는다")
+    void notWithinRangeClub() throws Exception {
+        //given
+        Double upperLeftLatitude = 37.507409;
+        Double upperLeftLongitude = 126.975763;
+        Double bottomRightLatitude = 37.500957;
+        Double bottomRightLongitude = 126.980657;
+
+        //when
+        List<SearchingWithinRangeClubResponse> result = queryFactory.select(
+                                                                       Projections.constructor(SearchingWithinRangeClubResponse.class,
+                                                                                               club.id, club.category, club.latitude, club.longitude))
+                                                               .from(club)
+                                                               .where(clubWithinRange(upperLeftLatitude, upperLeftLongitude,
+                                                                                      bottomRightLatitude,
+                                                                                      bottomRightLongitude))
+                                                               .fetch();
+
+        //then
+        assertThat(result).isEmpty();
+    }
+//
+//    @Test
+//    @DisplayName("모임 식별자 값이 주어질 경우 해당 모임의 간단한 정보를 조회할 수 있다")
+//    void getSimpleClubById() throws Exception {
+//        //given
+//        long clubId = 1L;
+//
+//        Club savedClub = clubRepository.findById(clubId).get();
+//
+//        Double userLatitude = 37.528176;
+//        Double userLongitude = 126.953678;
+//
+//        //when
+//        SearchingSimpleClubResponse result = queryFactory.select(
+//                                                                 Projections.constructor(
+//                                                                         SearchingSimpleClubResponse.class, accountClub.club,
+//                                                                         accountClub.club.accountClubs.size()))
+//                                                         .from(accountClub)
+//                                                         .join(accountClub.club, club)
+//                                                         .join(accountClub.account, account)
+//                                                         .where(isLeader(accountClub.leader))
+//                                                         .where(clubIdEq(clubId))
+//                                                         .fetchOne()
+//                                                         .getDistanceBetweenAccountAndClub(
+//                                                                 userLatitude, userLongitude);
+//
+//        //then
+//        assertAll(
+//                () ->assertEquals(savedClub.getLatitude(), result.getLatitude()),
+//                () ->assertEquals(savedClub.getLongitude(), result.getLongitude())
+//        );
+//    }
 
     private BooleanExpression clubWithinRange(Double upperLeftLatitude, Double upperLeftLongitude,
                                               Double bottomRightLatitude, Double bottomRightLongitude) {
