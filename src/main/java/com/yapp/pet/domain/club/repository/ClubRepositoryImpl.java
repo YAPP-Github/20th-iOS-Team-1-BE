@@ -93,7 +93,7 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
     public List<Club> findExceedTimeClub() {
         return queryFactory.selectFrom(club)
                            .where(clubStatusEq(ClubStatus.AVAILABLE).and(
-                                   club.endDate.after(ZonedDateTime.now())))
+                                   club.endDate.before(ZonedDateTime.now())))
                            .fetch();
     }
 
