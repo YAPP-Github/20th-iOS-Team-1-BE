@@ -505,11 +505,7 @@ components:
             - DOG_CAFE
         eligibleBreed:
           type: string
-          enum:
-            - MALTESE
-            - WELSH_CORGI
-            - RETRIEVER
-            - ALL
+          example: "웰시코기"
         petSizeType:
           type: string
           enum:
@@ -552,67 +548,67 @@ components:
             - END
       description: 모임 조회 및 필터링 요청 API
     SearchingResponse:
-      type: object
-      properties:
-        searchingClubDto:
-          type: array
-          items:
-            properties:
-              category:
-                type: string
-                enum:
-                  - WALK
-                  - DOG_CAFE
-              title:
-                type: string
-                example: "산책할사람!"
-              startDate:
-                type: string
-                format: date-time
-              endDate:
-                type: string
-                format: date-time
-              eligiblePetSizeTypes:
-                type: array
-                items:
-                  type: string
-                example:
-                  - LARGE
-                  - MEDIUM
-              eligibleBreeds:
-                type: array
-                items:
-                  type: string
-                example:
-                  - MALTESE
-                  - WELSH_CORGI
-                  - RETRIEVER
-              eligibleSex:
-                type: string
-                example: "ALL"
-              maximumPeople:
-                type: integer
-                example: "6"
-              participants:
-                type: integer
-                example: "5"
-              leaderName:
-                type: string
-                example: "재롱잔치"
-              imagePath:
-                type: string
-                example: "https://bucket.s3.amazonaws.com/folder/test.jpg"
-              latitude:
-                type: number
-                format: double
-                example: "2,174"
-              longitude:
-                type: number
-                format: double
-                example: "41,4033803"
-              meetingPlace:
-                type: string
-                example: "서울 강남역 10번 출구"
+      type: array
+      items:
+        properties:
+          category:
+            type: string
+            enum:
+              - WALK
+              - DOG_CAFE
+          title:
+            type: string
+            example: "산책할사람!"
+          startDate:
+            type: string
+            format: date-time
+          endDate:
+            type: string
+            format: date-time
+          eligiblePetSizeTypes:
+            type: array
+            items:
+              type: string
+            example:
+              - LARGE
+              - MEDIUM
+          eligibleBreeds:
+            type: array
+            items:
+              type: string
+            example:
+              - 말티즈
+              - 웰시코기
+              - 리트리버
+          eligibleSex:
+            type: string
+            example: "ALL"
+          maximumPeople:
+            type: integer
+            example: "6"
+          participants:
+            type: integer
+            example: "5"
+          latitude:
+            type: number
+            format: double
+            example: "2,174"
+          longitude:
+            type: number
+            format: double
+            example: "41,4033803"
+          meetingPlace:
+            type: string
+            example: "서울 강남역 10번 출구"
+          distance:
+            type: integer
+            example: "233m"
+          status:
+            type: string
+            enum:
+              - AVAILABLE
+              - PERSONNEL_FULL
+              - END
     SearchingWithinRangeClubRequest:
       type: object
       properties:
@@ -633,29 +629,26 @@ components:
           type: number
           format: double
     SearchingWithinRangeClubResponse:
-      type: object
-      properties:
-        SearchingWithinRangeClubDto:
-          type: array
-          items:
-            properties:
-              clubId:
-                type: integer
-                description: 모임 식별자 값
-                format: int64
-              category:
-                type: string
-                enum:
-                  - WALK
-                  - DOG_CAFE
-              clubLatitude:
-                title: 모임 위도
-                type: number
-                format: double
-              clubLongitude:
-                title: 모임 경도
-                type: number
-                format: double
+      type: array
+      items:
+        properties:
+          clubId:
+            type: integer
+            description: 모임 식별자 값
+            format: int64
+          category:
+            type: string
+            enum:
+              - WALK
+              - DOG_CAFE
+          clubLatitude:
+            title: 모임 위도
+            type: number
+            format: double
+          clubLongitude:
+            title: 모임 경도
+            type: number
+            format: double
     SearchingSimpleClubRequest:
       type: object
       properties:
@@ -695,9 +688,9 @@ components:
           items:
             type: string
           example:
-            - MALTESE
-            - WELSH_CORGI
-            - RETRIEVER
+            - 말티즈
+            - 웰시코기
+            - 리트리버
         eligibleSex:
           type: string
         maximumPeople:

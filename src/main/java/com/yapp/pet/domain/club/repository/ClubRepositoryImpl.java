@@ -6,15 +6,12 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.BooleanPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.yapp.pet.domain.accountclub.AccountClub;
 import com.yapp.pet.domain.common.Category;
 import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.club.entity.ClubStatus;
-import com.yapp.pet.domain.club.entity.EligibleBreed;
 import com.yapp.pet.domain.club.entity.EligibleSex;
 import com.yapp.pet.domain.common.PetSizeType;
-import com.yapp.pet.global.util.DistanceUtil;
-import com.yapp.pet.web.club.model.SearchingClubDto;
-import com.yapp.pet.web.club.model.SearchingWithinRangeClubDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
 
@@ -22,11 +19,10 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.yapp.pet.domain.account.entity.QAccount.account;
 import static com.yapp.pet.domain.accountclub.QAccountClub.accountClub;
 import static com.yapp.pet.domain.club.entity.QClub.club;
+import static com.yapp.pet.global.TogaetherConstants.ELIGIBLE_BREEDS_ALL;
 import static com.yapp.pet.web.club.model.SearchingClubDto.SearchingRequest;
-import static com.yapp.pet.web.club.model.SearchingSimpleClubDto.*;
 import static com.yapp.pet.web.club.model.SearchingWithinRangeClubDto.*;
 
 @RequiredArgsConstructor
@@ -37,16 +33,10 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
     private static final int PAGE_SIZE = 10;
 
     @Override
-    public List<SearchingClubDto> searchClubByWord(SearchingRequest searchingRequest) {
+    public List<Club> searchClubByWord(SearchingRequest searchingRequest) {
 
-        return queryFactory.select(
-                                   Projections.constructor(SearchingClubDto.class,
-                                                           accountClub.club,
-                                                           accountClub.account.nickname,
-                                                           accountClub.club.accountClubs.size()))
-                           .from(accountClub)
-                           .join(accountClub.club, club)
-                           .join(accountClub.account, account)
+        return queryFactory.selectFrom(accountClub)
+                           .join(accountClub.club, club).fetchJoin()
                            .where(isLeader(accountClub.leader))
                            .where(clubNameContains(searchingRequest.getSearchingWord()))
                            .where(clubCategoryEq(searchingRequest.getCategory()))
@@ -60,35 +50,17 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
                            .limit(PAGE_SIZE)
                            .fetch()
                            .stream()
-                           .sorted(
-                                   (club1, club2) -> {
-                                       Double userLatitude = searchingRequest.getStartLatitude();
-                                       Double userLongitude = searchingRequest.getStartLongitude();
-                                       return DistanceUtil.getDistanceBetweenUserAndClub(
-                                                                  userLatitude, club1.getLatitude(),
-                                                                  userLongitude, club1.getLongitude())
-                                                          .compareTo(
-                                                                  DistanceUtil.getDistanceBetweenUserAndClub(
-                                                                          userLatitude,
-                                                                          club2.getLatitude(),
-                                                                          userLongitude,
-                                                                          club2.getLongitude()));
-                                   }
-                           )
+                           .map(AccountClub::getClub)
                            .collect(Collectors.toList());
     }
 
     @Override
-    public List<SearchingClubDto> searchClubByCategory(SearchingRequest searchingRequest) {
+    public List<Club> searchClubByCategory(SearchingRequest searchingRequest) {
 
-        return queryFactory.select(
-                                   Projections.constructor(SearchingClubDto.class, accountClub.club, accountClub.account.nickname,
-                                                           accountClub.club.accountClubs.size()))
-                           .from(accountClub)
-                           .join(accountClub.club, club)
-                           .join(accountClub.account, account)
+        return queryFactory.selectFrom(accountClub)
+                           .join(accountClub.club, club).fetchJoin()
                            .where(isLeader(accountClub.leader))
-                           .where(clubCategoryEq(Category.valueOf(searchingRequest.getSearchingWord())))
+                           .where(clubCategoryEq(searchingRequest.getCategory()))
                            .where(clubStatusEq(searchingRequest.getStatus()))
                            .where(clubPetTypeExist(searchingRequest.getEligibleBreed()))
                            .where(clubPetSizeTypeExist(searchingRequest.getPetSizeType()))
@@ -99,29 +71,15 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
                            .limit(PAGE_SIZE)
                            .fetch()
                            .stream()
-                           .sorted(
-                                   (club1, club2) -> {
-                                       Double userLatitude = searchingRequest.getStartLatitude();
-                                       Double userLongitude = searchingRequest.getStartLongitude();
-                                       return DistanceUtil.getDistanceBetweenUserAndClub(
-                                                                  userLatitude, club1.getLatitude(),
-                                                                  userLongitude, club1.getLongitude())
-                                                          .compareTo(
-                                                                  DistanceUtil.getDistanceBetweenUserAndClub(
-                                                                          userLatitude,
-                                                                          club2.getLatitude(),
-                                                                          userLongitude,
-                                                                          club2.getLongitude()));
-                                   }
-                           )
+                           .map(AccountClub::getClub)
                            .collect(Collectors.toList());
     }
 
     @Override
-    public List<SearchingWithinRangeClubDto> searchClubByWithinRange(SearchingWithinRangeClubRequest rangeRequest) {
+    public List<SearchingWithinRangeClubResponse> searchClubByWithinRange(SearchingWithinRangeClubRequest rangeRequest) {
 
         return queryFactory.select(
-                                   Projections.constructor(SearchingWithinRangeClubDto.class,
+                                   Projections.constructor(SearchingWithinRangeClubResponse.class,
                                                            club.id, club.category, club.latitude, club.longitude))
                            .from(club)
                            .where(clubWithinRange(rangeRequest.getUpperLeftLatitude(),
@@ -132,27 +90,10 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
     }
 
     @Override
-    public SearchingSimpleClubResponse searchSimpleClubById(SearchingSimpleClubRequest simpleRequest, Long clubId) {
-        return queryFactory.select(
-                                   Projections.constructor(
-                                           SearchingSimpleClubResponse.class, accountClub.club,
-                                           accountClub.club.accountClubs.size()))
-                           .from(accountClub)
-                           .join(accountClub.club, club)
-                           .join(accountClub.account, account)
-                           .where(isLeader(accountClub.leader))
-                           .where(clubIdEq(clubId))
-                           .fetchOne()
-                           .getDistanceBetweenAccountAndClub(
-                                   simpleRequest.getUserLatitude(), simpleRequest.getUserLongitude());
-    }
-
-
-    @Override
     public List<Club> findExceedTimeClub() {
         return queryFactory.selectFrom(club)
                            .where(clubStatusEq(ClubStatus.AVAILABLE).and(
-                                   club.endDate.after(ZonedDateTime.now())))
+                                   club.endDate.before(ZonedDateTime.now())))
                            .fetch();
     }
 
@@ -176,8 +117,8 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
         return petSizeType == null ? null : club.eligiblePetSizeTypes.any().eq(petSizeType);
     }
 
-    private BooleanExpression clubPetTypeExist(EligibleBreed eligibleBreed) {
-        if (eligibleBreed == EligibleBreed.ALL) {
+    private BooleanExpression clubPetTypeExist(String eligibleBreed) {
+        if (eligibleBreed.equals(ELIGIBLE_BREEDS_ALL)) {
             return null;
         }
 
@@ -221,9 +162,5 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
 
         return club.latitude.between(bottomRightLatitude, upperLeftLatitude)
                             .and(club.longitude.between(upperLeftLongitude, bottomRightLongitude));
-    }
-
-    private BooleanExpression clubIdEq(Long clubId) {
-        return clubId == null ? null : club.id.eq(clubId);
     }
 }

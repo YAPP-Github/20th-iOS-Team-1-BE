@@ -2,7 +2,6 @@ package com.yapp.pet.web.club.model;
 
 import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.club.entity.ClubStatus;
-import com.yapp.pet.domain.club.entity.EligibleBreed;
 import com.yapp.pet.domain.club.entity.EligibleSex;
 import com.yapp.pet.domain.common.Category;
 import com.yapp.pet.domain.common.PetSizeType;
@@ -41,14 +40,14 @@ public class SearchingSimpleClubDto {
         private ZonedDateTime startDate;
         private ZonedDateTime endDate;
         private Set<PetSizeType> eligiblePetSizeTypes = new HashSet<>();
-        private Set<EligibleBreed> eligibleBreeds = new HashSet<>();
+        private Set<String> eligibleBreeds = new HashSet<>();
         private EligibleSex eligibleSex;
         private int maximumPeople;
         private int participants;
         private Double latitude;
         private Double longitude;
         private String meetingPlace;
-        private Double distance;
+        private int distance;
         private ClubStatus clubStatus;
 
         public SearchingSimpleClubResponse(Club club, int participants) {
@@ -68,7 +67,8 @@ public class SearchingSimpleClubDto {
         }
 
         public SearchingSimpleClubResponse getDistanceBetweenAccountAndClub(Double userLatitude, Double userLongitude) {
-            distance = DistanceUtil.getDistanceBetweenUserAndClub(userLatitude, latitude, userLongitude, longitude);
+            distance = (int) DistanceUtil.getDistanceBetweenUserAndClub(userLatitude, latitude,
+                                                                        userLongitude, longitude);
             return this;
         }
     }
