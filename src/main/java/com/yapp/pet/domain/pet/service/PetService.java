@@ -6,7 +6,6 @@ import com.yapp.pet.domain.pet.entity.Pet;
 import com.yapp.pet.domain.pet.repository.PetRepository;
 import com.yapp.pet.domain.pet_image.PetImage;
 import com.yapp.pet.domain.pet_image.PetImageService;
-import com.yapp.pet.domain.pet_tag.PetTag;
 import com.yapp.pet.domain.pet_tag.PetTagService;
 import com.yapp.pet.web.pet.model.PetRequest;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.yapp.pet.global.TogaetherConstants.YEAR_TO_MONTH;
 

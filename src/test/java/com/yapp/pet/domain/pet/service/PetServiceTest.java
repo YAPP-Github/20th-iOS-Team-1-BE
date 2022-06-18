@@ -3,9 +3,9 @@ package com.yapp.pet.domain.pet.service;
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.account.repository.AccountRepository;
 import com.yapp.pet.domain.common.PetSizeType;
+import com.yapp.pet.domain.pet.entity.Pet;
 import com.yapp.pet.domain.pet.entity.PetSex;
 import com.yapp.pet.domain.pet.repository.PetRepository;
-import com.yapp.pet.domain.pet_tag.PetTag;
 import com.yapp.pet.web.pet.model.PetRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
@@ -39,8 +39,8 @@ class PetServiceTest {
     PetService petService;
 
     @Test
-    @DisplayName("account에 자신의 Pet을 저장할 수 있다")
-    void registerPetToAccount() throws Exception {
+    @DisplayName("account에 자신의 Pet을 저장할 수 있다 - 이미지 없는 경우")
+    void registerPetWithoutImage() throws Exception {
         //given
         Account account = accountRepository.findById(1L).get();
         PetRequest petRequest = new PetRequest();
@@ -51,14 +51,19 @@ class PetServiceTest {
         petRequest.setSex(PetSex.MALE);
         petRequest.setNeutering(true);
         petRequest.setSizeType(PetSizeType.MEDIUM);
-        petRequest.setTags(null);
+        petRequest.setTags(List.of("활발", "사나움"));
         petRequest.setImageFile(null);
 
         //when
         long savedId = petService.addPet(account, petRequest);
 
-        //then
+        Pet savedPet = petRepository.findById(savedId).get();
 
+        //then
+        assertThat(savedPet.getName()).isEqualTo("name");
+        assertThat(savedPet.getAge().getAge()).isEqualTo("10개월");
+        assertThat(savedPet.getAccount()).isEqualTo(account);
+        assertThat(savedPet.getTags().size()).isEqualTo(2);
     }
 
     List<MultipartFile> createMockImageFiles() {
@@ -83,5 +88,34 @@ class PetServiceTest {
         }
 
         return mockFiles;
+    }
+
+    @Test
+    @DisplayName("account에 자신의 Pet을 저장할 수 있다 - 이미지 있는 경우")
+    void registerPetWithImage() throws Exception {
+        //given
+        Account account = accountRepository.findById(1L).get();
+        PetRequest petRequest = new PetRequest();
+        petRequest.setName("name");
+        petRequest.setYear(2021);
+        petRequest.setMonth(8);
+        petRequest.setBreed("말티즈");
+        petRequest.setSex(PetSex.MALE);
+        petRequest.setNeutering(true);
+        petRequest.setSizeType(PetSizeType.MEDIUM);
+        petRequest.setTags(List.of("활발", "사나움"));
+        petRequest.setImageFile(createMockImageFiles().get(0));
+
+        //when
+        long savedId = petService.addPet(account, petRequest);
+
+        Pet savedPet = petRepository.findById(savedId).get();
+
+        //then
+        assertThat(savedPet.getName()).isEqualTo("name");
+        assertThat(savedPet.getAge().getAge()).isEqualTo("10개월");
+        assertThat(savedPet.getAccount()).isEqualTo(account);
+        assertThat(savedPet.getTags().size()).isEqualTo(2);
+        assertThat(savedPet.getPetImage()).isNotNull();
     }
 }
