@@ -20,21 +20,13 @@ public class AccountRepositoryImpl implements AccountRepositoryCustom{
         return Optional.ofNullable(
                 queryFactory
                         .selectFrom(account)
+                        .distinct()
                         .join(account.token, token).fetchJoin()
+                        .leftJoin(account.accountImage, accountImage).fetchJoin()
+                        .leftJoin(account.interestCategories).fetchJoin()
                         .where(account.nickname.eq(nickname))
                         .fetchOne()
         );
-    }
-
-    @Override
-    public Account findAccount(String uniqueIdBySocial) {
-        return queryFactory
-                .selectFrom(account)
-                .distinct()
-                .join(account.token, token).fetchJoin()
-                .leftJoin(account.accountImage, accountImage).fetchJoin()
-                .where(account.token.uniqueIdBySocial.eq(uniqueIdBySocial))
-                .fetchOne();
     }
 
 }

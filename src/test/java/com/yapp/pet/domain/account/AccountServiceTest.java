@@ -276,7 +276,7 @@ public class AccountServiceTest {
     @DisplayName("마이페이지를 조회할 수 있다.")
     void getMyPageInfo(){
         //when
-        MyPageResponse myPageInfo = accountQueryService.getMyPageInfo(accountWithTokenAndImage);
+        MyPageResponse myPageInfo = accountQueryService.getMyPageInfo("재롱잔치");
 
         AccountInfoResponse accountInfo = myPageInfo.getAccountInfo();
         List<PetInfoResponse> petInfos = myPageInfo.getPetInfos();
