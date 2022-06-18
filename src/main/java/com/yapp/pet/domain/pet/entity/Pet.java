@@ -57,11 +57,10 @@ public class Pet extends BaseEntity {
     private PetSizeType sizeType;
 
     @Builder
-    public Pet(Account account, PetImage petImage, List<PetTag> tags, String breed, String name, Age age,
+    public Pet(Account account, PetImage petImage, String breed, String name, Age age,
                PetSex sex, boolean neutering, PetSizeType sizeType) {
         this.account = account;
         this.petImage = petImage;
-        this.tags = tags;
         this.breed = breed;
         this.name = name;
         this.age = age;
@@ -69,5 +68,4 @@ public class Pet extends BaseEntity {
         this.neutering = neutering;
         this.sizeType = sizeType;
     }
-
 }

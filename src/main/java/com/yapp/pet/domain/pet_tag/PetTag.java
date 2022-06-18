@@ -36,4 +36,9 @@ public class PetTag extends BaseEntity {
         return new PetTag(pet, name);
     }
 
+    public void addTags(Pet pet) {
+        pet.getTags().add(this);
+        this.pet = pet;
+    }
+
 }
