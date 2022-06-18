@@ -4,6 +4,7 @@ import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.account.repository.AccountRepository;
 import com.yapp.pet.domain.pet.entity.Pet;
 import com.yapp.pet.domain.pet.repository.PetRepository;
+import com.yapp.pet.global.exception.account.AccountNotFoundException;
 import com.yapp.pet.web.account.model.AccountValidationResponse;
 import com.yapp.pet.web.account.model.MyPageResponse;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +23,11 @@ public class AccountQueryService {
     private final AccountRepository accountRepository;
     private final PetRepository petRepository;
 
-    public MyPageResponse getMyPageInfo(Account account) {
+    public MyPageResponse getMyPageInfo(String nickname) {
 
-        Account findAccount = accountRepository.findAccount(account.getToken().getUniqueIdBySocial());
+        Account findAccount = accountRepository.findByNickname(nickname).orElseThrow(AccountNotFoundException::new);
 
-        List<Pet> findPets = petRepository.findPetsByAccountId(account.getId());
+        List<Pet> findPets = petRepository.findPetsByAccountId(findAccount.getId());
 
         return MyPageResponse.of(findAccount, findPets);
     }
