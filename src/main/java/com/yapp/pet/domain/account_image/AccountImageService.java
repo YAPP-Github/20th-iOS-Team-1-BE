@@ -21,9 +21,9 @@ public class AccountImageService {
     public AccountImage create(MultipartFile imageFile) {
 
         String origFilename = imageFile.getOriginalFilename();
-        String imageUrl = s3Utils.uploadToS3(imageFile, S3_ACCOUNT_DIR_NAME);
-        String filename = s3Utils.createFileName(origFilename);
-        String s3Key = s3Utils.createS3Key(imageFile, S3_ACCOUNT_DIR_NAME);
+        String filename = s3Utils.createFilename(origFilename);
+        String imageUrl = s3Utils.putS3(imageFile, filename, S3_ACCOUNT_DIR_NAME);
+        String s3Key = s3Utils.createS3Key(filename, S3_ACCOUNT_DIR_NAME);
 
         AccountImage accountImage = AccountImage.builder()
                 .name(filename)

@@ -78,7 +78,7 @@ insert into eligible_pet_breeds (club_id, eligible_breeds) values (1, '리트리
 insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (1, 'LARGE');
 insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (1, 'MEDIUM');
 
-insert into pet_image (name, origin_name, path) values ('90419_펫이미지1', '펫이미지1', 'https://acjic.com');
+insert into pet_image (name, origin_name, path, s3Key) values ('90419_펫이미지1', '펫이미지1', 'https://acjic.com', '디렉터리4+파일명4');
 
 insert into pet (age, birth_month, birth_year, breed, name, neutering, sex, size_type, account_id, pet_image_id)
 values (5, '2', '2', '말티즈', '재롱이', true, 'MALE', 'SMALL', 1, 1);
