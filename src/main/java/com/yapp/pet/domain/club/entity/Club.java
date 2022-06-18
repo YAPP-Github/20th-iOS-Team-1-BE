@@ -58,9 +58,8 @@ public class Club extends BaseEntity {
 
     @Column(nullable = false)
     @ElementCollection
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "eligible_breeds", joinColumns = @JoinColumn(name = "club_id"))
-    private Set<EligibleBreed> eligibleBreeds = new HashSet<>();
+    @CollectionTable(name = "eligible_pet_breeds", joinColumns = @JoinColumn(name = "club_id"))
+    private Set<String> eligibleBreeds = new HashSet<>();
 
     @Column(nullable = false)
     private ZonedDateTime startDate;
@@ -77,7 +76,7 @@ public class Club extends BaseEntity {
     @Builder
     public Club(String title, String description,
                 Category category, String meetingPlace, int maximumPeople, EligibleSex eligibleSex,
-                Set<PetSizeType> eligiblePetSizeTypes, Set<EligibleBreed> eligibleBreeds,
+                Set<PetSizeType> eligiblePetSizeTypes, Set<String> eligibleBreeds,
                 ZonedDateTime startDate, ZonedDateTime endDate, Double latitude, Double longitude) {
         this.title = title;
         this.description = description;

@@ -10,22 +10,6 @@ import java.util.List;
 @NoArgsConstructor
 public class SearchingWithinRangeClubDto {
 
-    private Long clubId;
-
-    private Category category;
-
-    private Double clubLatitude;
-
-    private Double clubLongitude;
-
-    @Builder
-    public SearchingWithinRangeClubDto(Long clubId, Category category, Double clubLatitude, Double clubLongitude) {
-        this.clubId = clubId;
-        this.category = category;
-        this.clubLatitude = clubLatitude;
-        this.clubLongitude = clubLongitude;
-    }
-
     @Getter
     @Setter
     public static class SearchingWithinRangeClubRequest{
@@ -46,8 +30,20 @@ public class SearchingWithinRangeClubDto {
     }
 
     @Getter
-    @AllArgsConstructor
-    public static class SearchingWithinRangeClubResponse{
-        List<SearchingWithinRangeClubDto> searchingWithinRangeClubDto;
+    @Setter
+    @NoArgsConstructor
+    public static class SearchingWithinRangeClubResponse {
+
+        private Long clubId;
+        private Category category;
+        private Double clubLatitude;
+        private Double clubLongitude;
+
+        public SearchingWithinRangeClubResponse(Long clubId, Category category, Double clubLatitude, Double clubLongitude) {
+            this.clubId = clubId;
+            this.category = category;
+            this.clubLatitude = clubLatitude;
+            this.clubLongitude = clubLongitude;
+        }
     }
 }

@@ -6,15 +6,12 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.BooleanPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.yapp.pet.domain.accountclub.AccountClub;
 import com.yapp.pet.domain.common.Category;
 import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.club.entity.ClubStatus;
-import com.yapp.pet.domain.club.entity.EligibleBreed;
 import com.yapp.pet.domain.club.entity.EligibleSex;
-import com.yapp.pet.domain.club.entity.QClub;
 import com.yapp.pet.domain.common.PetSizeType;
-import com.yapp.pet.web.club.model.SearchingClubDto;
-import com.yapp.pet.web.club.model.SearchingWithinRangeClubDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +24,13 @@ import javax.persistence.EntityManager;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static com.yapp.pet.domain.account.entity.QAccount.account;
 import static com.yapp.pet.domain.accountclub.QAccountClub.accountClub;
 import static com.yapp.pet.domain.club.entity.QClub.club;
-import static com.yapp.pet.web.club.model.SearchingSimpleClubDto.*;
+import static com.yapp.pet.web.club.model.SearchingWithinRangeClubDto.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -55,18 +51,17 @@ class ClubRepositoryImplTest {
     @DisplayName("검색어를 통해 club을 검색할 때, club의 title에 검색어가 포함된 club이 조회된다")
     void searchClubByWord() throws Exception {
 
-        List<SearchingClubDto> result = queryFactory.select(
-                                                            Projections.constructor(SearchingClubDto.class, accountClub.club, accountClub.account.nickname,
-                                                                                    accountClub.club.accountClubs.size()))
-                                                    .from(accountClub)
-                                                    .join(accountClub.club, club)
-                                                    .join(accountClub.account, account)
-                                                    .where(isLeader(accountClub.leader))
-                                                    .where(clubNameContains("산책"))
-                                                    .fetch();
+        List<Club> result = queryFactory.selectFrom(accountClub)
+                                    .join(accountClub.club, club).fetchJoin()
+                                    .where(isLeader(accountClub.leader))
+                                    .where(clubNameContains("산책"))
+                                    .fetch()
+                                    .stream()
+                                    .map(AccountClub::getClub)
+                                    .collect(Collectors.toList());
 
-        for (SearchingClubDto searchingClubDto : result) {
-            assertThat(searchingClubDto.getTitle()).contains("산책");
+        for (Club club1 : result) {
+            assertThat(club1.getTitle()).contains("산책");
         }
     }
 
@@ -74,35 +69,32 @@ class ClubRepositoryImplTest {
     @DisplayName("산책 카테고리를 검색하면, 산책 카테고리를 가진 club이 조회된다")
     void searchClubByCategory() throws Exception {
 
-        List<SearchingClubDto> result = queryFactory.select(
-                                                            Projections.constructor(SearchingClubDto.class, accountClub.club, accountClub.account.nickname,
-                                                                                    accountClub.club.accountClubs.size()))
-                                                    .from(accountClub)
-                                                    .join(accountClub.club, club)
-                                                    .join(accountClub.account, account)
-                                                    .where(isLeader(accountClub.leader))
-                                                    .where(clubCategoryEq(Category.WALK))
-                                                    .fetch();
+        List<Club> result = queryFactory.selectFrom(accountClub)
+                                         .join(accountClub.club, club).fetchJoin()
+                                         .where(isLeader(accountClub.leader))
+                                         .where(clubCategoryEq(Category.WALK))
+                                         .fetch()
+                                         .stream()
+                                         .map(AccountClub::getClub)
+                                         .collect(Collectors.toList());
 
         assertThat(result).extracting("category")
                 .containsExactly(Category.WALK);
     }
 
-
-
     @Test
     @DisplayName("유저가 선택한 견주 성별 필터가 ALL인 경우, club의 견주 성별 조건 상관없이 club이 조회되야한다")
     void eligibleSexIsAll() throws Exception {
         //given
-        List<SearchingClubDto> result = queryFactory.select(
-                                                            Projections.constructor(SearchingClubDto.class, accountClub.club, accountClub.account.nickname,
-                                                                                    accountClub.club.accountClubs.size()))
-                                                    .from(accountClub)
-                                                    .join(accountClub.club, club)
-                                                    .join(accountClub.account, account)
-                                                    .where(isLeader(accountClub.leader))
-                                                    .where(clubEligibleSexEq(EligibleSex.ALL))
-                                                    .fetch();
+
+        List<Club> result = queryFactory.selectFrom(accountClub)
+                                         .join(accountClub.club, club).fetchJoin()
+                                         .where(isLeader(accountClub.leader))
+                                         .where(clubEligibleSexEq(EligibleSex.ALL))
+                                         .fetch()
+                                         .stream()
+                                         .map(AccountClub::getClub)
+                                         .collect(Collectors.toList());
 
         //then
         assertThat(result).extracting("eligibleSex")
@@ -118,19 +110,14 @@ class ClubRepositoryImplTest {
         EligibleSex man = EligibleSex.MAN;
 
         //when
-        List<SearchingClubDto> result = queryFactory.select(
-                                                            Projections.constructor(SearchingClubDto.class, accountClub.club, accountClub.account.nickname,
-                                                                                    accountClub.club.accountClubs.size()))
-                                                    .from(accountClub)
-                                                    .join(accountClub.club, club)
-                                                    .join(accountClub.account, account)
-                                                    .where(isLeader(accountClub.leader))
-                                                    .where(clubEligibleSexEq(man))
-                                                    .fetch();
-
-        for (SearchingClubDto searchingClubDto : result) {
-            System.out.println("searchingClubDto = " + searchingClubDto.getEligibleSex());
-        }
+        List<Club> result = queryFactory.selectFrom(accountClub)
+                                         .join(accountClub.club, club).fetchJoin()
+                                         .where(isLeader(accountClub.leader))
+                                         .where(clubEligibleSexEq(man))
+                                         .fetch()
+                                         .stream()
+                                         .map(AccountClub::getClub)
+                                         .collect(Collectors.toList());
 
         //then
         assertThat(result).extracting("eligibleSex")
@@ -145,15 +132,14 @@ class ClubRepositoryImplTest {
         EligibleSex userFilter = EligibleSex.WOMAN;
 
         //when
-        List<SearchingClubDto> result = queryFactory.select(
-                                                            Projections.constructor(SearchingClubDto.class, accountClub.club, accountClub.account.nickname,
-                                                                                    accountClub.club.accountClubs.size()))
-                                                    .from(accountClub)
-                                                    .join(accountClub.club, club)
-                                                    .join(accountClub.account, account)
-                                                    .where(isLeader(accountClub.leader))
-                                                    .where(clubEligibleSexEq(userFilter))
-                                                    .fetch();
+        List<Club> result = queryFactory.selectFrom(accountClub)
+                                         .join(accountClub.club, club).fetchJoin()
+                                         .where(isLeader(accountClub.leader))
+                                         .where(clubEligibleSexEq(userFilter))
+                                         .fetch()
+                                         .stream()
+                                         .map(AccountClub::getClub)
+                                         .collect(Collectors.toList());
 
         //then
         assertThat(result).extracting("eligibleSex")
@@ -168,37 +154,36 @@ class ClubRepositoryImplTest {
         int limitMax = 3, limitMin = 0;
 
         //when
-        SearchingClubDto result = queryFactory.select(
-                                                      Projections.constructor(SearchingClubDto.class, accountClub.club, accountClub.account.nickname,
-                                                                              accountClub.club.accountClubs.size()))
-                                              .from(accountClub)
-                                              .join(accountClub.club, club)
-                                              .join(accountClub.account, account)
-                                              .where(isLeader(accountClub.leader))
-                                              .where(clubParticipateRange(limitMin, limitMax))
-                                              .fetchFirst();
+        List<Club> result = queryFactory.selectFrom(accountClub)
+                                         .join(accountClub.club, club).fetchJoin()
+                                         .where(isLeader(accountClub.leader))
+                                         .where(clubParticipateRange(limitMin, limitMax))
+                                         .fetch()
+                                         .stream()
+                                         .map(AccountClub::getClub)
+                                         .collect(Collectors.toList());
 
-        assertThat(result.getParticipants()).isBetween(0, 3);
+        assertThat(result.get(0).getAccountClubs().size()).isBetween(0, 3);
     }
 
     @Test
     @DisplayName("유저가 고른 견종이 웰시코기이고, club의 견종 조건이 말티즈, 리트리버일 경우 club이 조회되지 않는다")
     void clubEligiblePetTypeNotContainsUserPetTypeFilter() throws Exception {
         //given
-        EligibleBreed userFilter = EligibleBreed.WELSH_CORGI;
+        String userFilter = "웰시코기";
 
         //when
-        List<SearchingClubDto> result = queryFactory.select(
-                                                            Projections.constructor(SearchingClubDto.class, accountClub.club, accountClub.account.nickname,
-                                                                                    accountClub.club.accountClubs.size()))
-                                                    .from(accountClub)
-                                                    .join(accountClub.club, club)
-                                                    .join(accountClub.account, account)
-                                                    .where(isLeader(accountClub.leader))
-                                                    .where(clubPetTypeExist(userFilter))
-                                                    .fetch();
 
-        //then
+        List<Club> result = queryFactory.selectFrom(accountClub)
+                                         .join(accountClub.club, club).fetchJoin()
+                                         .where(isLeader(accountClub.leader))
+                                         .where(clubPetTypeExist(userFilter))
+                                         .fetch()
+                                         .stream()
+                                         .map(AccountClub::getClub)
+                                         .collect(Collectors.toList());
+
+        //then버
         assertThat(result).isEmpty();
     }
 
@@ -206,22 +191,21 @@ class ClubRepositoryImplTest {
     @DisplayName("유저가 고른 견종이 말티즈이고, club의 견종 조건이 말티즈, 리트리버일 경우 club이 조회된다")
     void clubEligiblePetTypeContainsUserPetTypeFilter() throws Exception {
         //given
-        EligibleBreed userFilter = EligibleBreed.RETRIEVER;
+        String userFilter = "말티즈";
 
         //when
-        List<SearchingClubDto> result = queryFactory.select(
-                                                            Projections.constructor(SearchingClubDto.class, accountClub.club, accountClub.account.nickname,
-                                                                                    accountClub.club.accountClubs.size()))
-                                                    .from(accountClub)
-                                                    .join(accountClub.club, QClub.club)
-                                                    .join(accountClub.account, account)
-                                                    .where(isLeader(accountClub.leader))
-                                                    .where(clubPetTypeExist(userFilter))
-                                                    .fetch();
+        List<Club> result = queryFactory.selectFrom(accountClub)
+                                        .join(accountClub.club, club).fetchJoin()
+                                        .where(isLeader(accountClub.leader))
+                                        .where(clubPetTypeExist(userFilter))
+                                        .fetch()
+                                        .stream()
+                                        .map(AccountClub::getClub)
+                                        .collect(Collectors.toList());
 
         //then
-        assertThat(result).flatExtracting(SearchingClubDto::getEligibleBreeds)
-                          .contains(EligibleBreed.MALTESE);
+        assertThat(result).flatExtracting("eligibleBreeds")
+                          .contains("말티즈");
     }
 
     @Test
@@ -231,15 +215,14 @@ class ClubRepositoryImplTest {
         PetSizeType userFilter = PetSizeType.SMALL;
 
         //when
-        List<SearchingClubDto> result = queryFactory.select(
-                                                            Projections.constructor(SearchingClubDto.class, accountClub.club, accountClub.account.nickname,
-                                                                                    accountClub.club.accountClubs.size()))
-                                                    .from(accountClub)
-                                                    .join(accountClub.club, club)
-                                                    .join(accountClub.account, account)
-                                                    .where(isLeader(accountClub.leader))
-                                                    .where(clubPetSizeTypeExist(userFilter))
-                                                    .fetch();
+        List<Club> result = queryFactory.selectFrom(accountClub)
+                                         .join(accountClub.club, club).fetchJoin()
+                                         .where(isLeader(accountClub.leader))
+                                         .where(clubPetSizeTypeExist(userFilter))
+                                         .fetch()
+                                         .stream()
+                                         .map(AccountClub::getClub)
+                                         .collect(Collectors.toList());
 
         //then
         assertThat(result).isEmpty();
@@ -252,18 +235,18 @@ class ClubRepositoryImplTest {
         PetSizeType userFilter = PetSizeType.LARGE;
 
         //when
-        List<SearchingClubDto> result = queryFactory.select(
-                                                            Projections.constructor(SearchingClubDto.class, accountClub.club, accountClub.account.nickname,
-                                                                                    accountClub.club.accountClubs.size()))
-                                                    .from(accountClub)
-                                                    .join(accountClub.club, club)
-                                                    .join(accountClub.account, account)
-                                                    .where(isLeader(accountClub.leader))
-                                                    .where(clubPetSizeTypeExist(userFilter))
-                                                    .fetch();
+        List<Club> result = queryFactory.selectFrom(accountClub)
+                                        .join(accountClub.club, club).fetchJoin()
+                                        .where(isLeader(accountClub.leader))
+                                        .where(clubPetSizeTypeExist(userFilter))
+                                        .where(clubPetTypeExist("말티즈"))
+                                        .fetch()
+                                        .stream()
+                                        .map(AccountClub::getClub)
+                                        .collect(Collectors.toList());
 
         //then
-        assertThat(result).flatExtracting(SearchingClubDto::getEligiblePetSizeTypes)
+        assertThat(result).flatExtracting("eligiblePetSizeTypes")
                           .contains(PetSizeType.LARGE);
     }
 
@@ -273,36 +256,35 @@ class ClubRepositoryImplTest {
         //given
         String userTitle = "산책";
         Category userCategory = Category.WALK;
-        EligibleBreed userBreed = EligibleBreed.ALL;
+        String userBreed = "상관없음";
         PetSizeType userPetSizeType = PetSizeType.MEDIUM;
         EligibleSex userSex = EligibleSex.ALL;
         int limitMin = 0, limitMax = 3;
 
         //when
-        List<SearchingClubDto> result = queryFactory.select(
-                                                           Projections.constructor(SearchingClubDto.class, accountClub.club, accountClub.account.nickname,
-                                                                                   accountClub.club.accountClubs.size()))
-                                                   .from(accountClub)
-                                                   .join(accountClub.club, club)
-                                                   .join(accountClub.account, account)
-                                                   .where(isLeader(accountClub.leader))
-                                                   .where(clubCategoryEq(userCategory))
-                                                   .where(clubNameContains(userTitle))
-                                                   .where(clubPetTypeExist(userBreed))
-                                                   .where(clubPetSizeTypeExist(userPetSizeType))
-                                                   .where(clubEligibleSexEq(userSex))
-                                                   .where(clubParticipateRange(limitMin, limitMax))
-                                                   .fetch();
+        List<Club> result = queryFactory.selectFrom(accountClub)
+                                         .join(accountClub.club, club).fetchJoin()
+                                         .where(isLeader(accountClub.leader))
+                                         .where(clubCategoryEq(userCategory))
+                                         .where(clubNameContains(userTitle))
+                                         .where(clubPetTypeExist(userBreed))
+                                         .where(clubPetSizeTypeExist(userPetSizeType))
+                                         .where(clubEligibleSexEq(userSex))
+                                         .where(clubParticipateRange(limitMin, limitMax))
+                                         .fetch()
+                                         .stream()
+                                         .map(AccountClub::getClub)
+                                         .collect(Collectors.toList());
 
         System.out.println("result.size() = " + result.size());
 
         //then
         assertAll(
-                () -> assertThat(result).flatExtracting(SearchingClubDto::getEligiblePetSizeTypes)
+                () -> assertThat(result).flatExtracting("eligiblePetSizeTypes")
                                         .contains(userPetSizeType),
                 () -> assertThat(result).extracting("category")
                                         .containsExactly(userCategory),
-                () -> assertThat(result.get(0).getParticipants()).isBetween(0, 3)
+                () -> assertThat(result.get(0).getAccountClubs().size()).isBetween(0, 3)
         );
     }
 
@@ -311,9 +293,9 @@ class ClubRepositoryImplTest {
     void exceedTimeClub() throws Exception {
         List<Club> result = queryFactory.selectFrom(club)
                                         .where(clubStatusEq(ClubStatus.AVAILABLE).and(
-                                               club.endDate.after(
-                                                       ZonedDateTime.of(1997, 9, 23, 19, 30, 0, 0,
-                                                                        ZoneId.of("Asia/Seoul")))))
+                                                club.endDate.after(
+                                                        ZonedDateTime.of(1997, 9, 23, 19, 30, 0, 0,
+                                                                         ZoneId.of("Asia/Seoul")))))
                                         .fetch();
 
         assertThat(result).extracting("status")
@@ -330,16 +312,17 @@ class ClubRepositoryImplTest {
         Double bottomRightLongitude = 126.991272;
 
         //when
-        List<SearchingWithinRangeClubDto> result = queryFactory.select(
-                                                                      Projections.constructor(SearchingWithinRangeClubDto.class,
-                                                                                              club.id, club.category, club.latitude, club.longitude))
-                                                              .from(club)
-                                                              .where(clubWithinRange(upperLeftLatitude, upperLeftLongitude,
-                                                                                     bottomRightLatitude,
-                                                                                     bottomRightLongitude))
-                                                              .fetch();
+        List<SearchingWithinRangeClubResponse> result = queryFactory.select(Projections.constructor(
+                                                                            SearchingWithinRangeClubResponse.class,
+                                                                            club.id, club.category, club.latitude, club.longitude))
+                                                                    .from(club)
+                                                                    .where(clubWithinRange(upperLeftLatitude,
+                                                                                           upperLeftLongitude,
+                                                                                           bottomRightLatitude,
+                                                                                           bottomRightLongitude))
+                                                                    .fetch();
 
-        SearchingWithinRangeClubDto firstResult = result.get(0);
+        SearchingWithinRangeClubResponse firstResult = result.get(0);
         //then
 
         assertAll(
@@ -360,8 +343,8 @@ class ClubRepositoryImplTest {
         Double bottomRightLongitude = 126.980657;
 
         //when
-        List<SearchingWithinRangeClubDto> result = queryFactory.select(
-                                                                       Projections.constructor(SearchingWithinRangeClubDto.class,
+        List<SearchingWithinRangeClubResponse> result = queryFactory.select(
+                                                                       Projections.constructor(SearchingWithinRangeClubResponse.class,
                                                                                                club.id, club.category, club.latitude, club.longitude))
                                                                .from(club)
                                                                .where(clubWithinRange(upperLeftLatitude, upperLeftLongitude,
@@ -371,38 +354,6 @@ class ClubRepositoryImplTest {
 
         //then
         assertThat(result).isEmpty();
-    }
-
-    @Test
-    @DisplayName("모임 식별자 값이 주어질 경우 해당 모임의 간단한 정보를 조회할 수 있다")
-    void getSimpleClubById() throws Exception {
-        //given
-        long clubId = 1L;
-
-        Club savedClub = clubRepository.findById(clubId).get();
-
-        Double userLatitude = 37.528176;
-        Double userLongitude = 126.953678;
-
-        //when
-        SearchingSimpleClubResponse result = queryFactory.select(
-                                                                 Projections.constructor(
-                                                                         SearchingSimpleClubResponse.class, accountClub.club,
-                                                                         accountClub.club.accountClubs.size()))
-                                                         .from(accountClub)
-                                                         .join(accountClub.club, club)
-                                                         .join(accountClub.account, account)
-                                                         .where(isLeader(accountClub.leader))
-                                                         .where(clubIdEq(clubId))
-                                                         .fetchOne()
-                                                         .getDistanceBetweenAccountAndClub(
-                                                                 userLatitude, userLongitude);
-
-        //then
-        assertAll(
-                () ->assertEquals(savedClub.getLatitude(), result.getLatitude()),
-                () ->assertEquals(savedClub.getLongitude(), result.getLongitude())
-        );
     }
 
     private BooleanExpression clubWithinRange(Double upperLeftLatitude, Double upperLeftLongitude,
@@ -464,16 +415,12 @@ class ClubRepositoryImplTest {
         return club.accountClubs.size().between(min, max);
     }
 
-    private BooleanExpression clubPetTypeExist(EligibleBreed eligibleBreed) {
-        if (eligibleBreed == EligibleBreed.ALL) {
+    private BooleanExpression clubPetTypeExist(String eligibleBreed) {
+        if (eligibleBreed.equals("상관없음")) {
             return null;
         }
 
         return eligibleBreed == null ? null : club.eligibleBreeds.any().eq(eligibleBreed);
-    }
-
-    private BooleanExpression clubIdEq(Long clubId) {
-        return clubId == null ? null : club.id.eq(clubId);
     }
 }
 

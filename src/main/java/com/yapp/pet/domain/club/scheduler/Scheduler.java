@@ -1,6 +1,6 @@
 package com.yapp.pet.domain.club.scheduler;
 
-import com.yapp.pet.domain.club.ClubService;
+import com.yapp.pet.domain.club.ClubQueryService;
 import com.yapp.pet.domain.club.entity.ClubStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class Scheduler {
 
-    private final ClubService clubService;
+    private final ClubQueryService clubQueryService;
 
 //    @Scheduled(cron = "0 * * * * *")
     public void exceedClub() {
-        clubService.exceedTimeClub()
-                   .forEach(club -> {
+        clubQueryService.exceedTimeClub()
+                        .forEach(club -> {
                        club.updateStatus(ClubStatus.END);
                    });
     }
