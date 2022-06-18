@@ -38,9 +38,9 @@ public class S3Utils {
                 .build();
     }
 
-    public List<String> multiUploadToS3(List<MultipartFile> uploadFiles, String dirName) {
+    public List<String> multiUploadToS3(List<MultipartFile> uploadFiles, String filename, String dirname) {
         return uploadFiles.stream()
-                .map(file -> putS3(file, dirName))
+                .map(file -> putS3(file, filename, dirname))
                 .collect(Collectors.toList());
     }
 
@@ -48,12 +48,8 @@ public class S3Utils {
         amazonS3Client.deleteObject(s3Properties.getBucket(), accountImage.getS3Key());
     }
 
-    public String uploadToS3(MultipartFile uploadFile, String dirName) {
-        return putS3(uploadFile, dirName);
-    }
-
-    private String putS3(MultipartFile uploadFile, String dirName) {
-        String s3Key = createS3Key(uploadFile, dirName);
+    public String putS3(MultipartFile uploadFile, String filename, String dirname) {
+        String s3Key = createS3Key(filename, dirname);
 
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(MediaType.IMAGE_PNG_VALUE);
@@ -73,16 +69,16 @@ public class S3Utils {
                 .toString();
     }
 
-    public String createS3Key(MultipartFile uploadFile, String dirName){
+    public String createS3Key(String filename, String dirname){
         StringBuilder sb = new StringBuilder();
 
-        return sb.append(dirName)
+        return sb.append(dirname)
                 .append("/")
-                .append(createFileName(uploadFile.getOriginalFilename()))
+                .append(filename)
                 .toString();
     }
 
-    public String createFileName(String origFilename){
+    public String createFilename(String origFilename){
         StringBuilder sb = new StringBuilder();
 
         return sb.append(System.currentTimeMillis())
