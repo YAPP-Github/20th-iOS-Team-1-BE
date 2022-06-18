@@ -19,11 +19,15 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class MyPageResponse {
 
+    private boolean myPage = false;
+
     private AccountInfoResponse accountInfo;
 
     private List<PetInfoResponse> petInfos;
 
     public MyPageResponse(Account account, List<Pet> pets) {
+
+        this.myPage = false;
 
         this.accountInfo = new AccountInfoResponse(account);
 
