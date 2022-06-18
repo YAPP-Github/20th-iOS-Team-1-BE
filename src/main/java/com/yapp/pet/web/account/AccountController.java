@@ -55,12 +55,13 @@ public class AccountController {
     }
 
     @GetMapping("/accounts/my-page/{nickname}")
-    public ResponseEntity<MyPageResponse> myPage(@PathVariable("nickname") String nickname){
+    public ResponseEntity<MyPageResponse> myPage(@PathVariable("nickname") String nickname,
+                                                 @AuthAccount Account account){
 
         MyPageResponse response;
 
         try {
-            response = accountQueryService.getMyPageInfo(nickname);
+            response = accountQueryService.getMyPageInfo(account, nickname);
         } catch (Exception e) {
             e.printStackTrace();
             throw e;

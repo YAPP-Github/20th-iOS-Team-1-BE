@@ -122,4 +122,8 @@ public class Account extends BaseEntity {
         }
     }
 
+    public boolean isMe(Account account){
+        return this.nickname.equals(account.getNickname());
+    }
+
 }

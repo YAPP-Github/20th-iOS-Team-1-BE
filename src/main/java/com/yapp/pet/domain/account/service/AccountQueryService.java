@@ -23,13 +23,19 @@ public class AccountQueryService {
     private final AccountRepository accountRepository;
     private final PetRepository petRepository;
 
-    public MyPageResponse getMyPageInfo(String nickname) {
+    public MyPageResponse getMyPageInfo(Account account, String nickname) {
 
         Account findAccount = accountRepository.findByNickname(nickname).orElseThrow(AccountNotFoundException::new);
 
         List<Pet> findPets = petRepository.findPetsByAccountId(findAccount.getId());
 
-        return MyPageResponse.of(findAccount, findPets);
+        MyPageResponse response = MyPageResponse.of(findAccount, findPets);
+
+        if (account.isMe(findAccount)) {
+            response.setMyPage(true);
+        }
+
+        return response;
     }
 
     public AccountValidationResponse validateNickname(String nickname){

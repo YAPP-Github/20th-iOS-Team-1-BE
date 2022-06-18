@@ -54,7 +54,7 @@ paths:
       tags:
         - 계정 (Account)
       summary: 마이페이지 조회 API
-      description: 마이페이지 조회 시 요청 파라미터 닉네임 계정의 견주와 강아지 정보를 응답합니다. (타 계정의 마이페이지를 조회할 때는 수정버튼이 보이지 않아야 합니다.)
+      description: 마이페이지 조회 시 요청 파라미터 닉네임 계정의 견주와 강아지 정보를 응답합니다. (타 계정의 마이페이지를 조회할 때는, 즉 myPage 필드가 false인 경우 수정버튼이 보이지 않아야 합니다.)
       parameters:
         - in: path
           name: nickname
@@ -430,6 +430,10 @@ components:
     MyPageResponse:
       type: object
       properties:
+        myPage:
+          type: boolean
+          example: true
+          description: 현재 로그인한 계정의 마이페이지를 조회하는지 여부를 나타냅니다.(true 이면 본인의 마이페이지이므로 정보 수정 버튼이 보여야 합니다.)
         accountInfo:
           type: object
           properties:

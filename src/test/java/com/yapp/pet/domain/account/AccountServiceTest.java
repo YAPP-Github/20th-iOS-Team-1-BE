@@ -273,15 +273,48 @@ public class AccountServiceTest {
     }
 
     @Test
-    @DisplayName("마이페이지를 조회할 수 있다.")
+    @DisplayName("자신의 마이페이지를 조회할 수 있다.")
     void getMyPageInfo(){
         //when
-        MyPageResponse myPageInfo = accountQueryService.getMyPageInfo("재롱잔치");
+        MyPageResponse myPageInfo = accountQueryService.getMyPageInfo(accountWithTokenAndImage, "재롱잔치");
 
         AccountInfoResponse accountInfo = myPageInfo.getAccountInfo();
         List<PetInfoResponse> petInfos = myPageInfo.getPetInfos();
 
         //then
+        assertThat(myPageInfo.isMyPage()).isTrue();
+
+        assertThat(accountInfo.getNickname()).isEqualTo("재롱잔치");
+        assertThat(accountInfo.getAddress()).isEqualTo("인천광역시 남동구");
+        assertThat(accountInfo.getAge()).isEqualTo("10살");
+        assertThat(accountInfo.getSex()).isEqualTo(AccountSex.MAN);
+        assertThat(accountInfo.getSelfIntroduction()).isEqualTo("저는 재롱이 견주입니다.");
+        assertThat(accountInfo.getInterestCategories()).hasSize(3);
+        assertThat(accountInfo.getImageUrl()).isEqualTo("https://togaether.s3.ap-northeast-2.amazonaws.com/account/1655044614407_cat.jpg");
+
+        assertThat(petInfos).hasSize(2);
+        PetInfoResponse petInfo = petInfos.get(0);
+
+        assertThat(petInfo.getNickname()).isEqualTo("재롱이");
+        assertThat(petInfo.getBreed()).isEqualTo("말티즈");
+        assertThat(petInfo.getAge()).isEqualTo("5");
+        assertThat(petInfo.getSex()).isEqualTo(PetSex.MALE);
+        assertThat(petInfo.getTags()).hasSize(3);
+        assertThat(petInfo.getImageUrl()).isEqualTo("https://acjic.com");
+    }
+
+    @Test
+    @DisplayName("타 유저의 마이페이지를 조회할 수 있다.")
+    void getMyPageInfo2(){
+        //when
+        MyPageResponse myPageInfo = accountQueryService.getMyPageInfo(accountWithTokenWithoutImage, "재롱잔치");
+
+        AccountInfoResponse accountInfo = myPageInfo.getAccountInfo();
+        List<PetInfoResponse> petInfos = myPageInfo.getPetInfos();
+
+        //then
+        assertThat(myPageInfo.isMyPage()).isFalse();
+
         assertThat(accountInfo.getNickname()).isEqualTo("재롱잔치");
         assertThat(accountInfo.getAddress()).isEqualTo("인천광역시 남동구");
         assertThat(accountInfo.getAge()).isEqualTo("10살");
