@@ -1,7 +1,5 @@
 package com.yapp.pet.domain.pet_image;
 
-import com.yapp.pet.domain.account_image.AccountImage;
-import com.yapp.pet.domain.account_image.AccountImageService;
 import com.yapp.pet.global.util.s3.S3Utils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,9 +25,6 @@ class PetImageServiceTest {
 
     @Autowired
     PetImageService petImageService;
-
-    @Autowired
-    AccountImageService accountImageService;
 
     @Autowired
     S3Utils s3Utils;
@@ -71,22 +66,5 @@ class PetImageServiceTest {
 
         //then
         assertThat(s3Utils.getImagePath(petImage.getPath())).isNotNull();
-    }
-
-    @Test
-    @DisplayName("S3에서 이미지를 삭제할 수 있다")
-    void deletePetImage() throws Exception {
-        //given
-        List<MultipartFile> mockImageFiles = createMockImageFiles();
-
-        //when
-        MultipartFile multipartFile = mockImageFiles.get(0);
-
-        PetImage petImage = petImageService.create(multipartFile);
-
-        s3Utils.deleteToS3(petImage);
-
-        //then
-        assertThat(s3Utils.getImagePath(petImage.getPath())).isNull();
     }
 }
