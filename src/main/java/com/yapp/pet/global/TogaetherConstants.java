@@ -21,15 +21,22 @@ public final class TogaetherConstants {
             "/auth/apple/callback", "/auth/kakao/callback");
 
     public static final String KAKAO_CONTENT_TYPE = "application/x-www-form-urlencoded;charset=utf-8";
+
     public static final String GRANT_TYPE = "authorization_code";
+
     public static final String LOCAL_REDIRECT_URI = "http://localhost:8080/auth/kakao/callback";
+
     public static final String DEV_REDIRECT_URI = "https://yapp-togather.com:443/auth/kakao/callback";
 
     public static final String S3_ACCOUNT_DIR_NAME = "account";
+
+    public static final String S3_PET_DIR_NAME = "pet";
 
     public static final String ELIGIBLE_BREEDS_ALL = "상관없음";
 
     public static final double FEET_TO_METER = 1000;
 
     public static final int EARTH = 6371;
+
+    public static final int YEAR_TO_MONTH = 12;
 }
