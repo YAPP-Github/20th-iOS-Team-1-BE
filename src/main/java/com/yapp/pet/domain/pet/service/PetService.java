@@ -74,4 +74,15 @@ public class PetService {
 
         return new Age((currentYear - birthYear) + "살", birthYear, birthMonth);
     }
+
+    public void deletePetInfo(long petId) {
+        Pet savedPet = petRepository.findById(petId)
+                                    .orElseThrow(() -> new IllegalArgumentException("존재하는 펫이 없습니다"));
+
+        if (savedPet.getPetImage() != null) {
+            petImageService.delete(savedPet);
+        }
+
+        petRepository.delete(savedPet);
+    }
 }

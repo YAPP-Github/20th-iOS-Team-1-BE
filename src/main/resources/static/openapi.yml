@@ -357,16 +357,18 @@ paths:
 
     ############################################# Pet #############################################
   /api/pets:
-    post:
+    get:
       tags:
         - 강아지 (Pet)
-      summary: 강아지 추가 API
+      summary: FIN 클릭 시 간단한 모임 조회
+      description: 유저의 위도, 경도, 모임의 식별자 값을통해 모임의 간단한 정보를 조회합니다
       parameters:
         - name: request
           in: query
+          description: SearchingSimpleClubRequest
           required: true
           schema:
-            $ref: '#/components/schemas/PetRequest'
+            $ref: '#/components/schemas/SearchingSimpleClubRequest'
       responses:
         '200':
           description: OK
@@ -376,6 +378,25 @@ paths:
                 type: integer
                 description: 저장된 애완견 고유 식별자 값입니다.
                 example: 5
+        '401':
+          description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseInfo'
+  /api/pets/{pet-id}:
+    delete:
+      tags:
+        - 강아지 (Pet)
+      summary: 강아지 정보 삭제 API
+      description: 강아지의 식별값을 받아 강아지 정보를 삭제합니다.
+      parameters:
+        - name: pet-id
+          in: path
+          required: true
+      responses:
+        '200':
+          description: OK
         '401':
           description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
           content:

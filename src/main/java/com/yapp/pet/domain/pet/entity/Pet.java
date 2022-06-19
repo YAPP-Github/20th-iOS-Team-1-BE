@@ -35,7 +35,7 @@ public class Pet extends BaseEntity {
     @JoinColumn(name = "pet_image_id")
     private PetImage petImage;
 
-    @OneToMany(mappedBy = "pet", fetch = LAZY)
+    @OneToMany(mappedBy = "pet", fetch = LAZY, cascade = CascadeType.REMOVE)
     private List<PetTag> tags = new ArrayList<>();
 
     private String breed;
