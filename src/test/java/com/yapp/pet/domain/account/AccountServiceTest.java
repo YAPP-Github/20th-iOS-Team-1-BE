@@ -322,10 +322,8 @@ public class AccountServiceTest {
         assertThat(accountInfo.getSelfIntroduction()).isEqualTo("저는 재롱이 견주입니다.");
         assertThat(accountInfo.getInterestCategories()).hasSize(3);
         assertThat(accountInfo.getImageUrl()).isEqualTo("https://togaether.s3.ap-northeast-2.amazonaws.com/account/1655044614407_cat.jpg");
-
         assertThat(petInfos).hasSize(2);
         PetInfoResponse petInfo = petInfos.get(0);
-
         assertThat(petInfo.getNickname()).isEqualTo("재롱이");
         assertThat(petInfo.getBreed()).isEqualTo("말티즈");
         assertThat(petInfo.getAge()).isEqualTo("5");

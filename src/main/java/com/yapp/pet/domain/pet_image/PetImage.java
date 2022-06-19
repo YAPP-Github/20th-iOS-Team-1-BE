@@ -25,12 +25,16 @@ public class PetImage extends BaseEntity {
     private String name;
 
     @Column(nullable = false)
+    private String s3Key;
+
+    @Column(nullable = false)
     private String path;
 
     @Builder
-    public PetImage(String originName, String name, String path) {
+    public PetImage(String originName, String name, String s3Key, String path) {
         this.originName = originName;
         this.name = name;
+        this.s3Key = s3Key;
         this.path = path;
     }
 }

@@ -9,6 +9,7 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.yapp.pet.domain.account_image.AccountImage;
+import com.yapp.pet.domain.pet_image.PetImage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -33,19 +34,23 @@ public class S3Utils {
                 = new BasicAWSCredentials(s3Properties.getAccessKey(), s3Properties.getSecretKey());
 
         amazonS3Client = AmazonS3ClientBuilder.standard()
-                .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                .withRegion(s3Properties.getRegion())
-                .build();
+                                              .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                                              .withRegion(s3Properties.getRegion())
+                                              .build();
     }
 
     public List<String> multiUploadToS3(List<MultipartFile> uploadFiles, String filename, String dirname) {
         return uploadFiles.stream()
-                .map(file -> putS3(file, filename, dirname))
-                .collect(Collectors.toList());
+                          .map(file -> putS3(file, filename, dirname))
+                          .collect(Collectors.toList());
     }
 
     public void deleteToS3(AccountImage accountImage){
         amazonS3Client.deleteObject(s3Properties.getBucket(), accountImage.getS3Key());
+    }
+
+    public void deleteToS3(PetImage petImage) {
+        amazonS3Client.deleteObject(s3Properties.getBucket(), petImage.getS3Key());
     }
 
     public String putS3(MultipartFile uploadFile, String filename, String dirname) {
@@ -73,18 +78,22 @@ public class S3Utils {
         StringBuilder sb = new StringBuilder();
 
         return sb.append(dirname)
-                .append("/")
-                .append(filename)
-                .toString();
+                 .append("/")
+                 .append(filename)
+                 .toString();
     }
 
     public String createFilename(String origFilename){
         StringBuilder sb = new StringBuilder();
 
         return sb.append(System.currentTimeMillis())
-                .append("_")
-                .append(origFilename)
-                .toString();
+                 .append("_")
+                 .append(origFilename)
+                 .toString();
+    }
+
+    public String getImagePath(String path) {
+        return amazonS3Client.getUrl(s3Properties.getBucket(), path).toString();
     }
 
 }
