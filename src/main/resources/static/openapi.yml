@@ -347,6 +347,34 @@ paths:
               schema:
                 $ref: '#/components/schemas/ExceptionResponseInfo'
 
+    ############################################# Pet #############################################
+  /api/pets:
+    post:
+      tags:
+        - 강아지 (Pet)
+      summary: 강아지 추가 API
+      parameters:
+        - name: request
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/PetRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+                description: 저장된 애완견 고유 식별자 값입니다.
+                example: 5
+        '401':
+          description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseInfo'
+
 
 components:
   schemas:
@@ -713,3 +741,49 @@ components:
           enum:
             - AVAILABLE
             - END
+
+    ############################################# Pet #############################################
+
+    PetRequest:
+      type: object
+      properties:
+        name:
+          title: 강아지 이름
+          type: string
+          example: 철수
+        year:
+          title: 강아지 태어난 년도
+          type: integer
+          example: "2022"
+        month:
+          title: 강아지 태어난 달
+          type: integer
+          example: "7"
+        breed:
+          title: 견종
+          type: string
+        sex:
+          type: string
+          enum:
+            - MALE
+            - FEMALE
+        neutering:
+          title: 중성화 여부
+          type: boolean
+        sizeType:
+          type: string
+          enum:
+            - LARGE
+            - MEDIUM
+            - SMALL
+        tags:
+          type: array
+          description: 강아지 성격
+          items:
+            type: string
+          example:
+            - 활발
+            - 사나움
+        imageFile:
+          type: object
+          description: 이미지 파일
