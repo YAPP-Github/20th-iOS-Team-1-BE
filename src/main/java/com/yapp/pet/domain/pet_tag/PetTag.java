@@ -35,10 +35,4 @@ public class PetTag extends BaseEntity {
     public static PetTag of(Pet pet, String name) {
         return new PetTag(pet, name);
     }
-
-    public void addTags(Pet pet) {
-        pet.getTags().add(this);
-        this.pet = pet;
-    }
-
 }

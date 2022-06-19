@@ -68,4 +68,8 @@ public class Pet extends BaseEntity {
         this.neutering = neutering;
         this.sizeType = sizeType;
     }
+
+    public void addTag(PetTag petTag) {
+        tags.add(petTag);
+    }
 }

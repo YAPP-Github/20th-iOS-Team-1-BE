@@ -16,8 +16,9 @@ public class PetTagService {
 
     public PetTag createPetTag(Pet pet, String name) {
         log.info("petTag name = {}", name);
+
         PetTag petTag = PetTag.of(pet, name);
-        petTag.addTags(pet);
+        pet.addTag(petTag);
 
         return petTagRepository.save(petTag);
     }
