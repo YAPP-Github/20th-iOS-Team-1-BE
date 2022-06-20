@@ -7,6 +7,7 @@ import com.yapp.pet.domain.pet.repository.PetRepository;
 import com.yapp.pet.domain.pet_image.PetImage;
 import com.yapp.pet.domain.pet_image.PetImageService;
 import com.yapp.pet.domain.pet_tag.PetTagService;
+import com.yapp.pet.global.mapper.PetMapper;
 import com.yapp.pet.web.pet.model.PetRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 import static com.yapp.pet.global.TogaetherConstants.YEAR_TO_MONTH;
 
@@ -29,6 +31,8 @@ public class PetService {
     private final PetImageService petImageService;
 
     private final PetTagService petTagService;
+
+    private final PetMapper petMapper;
 
     public long addPet(Account account, PetRequest petRequest) {
 
@@ -84,5 +88,36 @@ public class PetService {
         }
 
         petRepository.delete(savedPet);
+    }
+
+    public void updatePetInfo(long petId, PetRequest request) {
+        Pet savedPet = petRepository.findById(petId)
+                                    .orElseThrow(() -> new IllegalArgumentException("존재하는 펫이 없습니다"));
+
+        PetImage petImage = savedPet.getPetImage();
+        MultipartFile imageFile = request.getImageFile();
+
+        if (hasImageFile(imageFile)) {
+            PetImage createdPetImage = petImageService.create(imageFile);
+            savedPet.addImage(createdPetImage);
+        }
+
+        updateTags(savedPet, request.getTags());
+
+        Pet updatePet = petMapper.toEntity(request);
+
+        log.info("age = {}", updatePet.getAge());
+        log.info("sex = {}", updatePet.getSex());
+        log.info("sizeType = {}", updatePet.getSizeType());
+        log.info("petImage = {}", updatePet.getPetImage());
+
+        updatePet.updateAge(calculateAge(updatePet.getAge().getBirthYear(), updatePet.getAge().getBirthMonth()));
+
+        savedPet.update(updatePet);
+    }
+
+    private void updateTags(Pet pet, List<String> tags) {
+        pet.getTags().clear();
+        tags.forEach(tag -> petTagService.createPetTag(pet, tag));
     }
 }
