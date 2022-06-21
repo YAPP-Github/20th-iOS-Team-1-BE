@@ -31,11 +31,11 @@ public class Pet extends BaseEntity {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @OneToOne(fetch = LAZY, cascade = CascadeType.REMOVE)
+    @OneToOne(fetch = LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "pet_image_id")
     private PetImage petImage;
 
-    @OneToMany(mappedBy = "pet", fetch = LAZY)
+    @OneToMany(mappedBy = "pet", fetch = LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PetTag> tags = new ArrayList<>();
 
     private String breed;
@@ -69,7 +69,25 @@ public class Pet extends BaseEntity {
         this.sizeType = sizeType;
     }
 
+    public void update(Pet updatePet) {
+        name = updatePet.getName();
+        age = updatePet.getAge();
+        breed = updatePet.getBreed();
+        sex = updatePet.getSex();
+        neutering = updatePet.isNeutering();
+        sizeType = updatePet.getSizeType();
+    }
+
     public void addTag(PetTag petTag) {
         tags.add(petTag);
     }
+
+    public void addImage(PetImage petImage) {
+        this.petImage = petImage;
+    }
+
+    public void updateAge(Age age) {
+        this.age = age;
+    }
+
 }
