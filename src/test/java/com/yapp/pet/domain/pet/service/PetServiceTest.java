@@ -6,6 +6,7 @@ import com.yapp.pet.domain.common.PetSizeType;
 import com.yapp.pet.domain.pet.entity.Pet;
 import com.yapp.pet.domain.pet.entity.PetSex;
 import com.yapp.pet.domain.pet.repository.PetRepository;
+import com.yapp.pet.domain.pet_tag.PetTagRepository;
 import com.yapp.pet.web.pet.model.PetRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,6 +38,9 @@ class PetServiceTest {
 
     @Autowired
     PetService petService;
+
+    @Autowired
+    PetTagRepository petTagRepository;
 
     @Test
     @DisplayName("account에 자신의 Pet을 저장할 수 있다 - 이미지 없는 경우")
@@ -117,5 +121,30 @@ class PetServiceTest {
         assertThat(savedPet.getAccount()).isEqualTo(account);
         assertThat(savedPet.getTags().size()).isEqualTo(2);
         assertThat(savedPet.getPetImage()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Pet 정보 삭제 시 PetTag도 같이 삭제 된다")
+    void deletePetInfoWithPetTag() throws Exception {
+        //given
+        Account account = accountRepository.findById(1L).get();
+        PetRequest petRequest = new PetRequest();
+        petRequest.setName("name");
+        petRequest.setYear(2021);
+        petRequest.setMonth(8);
+        petRequest.setBreed("말티즈");
+        petRequest.setSex(PetSex.MALE);
+        petRequest.setNeutering(true);
+        petRequest.setSizeType(PetSizeType.MEDIUM);
+        petRequest.setTags(List.of("활발", "사나움"));
+        petRequest.setImageFile(createMockImageFiles().get(0));
+
+        long savedId = petService.addPet(account, petRequest);
+
+        //when
+        petService.deletePetInfo(savedId);
+
+        //then
+        assertThat(petTagRepository.findAll().size()).isEqualTo(5);
     }
 }
