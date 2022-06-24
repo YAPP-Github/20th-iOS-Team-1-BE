@@ -53,10 +53,11 @@ public class PetService {
                        .sizeType(petRequest.getSizeType())
                        .build();
 
-        petRequest.getTags()
-                  .forEach(tag -> petTagService.createPetTag(pet, tag));
 
         petRepository.save(pet);
+
+        petRequest.getTags()
+                  .forEach(tag -> petTagService.createPetTag(pet, tag));
 
         return pet.getId();
     }
