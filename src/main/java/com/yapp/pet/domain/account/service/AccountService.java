@@ -38,6 +38,7 @@ public class AccountService {
     private final TokenRepository tokenRepository;
 
     public SignInResponse signIn(String idToken, Social social) {
+        log.info("로직 시작");
         SignInResponse signInResponse = new SignInResponse();
 
         String uniqueIdBySocial = jwtService.getSubject(idToken);

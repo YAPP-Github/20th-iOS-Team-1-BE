@@ -5,7 +5,9 @@ env:
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - master
+      - fix/82-apple_login_이슈_해결
 
   workflow_dispatch:
     inputs:
