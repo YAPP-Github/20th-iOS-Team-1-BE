@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import javax.persistence.EntityNotFoundException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
@@ -43,20 +44,25 @@ public class ExceptionResponse {
 		String field = Arrays.stream(Objects.requireNonNull(ex.getTargetType().getFields()))
 				.map(Field::getName)
 				.collect(Collectors.joining(", "));
+
 		String getTargetType = ex.getTargetType().toString();
+
 		List<ExceptionDetailResponse> errors = null;
+
 		if (ex.getPath().size() != 0) {
 			errors = ExceptionDetailResponse.of(
 					"지원 Enum = " + field,
 					ex.getValue().toString(),
 					"지원하지 않는 Enum 입니다.");
 		}
+
 		if (ex.getPath().size() == 0) {
 			errors = ExceptionDetailResponse.of(
 					ex.getPath().size() == 0 ? "지원 Enum = " + field : ex.getPath().get(0).getFieldName(),
 					ex.getValue().toString(),
 					getTargetType.contains("$") ? getTargetType.substring('$' + 1) : getTargetType);
 		}
+
 		return new ExceptionResponse(ExceptionStatus.INVALID_FORMAT_EXCEPTION, errors);
 	}
 
@@ -64,10 +70,23 @@ public class ExceptionResponse {
 		String supportedMethods = Arrays.stream(Objects.requireNonNull(ex.getSupportedMethods()))
 				.map(String::toString)
 				.collect(Collectors.joining(", "));
+
 		List<ExceptionDetailResponse> details = ExceptionDetailResponse.of(ex.getLocalizedMessage(),
 				"입력한 HTTP Method = " + ex.getMethod(),
 				"지원 가능한 HTTP Method = " + supportedMethods);
+
 		return new ExceptionResponse(ExceptionStatus.METHOD_NOT_SUPPORT_EXCEPTION, details);
+	}
+
+	public static ExceptionResponse of(EntityNotFoundException ex){
+
+		List<ExceptionDetailResponse> errors = ExceptionDetailResponse.of(
+				ex.getLocalizedMessage(),
+				"",
+				"해당 엔티티를 찾을 수 없음"
+		);
+
+		return new ExceptionResponse(ExceptionStatus.ENTITY_NOT_FOUND_EXCEPTION, errors);
 	}
 
 }

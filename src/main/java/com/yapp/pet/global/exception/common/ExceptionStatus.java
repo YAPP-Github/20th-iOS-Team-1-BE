@@ -10,9 +10,6 @@ import static org.springframework.http.HttpStatus.*;
 @RequiredArgsConstructor
 public enum ExceptionStatus{
 
-	// Account, 4000
-	ACCOUNT_NOT_FOUND_EXCEPTION(4001, "유저가 존재하지 않습니다.", NOT_FOUND),
-
 	// Common
 	RUN_TIME_EXCEPTION(500, "런타임 에러", INTERNAL_SERVER_ERROR),
 	NOT_FOUND_EXCEPTION(404, "요청한 리소스가 존재하지 않습니다.", NOT_FOUND),
@@ -20,6 +17,7 @@ public enum ExceptionStatus{
 	INVALID_FORMAT_EXCEPTION(400, "유효하지 않는 Type 입니다. Type을 확인 해주세요.", BAD_REQUEST),
 	INVALID_INPUT_VALUE_EXCEPTION(400, "유효하지 않는 입력 값입니다.", BAD_REQUEST),
 	METHOD_NOT_SUPPORT_EXCEPTION(405, "지원하지 않은 HTTP Method 입니다.", METHOD_NOT_ALLOWED),
+	ENTITY_NOT_FOUND_EXCEPTION(500, "해당 엔티티가 존재하지 않습니다.", INTERNAL_SERVER_ERROR),
 
 	//JWT
 	AUTHORITY_INFO_NOT_FOUND_EXCEPTION(403, "권한 정보가 없는 토큰입니다.", FORBIDDEN),

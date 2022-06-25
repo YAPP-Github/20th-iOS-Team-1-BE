@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import javax.persistence.EntityNotFoundException;
+
 @Slf4j
 @RestControllerAdvice
 public class ExceptionHandlerController {
@@ -70,6 +72,12 @@ public class ExceptionHandlerController {
         HttpStatus httpStatus = exception.getHttpStatus();
         errorLogging(exception);
         return new ResponseEntity<>(response, httpStatus);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    private ExceptionResponse handleEntityNotFoundException(EntityNotFoundException exception){
+        errorLogging(exception);
+        return ExceptionResponse.of(exception);
     }
 
     /**
