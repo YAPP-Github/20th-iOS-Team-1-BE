@@ -53,7 +53,7 @@ public class Account extends BaseEntity {
     @Embedded
     private Address address;
 
-    @Column(length = 200)
+    @Column(length = 60)
     private String selfIntroduction;
 
     @Builder
