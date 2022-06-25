@@ -16,6 +16,10 @@ tags:
     description: 모임 관련 API를 제공합니다.
   - name: 토큰 (Token)
     description: 토큰 관련 API를 제공합니다.
+  - name: 강아지 (Pet)
+    description: 강아지 정보 관련 API를 제공합니다.
+  - name: 댓글 (Comment)
+    description: 댓글 관련 API를 제공합니다.
 
 paths:
 
@@ -357,18 +361,17 @@ paths:
 
     ############################################# Pet #############################################
   /api/pets:
-    get:
+    post:
       tags:
         - 강아지 (Pet)
-      summary: FIN 클릭 시 간단한 모임 조회
-      description: 유저의 위도, 경도, 모임의 식별자 값을통해 모임의 간단한 정보를 조회합니다
+      summary: 강아지 정보 추가
       parameters:
         - name: request
           in: query
-          description: SearchingSimpleClubRequest
+          description: PetRequest
           required: true
           schema:
-            $ref: '#/components/schemas/SearchingSimpleClubRequest'
+            $ref: '#/components/schemas/PetRequest'
       responses:
         '200':
           description: OK
@@ -421,6 +424,35 @@ paths:
       responses:
         '200':
           description: OK
+        '401':
+          description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseInfo'
+
+  ############################################# Comment #############################################
+
+  /api/comments:
+    post:
+      tags:
+        - 댓글 (Comment)
+      summary: 댓글 생성 API
+      parameters:
+        - name: commentRequest
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/CommentRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+                description: 저장된 댓글 고유 식별자 값입니다.
+                example: 5
         '401':
           description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
           content:
@@ -844,3 +876,16 @@ components:
         imageFile:
           type: object
           description: 이미지 파일
+
+  ############################################# Comment #############################################
+    CommentRequest:
+      type: object
+      properties:
+        clubId:
+          title: 댓글을 처리할 모임의 식별값
+          type: integer
+          example: 5
+        content:
+          title: 댓글 내용
+          type: string
+          example: "댓글을 입력"
