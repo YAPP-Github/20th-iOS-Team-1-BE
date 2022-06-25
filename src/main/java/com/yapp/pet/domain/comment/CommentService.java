@@ -16,6 +16,7 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final ClubQueryService clubQueryService;
+    private final CommentQueryService commentQueryService;
 
     public long addComment(Account account, CommentRequest commentRequest) {
 
@@ -25,5 +26,15 @@ public class CommentService {
         commentRepository.save(comment);
 
         return comment.getId();
+    }
+
+    public void deleteComment(Account account, long commentId) {
+        Comment savedComment = commentQueryService.findCommentById(commentId);
+
+        if (!account.isMe(savedComment.getAccount())) {
+            throw new IllegalArgumentException("당사자만 지울 수 있다");
+        }
+
+        commentRepository.delete(savedComment);
     }
 }
