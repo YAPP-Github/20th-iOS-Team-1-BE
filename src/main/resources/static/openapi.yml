@@ -355,6 +355,41 @@ paths:
               schema:
                 $ref: '#/components/schemas/ExceptionResponseInfo'
 
+  /api/clubs:
+    get:
+      tags:
+        - 모임 (Club)
+      summary: 모임 목록 조회 API
+      description: 참여중인 모임, 본인이 방장인 모임, 본인이 참여했으며 종료된 모임을 조건에 따라 조회합니다.
+      parameters:
+        - name: cursor-id
+          in: query
+          description: 모임 목록 화면에서 마지막 모임 id값에 해당합니다. (화면 기준 가장 아래 위치한 모임)
+          required: false
+          schema:
+            type: integer
+          example: 10
+        - name: condition
+          in: query
+          description: 설명에 명시한 조회 조건입니다. (I_AM_PARTICIPATING , I_AM_LEADER, I_AM_PARTICIPATED_AND_EXCEED)
+          required: false
+          schema:
+            type: string
+          example: I_AM_PARTICIPATING
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClubFindResponse'
+        '401':
+          description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseInfo'
+
     ############################################# Pet #############################################
   /api/pets:
     get:
@@ -798,6 +833,48 @@ components:
           enum:
             - AVAILABLE
             - END
+
+    ClubFindResponse:
+      type: object
+      properties:
+        hasNotClub:
+          type: boolean
+          example: true
+          description: 더 이상 조회할 모임이 없을 때 true를 리턴합니다.(마지막 목록 화면에서 아래로 스크롤을 했을 때)
+        clubInfos:
+          type: array
+          items:
+            type: object
+          example:
+            - clubId: 1
+              title: 산책하실분~
+              category: WALK
+              meetingPlace: 서울 한강공원
+              startDate: 2022-06-25T15:46:08.962Z
+              endDate: 2022-06-25T15:46:08.962Z
+              eligibleBreeds:
+                - 말티즈
+                - 리트리버
+                - 불독
+              eligiblePetSizeTypes:
+                - MEDIUM
+                - SMALL
+              eligibleSex: ALL
+              maximumPeople: 5
+              participants: 2
+            - clubId: 2
+              title: 박람회 모임 모집
+              category: EXPOSITION
+              meetingPlace: 서울 한강공원
+              startDate: 2022-06-25T15:46:08.962Z
+              endDate: 2022-06-25T15:46:08.962Z
+              eligibleBreeds:
+              eligiblePetSizeTypes:
+                - SMALL
+              eligibleSex: WOMAN
+              maximumPeople: 4
+              participants: 1
+
 
     ############################################# Pet #############################################
 
