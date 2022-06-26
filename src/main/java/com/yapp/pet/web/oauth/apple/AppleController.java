@@ -5,6 +5,7 @@ import com.yapp.pet.domain.token.entity.Social;
 import com.yapp.pet.web.oauth.apple.model.AppleRequest;
 import com.yapp.pet.web.oauth.apple.model.SignInResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class AppleController {
 
     private final AccountService accountService;
@@ -20,6 +22,8 @@ public class AppleController {
     public ResponseEntity<SignInResponse> appleLogin(@RequestBody AppleRequest appleRequest){
 
         SignInResponse signInResponse;
+
+        log.info("id_token {}", appleRequest.getIdToken());
 
         try {
             signInResponse = accountService.signIn(appleRequest.getIdToken(), Social.APPLE);
