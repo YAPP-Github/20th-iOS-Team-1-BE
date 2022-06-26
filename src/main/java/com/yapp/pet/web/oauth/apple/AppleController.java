@@ -23,8 +23,6 @@ public class AppleController {
 
         SignInResponse signInResponse;
 
-        log.info("id_token {}", appleRequest.getIdToken());
-
         try {
             signInResponse = accountService.signIn(appleRequest.getIdToken(), Social.APPLE);
         } catch (Exception e) {

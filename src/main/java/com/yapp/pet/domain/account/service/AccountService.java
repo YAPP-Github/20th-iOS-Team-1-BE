@@ -40,7 +40,13 @@ public class AccountService {
     public SignInResponse signIn(String idToken, Social social) {
         SignInResponse signInResponse = new SignInResponse();
 
-        String uniqueIdBySocial = jwtService.getSubject(idToken);
+        String uniqueIdBySocial;
+
+        if (social.equals(Social.APPLE)) {
+            uniqueIdBySocial = jwtService.getSubjectByAppleToken(idToken);
+        } else {
+            uniqueIdBySocial = jwtService.getSubject(idToken);
+        }
 
         String createAccessToken = jwtService.createAccessToken(uniqueIdBySocial);
         String createRefreshToken = jwtService.createRefreshToken(uniqueIdBySocial);
