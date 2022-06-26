@@ -4,7 +4,6 @@ import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.account.repository.AccountRepository;
 import com.yapp.pet.domain.pet.entity.Pet;
 import com.yapp.pet.domain.pet.repository.PetRepository;
-import com.yapp.pet.global.exception.account.AccountNotFoundException;
 import com.yapp.pet.web.account.model.AccountValidationResponse;
 import com.yapp.pet.web.account.model.MyPageResponse;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Slf4j
@@ -25,7 +25,7 @@ public class AccountQueryService {
 
     public MyPageResponse getMyPageInfo(Account account, String nickname) {
 
-        Account findAccount = accountRepository.findByNickname(nickname).orElseThrow(AccountNotFoundException::new);
+        Account findAccount = accountRepository.findByNickname(nickname).orElseThrow(EntityNotFoundException::new);
 
         List<Pet> findPets = petRepository.findPetsByAccountId(findAccount.getId());
 

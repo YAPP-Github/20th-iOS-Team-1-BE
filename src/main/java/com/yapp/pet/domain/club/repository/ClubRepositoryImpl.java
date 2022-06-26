@@ -6,24 +6,31 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.BooleanPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.accountclub.AccountClub;
-import com.yapp.pet.domain.common.Category;
 import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.club.entity.ClubStatus;
 import com.yapp.pet.domain.club.entity.EligibleSex;
+import com.yapp.pet.domain.common.Category;
 import com.yapp.pet.domain.common.PetSizeType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.yapp.pet.domain.account.entity.QAccount.account;
 import static com.yapp.pet.domain.accountclub.QAccountClub.accountClub;
 import static com.yapp.pet.domain.club.entity.QClub.club;
+import static com.yapp.pet.domain.club.repository.ClubFindCondition.*;
 import static com.yapp.pet.global.TogaetherConstants.ELIGIBLE_BREEDS_ALL;
 import static com.yapp.pet.web.club.model.SearchingClubDto.SearchingRequest;
-import static com.yapp.pet.web.club.model.SearchingWithinRangeClubDto.*;
+import static com.yapp.pet.web.club.model.SearchingWithinRangeClubDto.SearchingWithinRangeClubRequest;
+import static com.yapp.pet.web.club.model.SearchingWithinRangeClubDto.SearchingWithinRangeClubResponse;
 
 @RequiredArgsConstructor
 public class ClubRepositoryImpl implements ClubRepositoryCustom{
@@ -97,6 +104,31 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
                            .fetch();
     }
 
+    @Override
+    public Page<Club> findClubsByCondition(Long cursorId, ClubFindCondition condition, Account loginAccount,
+                                           Pageable pageable) {
+
+        List<AccountClub> findAccountClubs = queryFactory.selectFrom(accountClub)
+                .innerJoin(accountClub.account, account).fetchJoin()
+                .innerJoin(accountClub.club, club).fetchJoin()
+                .leftJoin(club.eligibleBreeds).fetchJoin()
+                .innerJoin(club.eligiblePetSizeTypes).fetchJoin()
+                .where(
+                        cursorId(cursorId),
+                        isParticipating(condition, loginAccount),
+                        isLeader(condition, loginAccount),
+                        isParticipatedAndExceed(condition, loginAccount)
+                )
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        List<Club> findClubs = findAccountClubs.stream()
+                .map(AccountClub::getClub)
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(findClubs, pageable, findClubs.size());
+    }
+
     private BooleanExpression clubNameContains(String searchingWord) {
         return StringUtils.hasText(searchingWord) ? club.title.contains(searchingWord) : null;
     }
@@ -162,5 +194,37 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
 
         return club.latitude.between(bottomRightLatitude, upperLeftLatitude)
                             .and(club.longitude.between(upperLeftLongitude, bottomRightLongitude));
+    }
+
+    private BooleanExpression cursorId(Long cursorId){
+        return cursorId == null ? null : club.id.gt(cursorId);
+    }
+
+    private BooleanExpression isParticipating(ClubFindCondition condition, Account account){
+        if (condition == null || !condition.equals(I_AM_PARTICIPATING)) {
+            return null;
+        }
+
+        return accountClub.account.eq(account)
+                                  .and(accountClub.club.status.ne(ClubStatus.END));
+    }
+
+    private BooleanExpression isLeader(ClubFindCondition condition, Account account){
+        if (condition == null || !condition.equals(I_AM_LEADER)) {
+            return null;
+        }
+
+        return accountClub.account.eq(account)
+                                  .and(accountClub.leader.isTrue())
+                                  .and(accountClub.club.status.ne(ClubStatus.END));
+    }
+
+    private BooleanExpression isParticipatedAndExceed(ClubFindCondition condition, Account account){
+        if (condition == null || !condition.equals(I_AM_PARTICIPATED_AND_EXCEED)) {
+            return null;
+        }
+
+        return accountClub.account.eq(account)
+                                  .and(accountClub.club.status.eq(ClubStatus.END));
     }
 }

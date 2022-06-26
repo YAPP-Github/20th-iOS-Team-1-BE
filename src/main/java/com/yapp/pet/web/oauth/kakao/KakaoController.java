@@ -8,7 +8,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.persistence.EntityNotFoundException;
 
 import static com.yapp.pet.global.TogaetherConstants.*;
 
@@ -27,7 +30,7 @@ public class KakaoController {
     private String clientSecret;
 
     @GetMapping("/auth/kakao/callback")
-    public ResponseEntity<SignInResponse> callbackOfKakao(String code){
+    public ResponseEntity<SignInResponse> callbackOfKakao(@RequestParam String code){
         SignInResponse signInResponse;
 
         KakaoTokenResponse kakaoTokenResponse
@@ -42,6 +45,11 @@ public class KakaoController {
         }
 
         return ResponseEntity.ok(signInResponse);
+    }
+
+    @GetMapping("/test")
+    public void test(){
+        throw new EntityNotFoundException();
     }
 
 }

@@ -19,6 +19,7 @@ spring:
     database: mysql
     properties:
       hibernate:
+        default_batch_fetch_size: 1000
         dialect: org.hibernate.dialect.MySQL57Dialect
         naming:
           physical-strategy: org.hibernate.boot.model.naming.MySQL5InnoDBDialect

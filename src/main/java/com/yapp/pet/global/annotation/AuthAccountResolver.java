@@ -3,7 +3,6 @@ package com.yapp.pet.global.annotation;
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.token.entity.Token;
 import com.yapp.pet.domain.token.repository.TokenRepository;
-import com.yapp.pet.global.exception.account.AccountNotFoundException;
 import com.yapp.pet.global.jwt.JwtService;
 import com.yapp.pet.global.util.JwtUtils;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +13,8 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+
+import javax.persistence.EntityNotFoundException;
 
 @Component
 @RequiredArgsConstructor
@@ -37,7 +38,7 @@ public class AuthAccountResolver implements HandlerMethodArgumentResolver {
 
         String jwt = JwtUtils.resolveTokenByWebRequest(webRequest);
         String sub = jwtService.getSubject(jwt);
-        Token token = tokenRepository.findByUniqueIdBySocial(sub).orElseThrow(AccountNotFoundException::new);
+        Token token = tokenRepository.findByUniqueIdBySocial(sub).orElseThrow(EntityNotFoundException::new);
 
         return token.getAccount();
     }

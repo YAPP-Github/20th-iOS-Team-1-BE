@@ -67,16 +67,39 @@ values ('DOG_CAFE', 'description', 'WOMAN', '2022-02-05', 37.506706, 126.961290,
 insert into club (category, description, eligible_sex, end_date, latitude, longitude, maximum_people, meeting_place, start_date, status, title)
 values ('PLAY_GROUND', 'description', 'ALL', '2022-01-05', 37.510033, 126.981571, 3, 'ㅁㄴㅇ', '2022-01-01', 'AVAILABLE', '코코랑 산책');
 
+insert into club (category, description, eligible_sex, end_date, latitude, longitude, maximum_people, meeting_place, start_date, status, title)
+values ('PLAY_GROUND', 'description', 'ALL', '2022-07-01', 37.510033, 126.981571, 3, 'ㅁㄴㅇ', '2022-06-01', 'AVAILABLE', '모임ㅁㅁㅁ');
+
+insert into club (category, description, eligible_sex, end_date, latitude, longitude, maximum_people, meeting_place, start_date, status, title)
+values ('PLAY_GROUND', 'description', 'ALL', '2022-08-05', 37.510033, 126.981571, 10, 'ㅁㄴㅇ', '2022-05-01', 'AVAILABLE', '박람회 가실 분');
+
+insert into club (category, description, eligible_sex, end_date, latitude, longitude, maximum_people, meeting_place, start_date, status, title)
+values ('PLAY_GROUND', 'description', 'ALL', '2022-09-05', 37.510033, 126.981571, 5, 'ㅁㄴㅇ', '2022-04-01', 'END', '재롱이 구경하실 분들');
+
+insert into club (category, description, eligible_sex, end_date, latitude, longitude, maximum_people, meeting_place, start_date, status, title)
+values ('PLAY_GROUND', 'description', 'ALL', '2022-10-05', 37.510033, 126.981571, 6, 'ㅁㄴㅇ', '2022-03-01', 'END', '수다');
+
+-- 1번 account는 6개의 club(1,4,5,6,7,8)의 방장임 / 6,7,8 club은 종료된 모임
 insert into account_club (leader, account_id, club_id) values (true, 1, 1);
 insert into account_club (leader, account_id, club_id) values (false , 2, 1);
 insert into account_club (leader, account_id, club_id) values (true, 3, 2);
 insert into account_club (leader, account_id, club_id) values (true, 4, 3);
+insert into account_club (leader, account_id, club_id) values (true, 1, 4);
+insert into account_club (leader, account_id, club_id) values (true, 1, 5);
+insert into account_club (leader, account_id, club_id) values (true, 1, 6);
+insert into account_club (leader, account_id, club_id) values (true, 1, 7);
 
 insert into eligible_pet_breeds (club_id, eligible_breeds) values (1, '말티즈');
 insert into eligible_pet_breeds (club_id, eligible_breeds) values (1, '리트리버');
 
 insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (1, 'LARGE');
 insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (1, 'MEDIUM');
+insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (4, 'SMALL');
+insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (5, 'LARGE');
+insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (5, 'MEDIUM');
+insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (5, 'SMALL');
+insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (6, 'SMALL');
+insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (7, 'SMALL');
 
 insert into pet_image (name, origin_name, path, s3Key) values ('90419_펫이미지1', '펫이미지1', 'https://acjic.com', '디렉터리4+파일명4');
 
