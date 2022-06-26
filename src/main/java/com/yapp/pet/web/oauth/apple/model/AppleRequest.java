@@ -8,13 +8,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CallbackResponseApple {
+public class AppleRequest {
 
-    private String state;
-
-    private String code;
-
-    @JsonProperty("id_token")
     private String idToken;
 
 }

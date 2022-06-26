@@ -62,11 +62,15 @@ public class ClubQueryService {
     }
 
     public SearchingSimpleClubResponse searchingSimpleClub(SearchingSimpleClubRequest simpleRequest, Long clubId) {
-        Club savedClub = clubRepository.findById(clubId)
-                                       .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 club"));
+        Club savedClub = findClubById(clubId);
 
         return new SearchingSimpleClubResponse(savedClub, savedClub.getAccountClubs().size())
                 .getDistanceBetweenAccountAndClub(simpleRequest.getUserLatitude(), simpleRequest.getUserLongitude());
+    }
+
+    public Club findClubById(long clubId) {
+        return clubRepository.findById(clubId)
+                             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 club"));
     }
 
     public ClubFindResponse findClubsByCondition(Long cursorId, ClubFindCondition condition, Account account,

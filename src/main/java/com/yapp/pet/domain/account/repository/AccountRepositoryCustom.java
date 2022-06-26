@@ -8,5 +8,4 @@ public interface AccountRepositoryCustom {
 
     Optional<Account> findByNickname(String nickname);
 
-    Account findAccount(String uniqueIdBySocial);
 }
