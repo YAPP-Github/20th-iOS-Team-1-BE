@@ -1,23 +1,26 @@
 package com.yapp.pet.web.club;
 
+import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.club.ClubQueryService;
+import com.yapp.pet.domain.club.repository.ClubFindCondition;
+import com.yapp.pet.global.annotation.AuthAccount;
+import com.yapp.pet.web.club.model.ClubFindResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 import static com.yapp.pet.web.club.model.SearchingClubDto.SearchingRequest;
 import static com.yapp.pet.web.club.model.SearchingClubDto.SearchingResponse;
-import static com.yapp.pet.web.club.model.SearchingSimpleClubDto.*;
+import static com.yapp.pet.web.club.model.SearchingSimpleClubDto.SearchingSimpleClubRequest;
+import static com.yapp.pet.web.club.model.SearchingSimpleClubDto.SearchingSimpleClubResponse;
 import static com.yapp.pet.web.club.model.SearchingWithinRangeClubDto.SearchingWithinRangeClubRequest;
 import static com.yapp.pet.web.club.model.SearchingWithinRangeClubDto.SearchingWithinRangeClubResponse;
+import static org.springframework.data.domain.Sort.Direction.ASC;
 
 @RestController
 @RequiredArgsConstructor
@@ -52,4 +55,24 @@ public class ClubController {
                                                            @PathVariable("club-id") Long clubId) {
         return clubQueryService.searchingSimpleClub(request, clubId);
     }
+
+    @GetMapping("/clubs")
+    public ResponseEntity<ClubFindResponse> findClubsByCondition(
+            @RequestParam(value = "cursor-id", required = false) Long cursorId,
+            @RequestParam(value = "condition", required = false) ClubFindCondition condition,
+            @PageableDefault(size = 10, sort = "endDate", direction = ASC) Pageable pageable,
+            @AuthAccount Account account){
+
+        ClubFindResponse response;
+
+        try {
+            response = clubQueryService.findClubsByCondition(cursorId, condition, account, pageable);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
 }
