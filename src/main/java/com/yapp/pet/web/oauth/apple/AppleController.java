@@ -21,7 +21,7 @@ public class AppleController {
     @PostMapping("/auth/apple/callback")
     public ResponseEntity<SignInResponse> callbackOfApple(@RequestBody CallbackResponseApple callbackResponse){
 
-        log.info("애플 redirect, {}", callbackResponse.toString());
+        log.info("애플 redirect! , {}", callbackResponse.toString());
 
         SignInResponse signInResponse;
 
