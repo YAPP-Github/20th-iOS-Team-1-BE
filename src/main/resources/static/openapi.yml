@@ -915,38 +915,107 @@ components:
           example: true
           description: 더 이상 조회할 모임이 없을 때 true를 리턴합니다.(마지막 목록 화면에서 아래로 스크롤을 했을 때)
         clubInfos:
-          type: array
-          items:
-            type: object
-          example:
-            - clubId: 1
-              title: 산책하실분~
-              category: WALK
-              meetingPlace: 서울 한강공원
-              startDate: 2022-06-25T15:46:08.962Z
-              endDate: 2022-06-25T15:46:08.962Z
-              eligibleBreeds:
-                - 말티즈
-                - 리트리버
-                - 불독
-              eligiblePetSizeTypes:
-                - MEDIUM
-                - SMALL
-              eligibleSex: ALL
-              maximumPeople: 5
-              participants: 2
-            - clubId: 2
-              title: 박람회 모임 모집
-              category: EXPOSITION
-              meetingPlace: 서울 한강공원
-              startDate: 2022-06-25T15:46:08.962Z
-              endDate: 2022-06-25T15:46:08.962Z
-              eligibleBreeds:
-              eligiblePetSizeTypes:
-                - SMALL
-              eligibleSex: WOMAN
-              maximumPeople: 4
-              participants: 1
+          type: object
+          properties:
+            content:
+              type: array
+              items:
+                type: object
+              example:
+                - clubId: 1
+                  title: 산책하실분~
+                  category: WALK
+                  meetingPlace: 서울 한강공원
+                  startDate: 2022-06-25T15:46:08.962Z
+                  endDate: 2022-06-25T15:46:08.962Z
+                  eligibleBreeds:
+                    - 말티즈
+                    - 리트리버
+                    - 불독
+                  eligiblePetSizeTypes:
+                    - MEDIUM
+                    - SMALL
+                  eligibleSex: ALL
+                  maximumPeople: 5
+                  participants: 2
+                - clubId: 2
+                  title: 박람회 모임 모집
+                  category: EXPOSITION
+                  meetingPlace: 서울 한강공원
+                  startDate: 2022-06-25T15:46:08.962Z
+                  endDate: 2022-06-25T15:46:08.962Z
+                  eligibleBreeds:
+                  eligiblePetSizeTypes:
+                    - SMALL
+                  eligibleSex: WOMAN
+                  maximumPeople: 4
+                  participants: 1
+            pageable:
+              type: object
+              properties:
+                sort:
+                  type: object
+                  properties:
+                    empty:
+                      type: boolean
+                      example: false
+                    unsorted:
+                      type: boolean
+                      example: false
+                    sorted:
+                      type: boolean
+                      example: true
+                offset:
+                  type: integer
+                  example: 0
+                pageNumber:
+                  type: integer
+                  example: 0
+                pageSize:
+                  type: integer
+                  example: 0
+                paged:
+                  type: boolean
+                  example: true
+                unpaged:
+                  type: boolean
+                  example: false
+            totalElements:
+              type: integer
+              example: 2
+            totalPages:
+              type: integer
+              example: 1
+            last:
+              type: boolean
+              example: true
+            size:
+              type: integer
+              example: 10
+            number:
+              type: integer
+              example: 0
+            sort:
+              type: object
+              properties:
+                empty:
+                  type: boolean
+                  example: false
+                unsorted:
+                  type: boolean
+                  example: false
+                sorted:
+                  type: boolean
+                  example: true
+            numberOfElements:
+              type: integer
+              example: 2
+            first:
+              type: boolean
+              example: true
+            empty:
+              type: boolean
+              example: false
 
 
     ############################################# Pet #############################################
