@@ -1,4 +1,4 @@
-package com.yapp.pet.domain.club;
+package com.yapp.pet.domain.club.service;
 
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.account.entity.AccountSex;
@@ -25,16 +25,18 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 import static com.yapp.pet.domain.club.repository.ClubFindCondition.*;
-import static com.yapp.pet.web.club.model.ClubFindResponse.*;
-import static com.yapp.pet.web.club.model.SearchingClubDto.*;
-import static com.yapp.pet.web.club.model.SearchingWithinRangeClubDto.*;
+import static com.yapp.pet.web.club.model.ClubFindResponse.ClubInfo;
+import static com.yapp.pet.web.club.model.SearchingClubDto.SearchingRequest;
+import static com.yapp.pet.web.club.model.SearchingClubDto.SearchingResponse;
+import static com.yapp.pet.web.club.model.SearchingWithinRangeClubDto.SearchingWithinRangeClubRequest;
+import static com.yapp.pet.web.club.model.SearchingWithinRangeClubDto.SearchingWithinRangeClubResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.data.domain.Sort.Direction.*;
+import static org.springframework.data.domain.Sort.Direction.ASC;
 
 @SpringBootTest
-@Transactional
+@Transactional(readOnly = true)
 @Sql({"/data.sql"})
 class ClubQueryServiceTest {
 
