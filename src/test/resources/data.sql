@@ -10,6 +10,9 @@ alter table pet_tag auto_increment = 1;
 delete from pet;
 alter table pet auto_increment = 1;
 
+delete from comment;
+alter table comment auto_increment = 1;
+
 delete from account;
 alter table account auto_increment = 1;
 
@@ -27,6 +30,7 @@ alter table eligible_pet_breeds auto_increment = 1;
 
 delete from club;
 alter table club auto_increment = 1;
+
 insert into token (refresh_token, social_type, unique_id_by_social) values ('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJ5YXBwIiwic3ViIjoidW5pcXVlMSIsImF1ZCI6IlJFRlJFU0giLCJleHAiOjE2Njg2NjY4NTIsImlhdCI6MTY1NTUyNjg1MiwiYXV0aCI6IlVTRVIifQ.kHnI8FuhqZpAYpVAuBieczAAXzXXk-E1dNMEO8gvMjTCiswEgBjeLpHyKyh6V-y8-WFET68l6I_GOk776ldKtQ', 'KAKAO', 'unique1');
 insert into token (refresh_token, social_type, unique_id_by_social) values ('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJ5YXBwIiwic3ViIjoidW5pcXVlMiIsImF1ZCI6IlJFRlJFU0giLCJleHAiOjE2Njg2NjY5NzAsImlhdCI6MTY1NTUyNjk3MCwiYXV0aCI6IlVTRVIifQ.7_QVjo2DtC5CFpIjHVUf7Q-La5wAGBZWbOC-R57C6DXS1kpIPiYtKyYo2HAnTuANU4zjv7AZA62iUr-FnmdHQQ', 'APPLE', 'unique2');
 insert into token (refresh_token, social_type, unique_id_by_social) values ('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJ5YXBwIiwic3ViIjoidW5pcXVlMyIsImF1ZCI6IlJFRlJFU0giLCJleHAiOjE2Njg2NjY5ODcsImlhdCI6MTY1NTUyNjk4NywiYXV0aCI6IlVTRVIifQ.w3UdeFkUr8MXxnL7PZmiujC0rZklBt_mFFa8uV8bUluRsvVtTxQWU4bmtA4udav4J6nEmKOyEwJtSeWdQzRNQA', 'KAKAO', 'unique3');
@@ -88,6 +92,9 @@ insert into account_club (leader, account_id, club_id) values (true, 1, 4);
 insert into account_club (leader, account_id, club_id) values (true, 1, 5);
 insert into account_club (leader, account_id, club_id) values (true, 1, 6);
 insert into account_club (leader, account_id, club_id) values (true, 1, 7);
+
+insert into comment (content, account_id, club_id, updated_at) values ('댓글1', 1, 1, '2022-05-01');
+insert into comment (content, account_id, club_id, updated_at) values ('댓글2', 2, 1, '2022-05-01');
 
 insert into eligible_pet_breeds (club_id, eligible_breeds) values (1, '말티즈');
 insert into eligible_pet_breeds (club_id, eligible_breeds) values (1, '리트리버');
