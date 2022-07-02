@@ -404,7 +404,7 @@ paths:
       tags:
         - 모임 (Club)
       summary: 모임 상세 조회 API
-      description: 모임의 상세 정보를 조회합니다..
+      description: 모임의 상세 정보를 조회합니다.
       parameters:
         - name: club-id
           in: path
@@ -420,6 +420,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClubFindDetailResponse'
+        '401':
+          description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseInfo'
+
+  /api/clubs/leave/{club-id}:
+    delete:
+      tags:
+        - 모임 (Club)
+      summary: 모임 나가기 API
+      description: 참여중인 모임을 나갑니다.
+      parameters:
+        - name: club-id
+          in: path
+          description: 모임의 id값 입니다.
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: OK
         '401':
           description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
           content:
@@ -1185,7 +1209,7 @@ components:
           type: object
           description: 이미지 파일
 
-  ############################################# Comment #############################################
+    ############################################# Comment #############################################
     CommentRequest:
       type: object
       properties:
