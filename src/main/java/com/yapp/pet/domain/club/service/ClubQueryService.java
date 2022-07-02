@@ -1,4 +1,4 @@
-package com.yapp.pet.domain.club;
+package com.yapp.pet.domain.club.service;
 
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.accountclub.AccountClub;

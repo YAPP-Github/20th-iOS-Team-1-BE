@@ -1,8 +1,9 @@
 package com.yapp.pet.web.club;
 
 import com.yapp.pet.domain.account.entity.Account;
-import com.yapp.pet.domain.club.ClubQueryService;
+import com.yapp.pet.domain.club.service.ClubQueryService;
 import com.yapp.pet.domain.club.repository.ClubFindCondition;
+import com.yapp.pet.domain.club.service.ClubService;
 import com.yapp.pet.global.annotation.AuthAccount;
 import com.yapp.pet.web.club.model.ClubFindDetailResponse;
 import com.yapp.pet.web.club.model.ClubFindResponse;
@@ -10,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +31,7 @@ import static org.springframework.data.domain.Sort.Direction.ASC;
 public class ClubController {
 
     private final ClubQueryService clubQueryService;
+    private final ClubService clubService;
 
     @GetMapping("/clubs/search")
     public ResponseEntity<List<SearchingResponse>> searchingByWord(@ModelAttribute SearchingRequest request,
@@ -91,6 +92,20 @@ public class ClubController {
         }
 
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/clubs/leave/{club-id}")
+    public ResponseEntity<Void> leaveClub(@PathVariable("club-id") Long clubId,
+                                          @AuthAccount Account account){
+
+        try {
+            clubService.leaveClub(clubId, account);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+        return ResponseEntity.ok().build();
     }
 
 }

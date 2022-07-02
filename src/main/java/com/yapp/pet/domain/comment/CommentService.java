@@ -1,7 +1,7 @@
 package com.yapp.pet.domain.comment;
 
 import com.yapp.pet.domain.account.entity.Account;
-import com.yapp.pet.domain.club.ClubQueryService;
+import com.yapp.pet.domain.club.service.ClubQueryService;
 import com.yapp.pet.web.comment.model.CommentRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
