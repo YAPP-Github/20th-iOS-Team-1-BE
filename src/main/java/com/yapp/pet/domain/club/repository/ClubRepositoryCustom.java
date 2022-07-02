@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.yapp.pet.web.club.model.SearchingClubDto.*;
 import static com.yapp.pet.web.club.model.SearchingWithinRangeClubDto.*;
@@ -20,4 +21,6 @@ public interface ClubRepositoryCustom {
     List<Club> findExceedTimeClub();
 
     Page<Club> findClubsByCondition(Long cursorId, ClubFindCondition condition, Account account, Pageable pageable);
+
+    Optional<Club> findClubDetailById(Long clubId);
 }

@@ -1,20 +1,26 @@
 package com.yapp.pet.domain.club;
 
 import com.yapp.pet.domain.account.entity.Account;
+import com.yapp.pet.domain.accountclub.AccountClub;
 import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.club.repository.ClubFindCondition;
 import com.yapp.pet.domain.club.repository.ClubRepository;
+import com.yapp.pet.domain.comment.CommentQueryService;
 import com.yapp.pet.global.mapper.ClubMapper;
+import com.yapp.pet.web.club.model.ClubFindDetailResponse;
 import com.yapp.pet.web.club.model.ClubFindResponse;
+import com.yapp.pet.web.comment.model.CommentResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.yapp.pet.web.club.model.ClubFindDetailResponse.*;
 import static com.yapp.pet.web.club.model.ClubFindResponse.ClubInfo;
 import static com.yapp.pet.web.club.model.ClubFindResponse.of;
 import static com.yapp.pet.web.club.model.SearchingClubDto.SearchingRequest;
@@ -32,6 +38,8 @@ public class ClubQueryService {
     private final ClubRepository clubRepository;
 
     private final ClubMapper clubMapper;
+
+    private final CommentQueryService commentQueryService;
 
     public List<SearchingResponse> searchingClub(SearchingRequest searchingRequest, String SearchingType) {
 
@@ -86,6 +94,20 @@ public class ClubQueryService {
         }
 
         return response;
+    }
+
+    public ClubFindDetailResponse findClubDetail(Long clubId, Account loginAccount) {
+        Club findClub = clubRepository.findClubDetailById(clubId).orElseThrow(EntityNotFoundException::new);
+        ClubDetailInfo clubDetailInfo = clubMapper.toDetailInfo(findClub);
+
+        List<CommentResponse> findComments = commentQueryService.findComment(clubId, loginAccount);
+
+        return ClubFindDetailResponse.builder()
+                .accountClubs(findClub.getAccountClubs())
+                .clubDetailInfo(clubDetailInfo)
+                .loginAccount(loginAccount)
+                .commentInfos(findComments)
+                .build();
     }
 
 }
