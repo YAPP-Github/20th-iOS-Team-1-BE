@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,4 +21,8 @@ public class CommentResponse {
     private boolean leader;
 
     private ZonedDateTime updatedTime;
+
+    private List<String> petType;
+
+    private String imageUrl;
 }
