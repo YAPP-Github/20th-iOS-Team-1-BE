@@ -33,6 +33,6 @@ public class CommentController {
 
         commentService.deleteComment(account, commentId);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 }

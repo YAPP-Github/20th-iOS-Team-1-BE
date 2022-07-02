@@ -36,7 +36,7 @@ public class PetController {
     public ResponseEntity<Void> delete(@AuthAccount Account account, @PathVariable("pet-id") long petId) {
         petService.deletePetInfo(petId);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/pets/{pet-id}")
@@ -45,6 +45,6 @@ public class PetController {
 
         petService.updatePetInfo(petId, request);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 }

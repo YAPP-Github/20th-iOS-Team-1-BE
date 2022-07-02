@@ -71,7 +71,7 @@ public class AccountController {
     }
 
     @PatchMapping("/accounts")
-    public ResponseEntity<HttpStatus> updateAccount(@AuthAccount Account account,
+    public ResponseEntity<Void> updateAccount(@AuthAccount Account account,
                                                     @ModelAttribute AccountUpdateRequest accountUpdateRequest){
 
         try {
@@ -81,7 +81,7 @@ public class AccountController {
             throw e;
         }
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 
 }
