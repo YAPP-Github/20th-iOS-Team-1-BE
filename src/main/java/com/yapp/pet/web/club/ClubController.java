@@ -4,6 +4,7 @@ import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.club.ClubQueryService;
 import com.yapp.pet.domain.club.repository.ClubFindCondition;
 import com.yapp.pet.global.annotation.AuthAccount;
+import com.yapp.pet.web.club.model.ClubFindDetailResponse;
 import com.yapp.pet.web.club.model.ClubFindResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -67,6 +68,22 @@ public class ClubController {
 
         try {
             response = clubQueryService.findClubsByCondition(cursorId, condition, account, pageable);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/clubs/{club-id}")
+    public ResponseEntity<ClubFindDetailResponse> findClubDetail(@PathVariable("club-id") Long clubId,
+                                                                 @AuthAccount Account account){
+
+        ClubFindDetailResponse response;
+
+        try {
+            response = clubQueryService.findClubDetail(clubId, account);
         } catch (Exception e) {
             e.printStackTrace();
             throw e;

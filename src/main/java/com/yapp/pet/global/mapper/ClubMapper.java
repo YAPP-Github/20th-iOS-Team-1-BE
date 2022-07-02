@@ -8,7 +8,8 @@ import org.mapstruct.Named;
 
 import java.util.List;
 
-import static com.yapp.pet.web.club.model.ClubFindResponse.*;
+import static com.yapp.pet.web.club.model.ClubFindDetailResponse.ClubDetailInfo;
+import static com.yapp.pet.web.club.model.ClubFindResponse.ClubInfo;
 
 @Mapper(componentModel = "spring")
 public interface ClubMapper {
@@ -21,4 +22,7 @@ public interface ClubMapper {
     default int getParticipants(List<AccountClub> accountClubs){
         return accountClubs.size();
     }
+
+    @Mapping(target = "participants", source = "accountClubs", qualifiedByName = "getParticipants")
+    ClubDetailInfo toDetailInfo(Club club);
 }

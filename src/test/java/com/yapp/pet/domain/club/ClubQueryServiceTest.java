@@ -8,6 +8,7 @@ import com.yapp.pet.domain.club.entity.EligibleSex;
 import com.yapp.pet.domain.club.repository.ClubRepository;
 import com.yapp.pet.domain.common.Category;
 import com.yapp.pet.domain.common.PetSizeType;
+import com.yapp.pet.web.club.model.ClubFindDetailResponse;
 import com.yapp.pet.web.club.model.ClubFindResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -318,5 +319,63 @@ class ClubQueryServiceTest {
         assertThat(response.getHasNotClub()).isTrue();
         assertThat(clubInfos.getTotalElements()).isEqualTo(0);
     }
+
+    @Test
+    @DisplayName("모임 상세 조회 - 조회 하는 유저가 리더인 경우")
+    void findClubDetailAtLeader() {
+        //given
+        Long clubId = 1L;
+        Account loginAccount = accountWithTokenAndImage;
+
+        //when
+        ClubFindDetailResponse response = clubQueryService.findClubDetail(clubId, loginAccount);
+
+        //then
+        assertThat(response.isParticipating()).isTrue();
+        assertThat(response.isLeader()).isTrue();
+        assertThat(response.getLeaderInfo().getNickname()).isEqualTo("재롱잔치");
+        assertThat(response.getAccountInfos().size()).isEqualTo(2);
+        assertThat(response.getClubDetailInfo().getTitle()).isEqualTo("쿄쿄량 산책할사람");
+        assertThat(response.getCommentInfos().size()).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("모임 상세 조회 - 조회 하는 유저가 리더가 아니지만, 모임에 참여한 경우")
+    void findClubDetailAtNotLeaderAndParticipating() {
+        //given
+        Long clubId = 1L;
+        Account loginAccount = accountRepository.findById(2L).get();
+
+        //when
+        ClubFindDetailResponse response = clubQueryService.findClubDetail(clubId, loginAccount);
+
+        //then
+        assertThat(response.isParticipating()).isTrue();
+        assertThat(response.isLeader()).isFalse();
+        assertThat(response.getLeaderInfo().getNickname()).isEqualTo("재롱잔치");
+        assertThat(response.getAccountInfos().size()).isEqualTo(2);
+        assertThat(response.getClubDetailInfo().getTitle()).isEqualTo("쿄쿄량 산책할사람");
+        assertThat(response.getCommentInfos().size()).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("모임 상세 조회 - 조회 하는 유저가 리더가 아니고, 모임에도 참여하지 않은 경우")
+    void findClubDetailAtNotLeaderAndNotParticipating() {
+        //given
+        Long clubId = 1L;
+        Account loginAccount = accountRepository.findById(3L).get();
+
+        //when
+        ClubFindDetailResponse response = clubQueryService.findClubDetail(clubId, loginAccount);
+
+        //then
+        assertThat(response.isParticipating()).isFalse();
+        assertThat(response.isLeader()).isFalse();
+        assertThat(response.getLeaderInfo().getNickname()).isEqualTo("재롱잔치");
+        assertThat(response.getAccountInfos().size()).isEqualTo(2);
+        assertThat(response.getClubDetailInfo().getTitle()).isEqualTo("쿄쿄량 산책할사람");
+        assertThat(response.getCommentInfos().size()).isEqualTo(2);
+    }
+
 
 }

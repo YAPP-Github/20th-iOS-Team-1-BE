@@ -399,6 +399,34 @@ paths:
               schema:
                 $ref: '#/components/schemas/ExceptionResponseInfo'
 
+  /api/clubs/{club-id}:
+    get:
+      tags:
+        - 모임 (Club)
+      summary: 모임 상세 조회 API
+      description: 모임의 상세 정보를 조회합니다..
+      parameters:
+        - name: club-id
+          in: path
+          description: 모임의 id값 입니다.
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClubFindDetailResponse'
+        '401':
+          description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseInfo'
+
     ############################################# Pet #############################################
   /api/pets:
     post:
@@ -1017,6 +1045,99 @@ components:
               type: boolean
               example: false
 
+    ClubFindDetailResponse:
+      type: object
+      properties:
+        participating:
+          type: boolean
+          example: true
+          description: 현재 로그인한 유저가, 조회하는 모임에 참여한 경우 true를 리턴합니다.(모임 참여 및 나갈래요 버튼 노출 판단)
+        leader:
+          type: boolean
+          example: true
+          description: 현재 로그인한 유저가, 조회하는 모임의 리더(방장)인경우 true를 리턴합니다.(모임을 삭제할래요 버튼 노출 판단)
+        clubDetailInfo:
+          type: object
+          properties:
+            title:
+              type: string
+              example: "박람회 모임"
+            description:
+              type: string
+              example: "xx 박람회 갑니다."
+            category:
+              type: string
+              example: "EXPOSITION"
+            meetingPlace:
+              type: string
+              example: "서울 어딘가"
+            latitude:
+              type: number
+              example: "2,174"
+            longitude:
+              type: number
+              example: "41,4033803"
+            startDate:
+              type: string
+              example: "2022-06-25T11:46:08.962Z"
+            endDate:
+              type: string
+              example: "2022-06-25T15:46:08.962Z"
+            eligiblePetSizeTypes:
+              type: array
+              items:
+                type: string
+              example:
+                - LARGE
+                - MEDIUM
+            eligibleBreeds:
+              type: array
+              items:
+                type: string
+              example:
+                - 말티즈
+                - 웰시코기
+                - 리트리버
+            eligibleSex:
+              type: string
+              example: "ALL"
+            maximumPeople:
+              type: integer
+              example: 2
+            participants:
+              type: integer
+              example: 2
+        leaderInfo:
+          type: object
+          properties:
+            nickname:
+              type: string
+              example: "재롱잔치"
+            imageUrl:
+              type: string
+              example: "https://togaether.s3.ap-northeast-2.amazonaws.com/account/파일이름.jpg"
+        accountInfos:
+          type: array
+          items:
+            type: object
+          example:
+            - nickname: 재롱잔치
+              imageUrl: "https://togaether.s3.ap-northeast-2.amazonaws.com/account/파일이름.jpg"
+            - nickname: 밀란이네 시트콤
+              imageUrl: "https://togaether.s3.ap-northeast-2.amazonaws.com/account/파일이름.jpg"
+        commentInfos:
+          type: array
+          items:
+            type: object
+          example:
+            - content: 댓글1
+              author: "누군가"
+              leader: false
+              updatedTime: "2022-06-25T15:46:08.962Z"
+            - content: 댓글2
+              author: "재롱잔치"
+              leader: true
+              updatedTime: "2022-06-25T15:46:08.962Z"
 
     ############################################# Pet #############################################
 

@@ -21,6 +21,7 @@ import org.springframework.util.StringUtils;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.yapp.pet.domain.account.entity.QAccount.account;
@@ -127,6 +128,21 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
                 .collect(Collectors.toList());
 
         return new PageImpl<>(findClubs, pageable, findClubs.size());
+    }
+
+    @Override
+    public Optional<Club> findClubDetailById(Long clubId) {
+
+        AccountClub findAccountClub = queryFactory
+                .selectFrom(accountClub)
+                .innerJoin(accountClub.account, account).fetchJoin()
+                .innerJoin(accountClub.club, club).fetchJoin()
+                .leftJoin(club.eligibleBreeds).fetchJoin()
+                .innerJoin(club.eligiblePetSizeTypes).fetchJoin()
+                .where(club.id.eq(clubId))
+                .fetchFirst();
+
+        return Optional.ofNullable(findAccountClub.getClub());
     }
 
     private BooleanExpression clubNameContains(String searchingWord) {
