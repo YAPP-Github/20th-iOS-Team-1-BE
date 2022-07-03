@@ -35,6 +35,8 @@ insert into token (refresh_token, social_type, unique_id_by_social) values ('eyJ
 insert into token (refresh_token, social_type, unique_id_by_social) values ('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJ5YXBwIiwic3ViIjoidW5pcXVlMiIsImF1ZCI6IlJFRlJFU0giLCJleHAiOjE2Njg2NjY5NzAsImlhdCI6MTY1NTUyNjk3MCwiYXV0aCI6IlVTRVIifQ.7_QVjo2DtC5CFpIjHVUf7Q-La5wAGBZWbOC-R57C6DXS1kpIPiYtKyYo2HAnTuANU4zjv7AZA62iUr-FnmdHQQ', 'APPLE', 'unique2');
 insert into token (refresh_token, social_type, unique_id_by_social) values ('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJ5YXBwIiwic3ViIjoidW5pcXVlMyIsImF1ZCI6IlJFRlJFU0giLCJleHAiOjE2Njg2NjY5ODcsImlhdCI6MTY1NTUyNjk4NywiYXV0aCI6IlVTRVIifQ.w3UdeFkUr8MXxnL7PZmiujC0rZklBt_mFFa8uV8bUluRsvVtTxQWU4bmtA4udav4J6nEmKOyEwJtSeWdQzRNQA', 'KAKAO', 'unique3');
 insert into token (refresh_token, social_type, unique_id_by_social) values ('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJ5YXBwIiwic3ViIjoidW5pcXVlNCIsImF1ZCI6IlJFRlJFU0giLCJleHAiOjE2Njg2NjY5OTksImlhdCI6MTY1NTUyNjk5OSwiYXV0aCI6IlVTRVIifQ.iXt7v6zGPvQ4wOjdUM6zsBYc-da7JB3xBr8ETDIcqnn56yJizoy8nRcsDfyRKZ2R_TGcZDoJzkMEkNKhoeFOvg', 'KAKAO', 'unique4');
+insert into token (refresh_token, social_type, unique_id_by_social) values ('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJ5YXBwIiwic3ViIjoidW5pcXVlNSIsImF1ZCI6IlJFRlJFU0giLCJleHAiOjE2NTc0NTIyNDQsImlhdCI6MTY1Njg0NzQ0NCwiYXV0aCI6IlVTRVIifQ.sp8GYmUnJCGuAjYh1r4O99QSKPi8iiAvUSyRnx17ijBSrywfbBSQcT0isBccUw90yXSwVkGmx1l5cdGlOc1hgw', 'APPLE', 'unique5');
+insert into token (refresh_token, social_type, unique_id_by_social) values ('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJ5YXBwIiwic3ViIjoidW5pcXVlNiIsImF1ZCI6IlJFRlJFU0giLCJleHAiOjE2NTc0NTIyNzksImlhdCI6MTY1Njg0NzQ3OSwiYXV0aCI6IlVTRVIifQ.fBXqvXpocfut_dhMS8HixSglsporH_VhxLOLIEf2Nu1ExZimkpfReSlyT_L6RQO5-KAaGCgkcn1Svy74Rcolpw', 'APPLE', 'unique6');
 
 insert into account_image (name, origin_name, s3key, path) values ('1655044614407_cat.jpg', 'cat.jpg', '디렉터리1+파일명1', 'https://togaether.s3.ap-northeast-2.amazonaws.com/account/1655044614407_cat.jpg');
 insert into account_image (name, origin_name, s3key, path) values ('486421_이미지2', '이미지2', '디렉터리2+파일명2', 'https://vdfkopvd.com');
@@ -51,6 +53,12 @@ values (30, 'yapp', 'PRIVATE', 3, '서울시', '강동구', 'yapp 견주입니�
 
 insert into account (age, nickname, sex, token_id, city, detail)
 values (40, 'abcd', 'MAN', 4, '서울시', '강서구');
+
+insert into account (age, nickname, sex, token_id, city, detail)
+values (50, '와랄라', 'MAN', 5, '서울시', '강서구');
+
+insert into account (age, nickname, sex, token_id, city, detail)
+values (60, 'tmp', 'MAN', 6, '서울시', '강서구');
 
 insert into interest_categories (account_id, interest_categories) values (1, 'WALK');
 insert into interest_categories (account_id, interest_categories) values (1, 'DOG_CAFE');
@@ -113,7 +121,15 @@ insert into pet_image (name, origin_name, path, s3Key) values ('90419_펫이미�
 insert into pet (age, birth_month, birth_year, breed, name, neutering, sex, size_type, account_id, pet_image_id)
 values (5, '2', '2', '말티즈', '재롱이', true, 'MALE', 'SMALL', 1, 1);
 insert into pet (age, birth_month, birth_year, breed, name, neutering, sex, size_type, account_id)
-values (4, '1', '1', '리트리버', '밀란', true, 'MALE', 'SMALL', 1);
+values (4, '1', '1', '리트리버', '밀란', true, 'MALE', 'LARGE', 1);
+insert into pet (age, birth_month, birth_year, breed, name, neutering, sex, size_type, account_id)
+values (9, '1', '1', '포메라니안', '행성', true, 'MALE', 'SMALL', 2);
+insert into pet (age, birth_month, birth_year, breed, name, neutering, sex, size_type, account_id)
+values (2, '1', '1', '잡종스트릿', '트릿', true, 'MALE', 'MEDIUM', 4);
+insert into pet (age, birth_month, birth_year, breed, name, neutering, sex, size_type, account_id)
+values (2, '1', '1', '불독', '불독이', true, 'MALE', 'SMALL', 5);
+insert into pet (age, birth_month, birth_year, breed, name, neutering, sex, size_type, account_id)
+values (8, '1', '1', '리트리버', '소녀', true, 'MALE', 'LARGE', 6);
 
 insert into pet_tag (name, pet_id) values ('tag1', 1);
 insert into pet_tag (name, pet_id) values ('tag2', 1);
