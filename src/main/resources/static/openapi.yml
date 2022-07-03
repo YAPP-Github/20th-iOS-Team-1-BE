@@ -424,7 +424,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExceptionResponseInfo'
-
+        '403':
+          description: 애완견을 가지고 있지 않은 유저는 모임을 생성할 수 없습니다
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionCreateClub'
 
   /api/clubs/{club-id}:
     get:
@@ -643,6 +648,16 @@ components:
         message:
           type: string
           example: 만료된 JWT토큰입니다.
+    ExceptionCreateClub:
+      type: object
+      properties:
+        status:
+          type: string
+          example: 403
+        message:
+          type: string
+          example: 해당 모임에 참여할 수 있는 애완견이 없습니다.
+
 
 
     ############################################# Account #############################################
