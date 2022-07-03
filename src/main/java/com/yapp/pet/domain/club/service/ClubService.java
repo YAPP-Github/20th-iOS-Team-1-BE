@@ -5,6 +5,8 @@ import com.yapp.pet.domain.accountclub.AccountClub;
 import com.yapp.pet.domain.accountclub.AccountClubRepository;
 import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.club.repository.ClubRepository;
+import com.yapp.pet.domain.pet.repository.PetRepository;
+import com.yapp.pet.global.exception.club.NotHaveAnyPetException;
 import com.yapp.pet.global.exception.club.NotParticipatingClubException;
 import com.yapp.pet.global.mapper.ClubMapper;
 import com.yapp.pet.web.club.model.ClubCreateRequest;
@@ -22,6 +24,7 @@ public class ClubService {
     private final ClubRepository clubRepository;
     private final AccountClubRepository accountClubRepository;
     private final ClubMapper clubMapper;
+    private final PetRepository petRepository;
 
     public void leaveClub(Long clubId, Account loginAccount){
 
@@ -36,6 +39,10 @@ public class ClubService {
     }
 
     public long create(Account account, ClubCreateRequest clubCreateRequest) {
+
+        if (petRepository.findPetsByAccountId(account.getId()).size() <= 0) {
+            throw new NotHaveAnyPetException();
+        }
 
         Club club = clubMapper.toEntity(clubCreateRequest);
         clubRepository.save(club);

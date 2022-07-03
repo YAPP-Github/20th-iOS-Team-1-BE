@@ -111,7 +111,17 @@ public class ClubController {
 
     @PostMapping("/clubs")
     public long createClub(@AuthAccount Account account, ClubCreateRequest clubCreateRequest) {
-        return clubService.create(account, clubCreateRequest);
+
+        long savedId = 0L;
+
+        try {
+            savedId = clubService.create(account, clubCreateRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+        return savedId;
     }
 
 }
