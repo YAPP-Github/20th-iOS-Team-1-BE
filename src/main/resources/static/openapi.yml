@@ -398,6 +398,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExceptionResponseInfo'
+    post:
+      tags:
+        - 모임 (Club)
+      summary: 모임 생성 API
+      parameters:
+        - name: clubCreateRequest
+          in: query
+          description: 생성할 모임의 정보들입니다
+          required: true
+          schema:
+            $ref: '#/components/schemas/ClubCreateRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+                description: 저장된 모임의 고유 식별자 값입니다.
+                example: 5
+        '401':
+          description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseInfo'
+
 
   /api/clubs/{club-id}:
     get:
@@ -1162,6 +1189,58 @@ components:
               author: "재롱잔치"
               leader: true
               updatedTime: "2022-06-25T15:46:08.962Z"
+    ClubCreateRequest:
+      type: object
+      properties:
+        meetingPlace:
+          type: string
+        category:
+          type: string
+          enum:
+            - WALK
+            - DOG_CAFE
+        title:
+          type: string
+        description:
+          type: string
+          example: 모임에 관한 설명을 적어주시면 됩니다
+        startDate:
+          type: string
+          format: date-time
+          example: 2022-03-15 19:24:02처럼 년-월-일 시:분:초 로 적어주시면 됩니다 format 꼭 지켜주세요해요!
+        endDate:
+          type: string
+          format: date-time
+          example: 2022-03-15 19:24:02처럼 년-월-일 시:분:초 로 적어주시면 됩니다 format 꼭 지켜주셔야해요!
+        maximumPeople:
+          type: integer
+        eligibleSex:
+          type: string
+          enum:
+            - MAN
+            - WOMAN
+            - ALL
+        eligiblePetSizeTypes:
+          type: array
+          items:
+            type: string
+          example:
+            - LARGE
+            - MEDIUM
+        eligibleBreeds:
+          type: array
+          items:
+            type: string
+          example:
+            - 말티즈
+            - 웰시코기
+            - 리트리버
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
 
     ############################################# Pet #############################################
 
