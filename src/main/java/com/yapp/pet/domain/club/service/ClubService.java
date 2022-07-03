@@ -10,9 +10,11 @@ import com.yapp.pet.domain.club.repository.ClubRepository;
 import com.yapp.pet.domain.comment.CommentRepository;
 import com.yapp.pet.domain.pet.entity.Pet;
 import com.yapp.pet.domain.pet.repository.PetRepository;
+import com.yapp.pet.global.exception.club.NotHaveAnyPetException;
 import com.yapp.pet.global.exception.club.NotLeaderException;
 import com.yapp.pet.global.exception.club.NotParticipatingClubException;
-import com.yapp.pet.web.club.model.ClubParticipateRejectReason;
+import com.yapp.pet.global.mapper.ClubMapper;
+import com.yapp.pet.web.club.model.ClubCreateRequest;
 import com.yapp.pet.web.club.model.ClubParticipateResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,8 +32,9 @@ public class ClubService {
 
     private final ClubRepository clubRepository;
     private final AccountClubRepository accountClubRepository;
-    private final CommentRepository commentRepository;
+    private final ClubMapper clubMapper;
     private final PetRepository petRepository;
+    private final CommentRepository commentRepository;
 
     public void leaveClub(Long clubId, Account loginAccount) {
 
@@ -43,6 +46,22 @@ public class ClubService {
                 .orElseThrow(NotParticipatingClubException::new);
 
         accountClubRepository.delete(accountClub);
+    }
+
+    public long create(Account account, ClubCreateRequest clubCreateRequest) {
+
+        if (petRepository.findPetsByAccountId(account.getId()).size() <= 0) {
+            throw new NotHaveAnyPetException();
+        }
+
+        Club club = clubMapper.toEntity(clubCreateRequest);
+        clubRepository.save(club);
+
+        AccountClub accountClub = AccountClub.of(account, club);
+        accountClub.addClub(club);
+        accountClubRepository.save(accountClub);
+
+        return club.getId();
     }
 
     public void deleteClub(Long clubId, Account loginAccount) {

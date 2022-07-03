@@ -5,6 +5,7 @@ import com.yapp.pet.domain.club.service.ClubQueryService;
 import com.yapp.pet.domain.club.repository.ClubFindCondition;
 import com.yapp.pet.domain.club.service.ClubService;
 import com.yapp.pet.global.annotation.AuthAccount;
+import com.yapp.pet.web.club.model.ClubCreateRequest;
 import com.yapp.pet.web.club.model.ClubFindDetailResponse;
 import com.yapp.pet.web.club.model.ClubFindResponse;
 import com.yapp.pet.web.club.model.ClubParticipateResponse;
@@ -107,6 +108,21 @@ public class ClubController {
         }
 
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/clubs")
+    public long createClub(@AuthAccount Account account, ClubCreateRequest clubCreateRequest) {
+
+        long savedId = 0L;
+
+        try {
+            savedId = clubService.create(account, clubCreateRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+        return savedId;
     }
 
     @DeleteMapping("/clubs/{club-id}")
