@@ -22,13 +22,13 @@ public interface ClubMapper {
     @Mapping(target = "participants", source = "accountClubs", qualifiedByName = "getParticipants")
     ClubInfo toInfo(Club club);
 
+    @Mapping(target = "participants", source = "accountClubs", qualifiedByName = "getParticipants")
+    ClubDetailInfo toDetailInfo(Club club);
+
     @Named("getParticipants")
     default int getParticipants(List<AccountClub> accountClubs) {
         return accountClubs.size();
     }
-
-    @Mapping(target = "participants", source = "accountClubs", qualifiedByName = "getParticipants")
-    ClubDetailInfo toDetailInfo(Club club);
 
     @Mapping(target = "startDate", source = "startDate", qualifiedByName = "toZonedDateTime")
     @Mapping(target = "endDate", source = "endDate", qualifiedByName = "toZonedDateTime")

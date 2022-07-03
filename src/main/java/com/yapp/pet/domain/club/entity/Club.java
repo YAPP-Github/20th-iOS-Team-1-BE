@@ -23,7 +23,7 @@ public class Club extends BaseEntity {
     @Column(name = "club_id")
     private Long id;
 
-    @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "club")
     private List<AccountClub> accountClubs = new ArrayList<>();
 
     @Column(nullable = false, length = 70)

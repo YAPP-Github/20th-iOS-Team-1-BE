@@ -458,6 +458,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExceptionResponseInfo'
+    delete:
+      tags:
+        - 모임 (Club)
+      summary: 모임 삭제 API
+      description: 방장이 모임을 삭제합니다.
+      parameters:
+        - name: club-id
+          in: path
+          description: 모임의 id값 입니다.
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseInfo'
 
   /api/clubs/leave/{club-id}:
     delete:
@@ -483,7 +505,51 @@ paths:
               schema:
                 $ref: '#/components/schemas/ExceptionResponseInfo'
 
+  /api/clubs/participate/{club-id}:
+    post:
+      tags:
+        - 모임 (Club)
+      summary: 모임 참여 API
+      description: 모임에 참여합니다.
+      parameters:
+        - name: club-id
+          in: path
+          description: 모임의 id값 입니다.
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: 모임에 정상적으로 참여한 경우
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClubParticipateResponse'
+        '400':
+          description: 모임 참여 조건을 만족하지 못하는 경우
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  eligible:
+                    type: boolean
+                    example: false
+                  rejectReason:
+                    type: string
+                    example: HAS_NOT_PET
+                    description: 모임에 참여하지 못하는 이유입니다. (enum 데이터 입니다.)
+
+        '401':
+          description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponseInfo'
+
     ############################################# Pet #############################################
+
   /api/pets:
     post:
       tags:
@@ -1256,6 +1322,18 @@ components:
         longitude:
           type: number
           format: double
+
+    ClubParticipateResponse:
+      type: object
+      properties:
+        eligible:
+          type: boolean
+          example: true
+          description: 해당 모임에 참여 가능 여부를 나타냅니다.
+        rejectReason:
+          type: string
+          example: null
+          description: 모임에 참여 불가능한 이유를 응답합니다. 참여 가능한 경우 null값을 응답합니다.
 
     ############################################# Pet #############################################
 
