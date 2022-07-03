@@ -7,6 +7,7 @@ import com.yapp.pet.domain.club.service.ClubService;
 import com.yapp.pet.global.annotation.AuthAccount;
 import com.yapp.pet.web.club.model.ClubFindDetailResponse;
 import com.yapp.pet.web.club.model.ClubFindResponse;
+import com.yapp.pet.web.club.model.ClubParticipateResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -120,6 +121,28 @@ public class ClubController {
         }
 
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/clubs/participate/{club-id}")
+    public ResponseEntity<ClubParticipateResponse> participateClub(@PathVariable("club-id") Long clubId,
+                                                                   @AuthAccount Account loginAccount){
+
+        ClubParticipateResponse response;
+
+        try {
+            response = clubService.isEligibleClub(clubId, loginAccount);
+
+            if (!response.isEligible()) {
+                return ResponseEntity.badRequest().body(response);
+            }
+
+            clubService.participateClub(clubId, loginAccount);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+        return ResponseEntity.ok(response);
     }
 
 }
