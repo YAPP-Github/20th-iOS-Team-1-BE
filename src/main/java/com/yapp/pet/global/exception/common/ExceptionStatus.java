@@ -29,7 +29,8 @@ public enum ExceptionStatus{
 	NOT_FOUND_TOKEN_EXCEPTION(401, "Token이 존재하지 않습니다.", UNAUTHORIZED),
 
 	//Club
-	NOT_PARTICIPATING_CLUB_EXCEPTION(400, "해당 모임에 참여하지 않은 유저입니다.", BAD_REQUEST);
+	NOT_PARTICIPATING_CLUB_EXCEPTION(400, "해당 모임에 참여하지 않은 유저입니다.", BAD_REQUEST),
+	NOT_LEADER_EXCEPTION(400, "해당 모임의 방장이 아닙니다.", BAD_REQUEST);
 
 	private final int status;
 	private final String message;

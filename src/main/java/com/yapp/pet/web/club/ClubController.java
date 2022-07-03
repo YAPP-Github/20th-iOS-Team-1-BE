@@ -108,4 +108,18 @@ public class ClubController {
         return ResponseEntity.ok().build();
     }
 
+    @DeleteMapping("/clubs/{club-id}")
+    public ResponseEntity<Void> deleteClub(@PathVariable("club-id") Long clubId,
+                                           @AuthAccount Account account){
+
+        try {
+            clubService.deleteClub(clubId, account);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
 }
