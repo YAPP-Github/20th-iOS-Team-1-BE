@@ -4,9 +4,11 @@ import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.account.entity.AccountSex;
 import com.yapp.pet.domain.accountclub.AccountClub;
 import com.yapp.pet.domain.accountclub.AccountClubRepository;
+import com.yapp.pet.domain.club.document.ClubDocument;
 import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.club.entity.EligibleSex;
 import com.yapp.pet.domain.club.repository.ClubRepository;
+import com.yapp.pet.domain.club.repository.ClubSearchRepository;
 import com.yapp.pet.domain.comment.CommentRepository;
 import com.yapp.pet.domain.pet.entity.Pet;
 import com.yapp.pet.domain.pet.repository.PetRepository;
@@ -35,6 +37,7 @@ public class ClubService {
     private final ClubMapper clubMapper;
     private final PetRepository petRepository;
     private final CommentRepository commentRepository;
+    private final ClubSearchRepository clubSearchRepository;
 
     public void leaveClub(Long clubId, Account loginAccount) {
 
@@ -48,7 +51,7 @@ public class ClubService {
         accountClubRepository.delete(accountClub);
     }
 
-    public long create(Account account, ClubCreateRequest clubCreateRequest) {
+    public long createClub(Account account, ClubCreateRequest clubCreateRequest) {
 
         if (petRepository.findPetsByAccountId(account.getId()).size() <= 0) {
             throw new NotHaveAnyPetException();
@@ -62,6 +65,16 @@ public class ClubService {
         accountClubRepository.save(accountClub);
 
         return club.getId();
+    }
+
+    public long createClubDocument(long clubId) {
+        ClubDocument clubDocument = clubRepository.findById(clubId)
+                                                  .map(ClubDocument::of)
+                                                  .orElseThrow(EntityNotFoundException::new);
+
+        ClubDocument savedClubDocument = clubSearchRepository.save(clubDocument);
+
+        return savedClubDocument.getId();
     }
 
     public void deleteClub(Long clubId, Account loginAccount) {

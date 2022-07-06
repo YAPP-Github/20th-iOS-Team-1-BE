@@ -1,6 +1,7 @@
 package com.yapp.pet.web.club;
 
 import com.yapp.pet.domain.account.entity.Account;
+import com.yapp.pet.domain.club.repository.CustomClubSearchRepositoryImpl;
 import com.yapp.pet.domain.club.service.ClubQueryService;
 import com.yapp.pet.domain.club.repository.ClubFindCondition;
 import com.yapp.pet.domain.club.service.ClubService;
@@ -34,6 +35,7 @@ public class ClubController {
 
     private final ClubQueryService clubQueryService;
     private final ClubService clubService;
+
 
     @GetMapping("/clubs/search")
     public ResponseEntity<List<SearchingResponse>> searchingByWord(@ModelAttribute SearchingRequest request,
@@ -116,7 +118,8 @@ public class ClubController {
         long savedId = 0L;
 
         try {
-            savedId = clubService.create(account, clubCreateRequest);
+            savedId = clubService.createClub(account, clubCreateRequest);
+            clubService.createClubDocument(savedId);
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
@@ -160,5 +163,4 @@ public class ClubController {
 
         return ResponseEntity.ok(response);
     }
-
 }
