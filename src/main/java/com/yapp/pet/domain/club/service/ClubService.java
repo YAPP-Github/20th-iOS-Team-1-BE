@@ -154,12 +154,24 @@ public class ClubService {
                 .anyMatch(pet -> club.getEligibleBreeds().contains(pet.getBreed()));
     }
 
-    public void participateClub(Long clubId, Account loginAccount){
+    public long participateClub(Long clubId, Account loginAccount){
         Club findClub = clubRepository.findById(clubId).orElseThrow(EntityNotFoundException::new);
 
         AccountClub accountClub = AccountClub.of(loginAccount, findClub);
         accountClub.addClub(findClub);
 
-        accountClubRepository.save(accountClub);
+        return accountClubRepository.save(accountClub).getId();
+    }
+
+    public void updateAccountClubDocument(Long accountClubId) {
+        AccountClub accountClub = accountClubRepository.findById(accountClubId)
+                                                       .orElseThrow(EntityNotFoundException::new);
+
+        ClubDocument clubDocument = clubSearchRepository.findById(accountClub.getClub().getId())
+                                                        .orElseThrow(EntityNotFoundException::new);
+
+        clubDocument.updateAccountClubDocument(accountClub);
+
+        clubSearchRepository.save(clubDocument);
     }
 }

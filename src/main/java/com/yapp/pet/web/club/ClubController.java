@@ -155,7 +155,9 @@ public class ClubController {
                 return ResponseEntity.badRequest().body(response);
             }
 
-            clubService.participateClub(clubId, loginAccount);
+            long savedAccountClubId = clubService.participateClub(clubId, loginAccount);
+
+            clubService.updateAccountClubDocument(savedAccountClubId);
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
