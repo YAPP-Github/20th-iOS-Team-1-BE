@@ -40,8 +40,8 @@ public class AccountController {
 
     @PostMapping("/accounts/sign-up")
     public ResponseEntity<Long> signUp(@AuthAccount Account account,
-                                       @Valid AccountSignUpRequest accountSignUpRequest,
-                                       @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) {
+                                       @Valid @RequestPart AccountSignUpRequest accountSignUpRequest,
+                                       @RequestPart (value = "imageFile", required = false) MultipartFile imageFile) {
 
         Long accountId;
 
