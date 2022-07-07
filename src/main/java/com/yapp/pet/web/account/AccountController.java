@@ -9,7 +9,6 @@ import com.yapp.pet.web.account.model.AccountUpdateRequest;
 import com.yapp.pet.web.account.model.AccountValidationResponse;
 import com.yapp.pet.web.account.model.MyPageResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,7 +39,7 @@ public class AccountController {
 
     @PostMapping("/accounts/sign-up")
     public ResponseEntity<Long> signUp(@AuthAccount Account account,
-                                       @Valid @ModelAttribute AccountSignUpRequest accountSignUpRequest) {
+                                       @Valid AccountSignUpRequest accountSignUpRequest) {
 
         Long accountId;
 
@@ -72,7 +71,7 @@ public class AccountController {
 
     @PatchMapping("/accounts")
     public ResponseEntity<Void> updateAccount(@AuthAccount Account account,
-                                                    @ModelAttribute AccountUpdateRequest accountUpdateRequest){
+                                              @ModelAttribute AccountUpdateRequest accountUpdateRequest){
 
         try {
             accountService.updateAccount(account, accountUpdateRequest);
