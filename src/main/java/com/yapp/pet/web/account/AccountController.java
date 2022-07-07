@@ -11,6 +11,7 @@ import com.yapp.pet.web.account.model.MyPageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -39,12 +40,13 @@ public class AccountController {
 
     @PostMapping("/accounts/sign-up")
     public ResponseEntity<Long> signUp(@AuthAccount Account account,
-                                       @Valid AccountSignUpRequest accountSignUpRequest) {
+                                       @Valid AccountSignUpRequest accountSignUpRequest,
+                                       @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) {
 
         Long accountId;
 
         try {
-            accountId = accountService.signUp(account, accountSignUpRequest);
+            accountId = accountService.signUp(account, accountSignUpRequest, imageFile);
         } catch (Exception e) {
             e.printStackTrace();
             throw e;

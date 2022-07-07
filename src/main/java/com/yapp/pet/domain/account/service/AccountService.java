@@ -76,14 +76,14 @@ public class AccountService {
         return signInResponse;
     }
 
-    public Long signUp(Account account, AccountSignUpRequest signUpRequest) {
+    public Long signUp(Account account, AccountSignUpRequest signUpRequest, MultipartFile imageFile) {
 
         Account updateAccount = accountMapper.toEntity(signUpRequest);
 
         account.signUp(updateAccount);
 
-        if (hasImageFile(signUpRequest.getImageFile())) {
-            AccountImage accountImage = accountImageService.create(signUpRequest.getImageFile());
+        if (hasImageFile(imageFile)) {
+            AccountImage accountImage = accountImageService.create(imageFile);
             account.addImage(accountImage);
         }
 
