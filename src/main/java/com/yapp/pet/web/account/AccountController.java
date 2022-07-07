@@ -40,13 +40,12 @@ public class AccountController {
 
     @PostMapping("/accounts/sign-up")
     public ResponseEntity<Long> signUp(@AuthAccount Account account,
-                                       @Valid @RequestPart AccountSignUpRequest accountSignUpRequest,
-                                       @RequestPart (value = "imageFile", required = false) MultipartFile imageFile) {
+                                       @Valid @ModelAttribute AccountSignUpRequest accountSignUpRequest) {
 
         Long accountId;
 
         try {
-            accountId = accountService.signUp(account, accountSignUpRequest, imageFile);
+            accountId = accountService.signUp(account, accountSignUpRequest);
         } catch (Exception e) {
             e.printStackTrace();
             throw e;

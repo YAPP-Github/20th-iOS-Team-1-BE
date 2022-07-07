@@ -16,6 +16,8 @@ public class AccountSignUpRequest {
     @NotBlank
     private String nickname;
 
+    private MultipartFile imageFile;
+
     @NotNull
     @Min(value = 1) @Max(value = 120)
     private Integer age;
