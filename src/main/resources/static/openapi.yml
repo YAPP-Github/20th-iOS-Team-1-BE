@@ -280,16 +280,10 @@ paths:
       parameters:
         - name: request
           in: query
-          description: SearchingRequest
+          description: "지정되지 않은 필터는 null로 보내주시면 됩니다 !"
           required: true
           schema:
             $ref: '#/components/schemas/SearchingRequest'
-        - name: searchingType
-          in: query
-          description: 검색어를 통한 검색은 word, 카테고리 검색은 category
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: OK
