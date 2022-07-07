@@ -38,16 +38,14 @@ public class ClubController {
 
 
     @GetMapping("/clubs/search")
-    public ResponseEntity<List<SearchingResponse>> searchingByWord(@ModelAttribute SearchingRequest request,
-                                                                   @RequestParam("searchingType") String searchingType) {
+    public ResponseEntity<List<SearchingResponse>> searchingByWord(@ModelAttribute SearchingRequest request) {
 
-        log.info("SearchingType = {}", searchingType);
         log.info("category = {}", request.getCategory());
         log.info("petSizeType = {}", request.getPetSizeType());
         log.info("eligibleSex = {}", request.getEligibleSex());
         log.info("EligibleBreed = {}", request.getEligibleBreed());
 
-        return ResponseEntity.ok(clubQueryService.searchingClub(request, searchingType));
+        return ResponseEntity.ok(clubQueryService.searchingClub(request));
     }
 
     @GetMapping("/clubs/search/range")

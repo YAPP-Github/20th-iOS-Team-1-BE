@@ -1,6 +1,6 @@
 package com.yapp.pet.web.club.model;
 
-import com.yapp.pet.domain.club.entity.Club;
+import com.yapp.pet.domain.club.document.ClubDocument;
 import com.yapp.pet.domain.club.entity.ClubStatus;
 import com.yapp.pet.domain.club.entity.EligibleSex;
 import com.yapp.pet.domain.common.Category;
@@ -73,20 +73,20 @@ public class SearchingClubDto {
         private int distance;
         private ClubStatus clubStatus;
 
-        public SearchingResponse(Club club) {
-            this.category = club.getCategory();
-            this.title = club.getTitle();
-            this.startDate = club.getStartDate();
-            this.endDate = club.getEndDate();
-            this.eligiblePetSizeTypes = club.getEligiblePetSizeTypes();
-            this.eligibleBreeds = club.getEligibleBreeds();
-            this.eligibleSex = club.getEligibleSex();
-            this.maximumPeople = club.getMaximumPeople();
-            this.latitude = club.getLatitude();
-            this.longitude = club.getLongitude();
-            this.participants = club.getAccountClubs().size();
-            this.meetingPlace = club.getMeetingPlace();
-            this.clubStatus = club.getStatus();
+        public SearchingResponse(ClubDocument clubDocument) {
+            this.category = clubDocument.getCategory();
+            this.title = clubDocument.getTitle();
+            this.startDate = clubDocument.getStartDate();
+            this.endDate = clubDocument.getEndDate();
+            this.eligiblePetSizeTypes = clubDocument.getEligiblePetSizeTypes();
+            this.eligibleBreeds = clubDocument.getEligibleBreeds();
+            this.eligibleSex = clubDocument.getEligibleSex();
+            this.maximumPeople = clubDocument.getMaximumPeople();
+            this.latitude = clubDocument.getLatitude();
+            this.longitude = clubDocument.getLongitude();
+            this.participants = clubDocument.getAccountClubs().size();
+            this.meetingPlace = clubDocument.getMeetingPlace();
+            this.clubStatus = clubDocument.getStatus();
         }
 
         public SearchingResponse getDistanceBetweenAccountAndClub(Double userLatitude, Double userLongitude) {

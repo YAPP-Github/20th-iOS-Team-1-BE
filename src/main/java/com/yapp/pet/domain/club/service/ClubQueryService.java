@@ -1,10 +1,11 @@
 package com.yapp.pet.domain.club.service;
 
 import com.yapp.pet.domain.account.entity.Account;
-import com.yapp.pet.domain.accountclub.AccountClub;
+import com.yapp.pet.domain.club.document.ClubDocument;
 import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.club.repository.ClubFindCondition;
 import com.yapp.pet.domain.club.repository.ClubRepository;
+import com.yapp.pet.domain.club.repository.ClubSearchRepository;
 import com.yapp.pet.domain.comment.CommentQueryService;
 import com.yapp.pet.global.mapper.ClubMapper;
 import com.yapp.pet.web.club.model.ClubFindDetailResponse;
@@ -22,7 +23,6 @@ import java.util.stream.Collectors;
 
 import static com.yapp.pet.web.club.model.ClubFindDetailResponse.*;
 import static com.yapp.pet.web.club.model.ClubFindResponse.ClubInfo;
-import static com.yapp.pet.web.club.model.ClubFindResponse.of;
 import static com.yapp.pet.web.club.model.SearchingClubDto.SearchingRequest;
 import static com.yapp.pet.web.club.model.SearchingClubDto.SearchingResponse;
 import static com.yapp.pet.web.club.model.SearchingSimpleClubDto.SearchingSimpleClubRequest;
@@ -41,17 +41,13 @@ public class ClubQueryService {
 
     private final CommentQueryService commentQueryService;
 
-    public List<SearchingResponse> searchingClub(SearchingRequest searchingRequest, String SearchingType) {
+    private final ClubSearchRepository clubSearchRepository;
 
-        List<Club> savedClub;
+    public List<SearchingResponse> searchingClub(SearchingRequest searchingRequest) {
 
-        if (SearchingType.equals("word")) {
-            savedClub = clubRepository.searchClubByWord(searchingRequest);
-        } else{
-            savedClub = clubRepository.searchClubByCategory(searchingRequest);
-        }
+        List<ClubDocument> savedClubDocument = clubSearchRepository.findByTitleCondition(searchingRequest);
 
-        return savedClub.stream()
+        return savedClubDocument.stream()
                         .map(SearchingResponse::new)
                         .map(dto -> dto.getDistanceBetweenAccountAndClub(searchingRequest.getStartLatitude(),
                                                                          searchingRequest.getStartLongitude()))
