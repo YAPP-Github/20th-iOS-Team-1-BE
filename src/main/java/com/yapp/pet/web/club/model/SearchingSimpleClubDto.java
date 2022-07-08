@@ -35,6 +35,8 @@ public class SearchingSimpleClubDto {
     @Getter
     @AllArgsConstructor
     public static class SearchingSimpleClubResponse {
+
+        private long clubId;
         private Category category;
         private String title;
         private ZonedDateTime startDate;
@@ -51,6 +53,7 @@ public class SearchingSimpleClubDto {
         private ClubStatus clubStatus;
 
         public SearchingSimpleClubResponse(Club club, int participants) {
+            this.clubId = club.getId();
             this.category = club.getCategory();
             this.title = club.getTitle();
             this.startDate = club.getStartDate();

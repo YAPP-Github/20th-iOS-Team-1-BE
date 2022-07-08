@@ -3,6 +3,7 @@ package com.yapp.pet.global.config;
 import com.yapp.pet.domain.club.document.AccountClubDocument;
 import com.yapp.pet.domain.club.repository.ClubSearchRepository;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
@@ -22,11 +23,14 @@ import java.util.Map;
 @EnableElasticsearchRepositories(basePackageClasses = ClubSearchRepository.class)
 public class ElasticSearchConfig extends AbstractElasticsearchConfiguration {
 
+    @Value("${TOGATHER_PRIVATE_IP}")
+    String ip;
+
     @Override
     public RestHighLevelClient elasticsearchClient() {
 
         ClientConfiguration clientConfiguration = ClientConfiguration.builder()
-                                                                     .connectedTo("localhost:9200")
+                                                                     .connectedTo(ip + ":9200")
                                                                      .build();
         return RestClients.create(clientConfiguration).rest();
     }

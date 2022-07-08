@@ -2,6 +2,7 @@ name: Togather
 
 env:
   TOGATHER_JASYPT_PASSWORD: ${{ secrets.TOGATHER_JASYPT_PASSWORD }}
+  TOGATHER_PRIVATE_IP: ${{ secrets.TOGATHER_PRIVATE_IP }}
 
 on:
   push:
@@ -84,4 +85,5 @@ jobs:
       - name: Docker run
         run: |
             sudo docker stop yapp && docker rm yapp && docker rmi ${{ secrets.DOCKER_TAG }}
-            sudo docker run -d -p 8080:8080 -e TOGATHER_JASYPT_PASSWORD=${{ secrets.TOGATHER_JASYPT_PASSWORD }} --name yapp ${{ secrets.DOCKER_TAG }}
+            sudo docker run -d -p 8080:8080 -e TOGATHER_JASYPT_PASSWORD=${{ secrets.TOGATHER_JASYPT_PASSWORD }} -e TOGATHER_PRIVATE_IP=${{ secrets.TOGATHER_PRIVATE_IP }} --name yapp ${{ secrets.DOCKER_TAG }}
+

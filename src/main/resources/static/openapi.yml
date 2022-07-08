@@ -396,13 +396,11 @@ paths:
       tags:
         - 모임 (Club)
       summary: 모임 생성 API
-      parameters:
-        - name: clubCreateRequest
-          in: query
-          description: 생성할 모임의 정보들입니다
-          required: true
-          schema:
-            $ref: '#/components/schemas/ClubCreateRequest'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClubCreateRequest'
       responses:
         '200':
           description: OK
@@ -628,12 +626,11 @@ paths:
       tags:
         - 댓글 (Comment)
       summary: 댓글 생성 API
-      parameters:
-        - name: commentRequest
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/CommentRequest'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentRequest'
       responses:
         '200':
           description: OK
@@ -1010,6 +1007,8 @@ components:
     SearchingSimpleClubResponse:
       type: object
       properties:
+        clubId:
+          type: integer
         category:
           type: string
           enum:
