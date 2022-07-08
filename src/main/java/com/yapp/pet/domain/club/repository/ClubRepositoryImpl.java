@@ -106,8 +106,8 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
     }
 
     @Override
-    public Page<Club> findClubsByCondition(Long cursorId, ClubFindCondition condition, Account loginAccount,
-                                           Pageable pageable) {
+    public Page<Club> findClubsByCondition(Long cursorId, ZonedDateTime cursorEndDate,
+                                           ClubFindCondition condition, Account loginAccount, Pageable pageable) {
 
         List<AccountClub> findAccountClubs = queryFactory.selectFrom(accountClub)
                 .innerJoin(accountClub.account, account).fetchJoin()
@@ -115,7 +115,7 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
                 .leftJoin(club.eligibleBreeds).fetchJoin()
                 .innerJoin(club.eligiblePetSizeTypes).fetchJoin()
                 .where(
-                        cursorId(cursorId),
+                        cursorEndDateAndCursorId(cursorEndDate, cursorId),
                         isParticipating(condition, loginAccount),
                         isLeader(condition, loginAccount),
                         isParticipatedAndExceed(condition, loginAccount)
@@ -212,8 +212,14 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
                             .and(club.longitude.between(upperLeftLongitude, bottomRightLongitude));
     }
 
-    private BooleanExpression cursorId(Long cursorId){
-        return cursorId == null ? null : club.id.gt(cursorId);
+    private BooleanExpression cursorEndDateAndCursorId(ZonedDateTime cursorEndDate, Long cursorId){
+        if (cursorEndDate == null || cursorId == null) {
+            return null;
+        }
+
+        return club.endDate.eq(cursorEndDate)
+                .and(club.id.gt(cursorId))
+                .or(club.endDate.gt(cursorEndDate));
     }
 
     private BooleanExpression isParticipating(ClubFindCondition condition, Account account){

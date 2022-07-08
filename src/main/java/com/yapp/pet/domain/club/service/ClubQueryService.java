@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -84,11 +85,15 @@ public class ClubQueryService {
                              .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 club"));
     }
 
-    public ClubFindResponse findClubsByCondition(Long cursorId, ClubFindCondition condition, Account account,
-                                                 Pageable pageable){
+    public ClubFindResponse findClubsByCondition(Long cursorId, ZonedDateTime cursorEndDate,
+                                                 ClubFindCondition condition, Account account, Pageable pageable){
 
-        Page<ClubInfo> findClubInfos = clubRepository.findClubsByCondition(cursorId, condition, account, pageable)
-                                                     .map(clubMapper::toInfo);
+        Page<ClubInfo> findClubInfos
+                = clubRepository.findClubsByCondition(
+                        cursorId, cursorEndDate,
+                        condition, account, pageable
+                )
+                .map(clubMapper::toInfo);
 
         ClubFindResponse response = ClubFindResponse.of(findClubInfos, false);
 

@@ -1,15 +1,11 @@
 package com.yapp.pet.web.club;
 
 import com.yapp.pet.domain.account.entity.Account;
-import com.yapp.pet.domain.club.repository.CustomClubSearchRepositoryImpl;
 import com.yapp.pet.domain.club.service.ClubQueryService;
 import com.yapp.pet.domain.club.repository.ClubFindCondition;
 import com.yapp.pet.domain.club.service.ClubService;
 import com.yapp.pet.global.annotation.AuthAccount;
-import com.yapp.pet.web.club.model.ClubCreateRequest;
-import com.yapp.pet.web.club.model.ClubFindDetailResponse;
-import com.yapp.pet.web.club.model.ClubFindResponse;
-import com.yapp.pet.web.club.model.ClubParticipateResponse;
+import com.yapp.pet.web.club.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +13,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import static com.yapp.pet.web.club.model.SearchingClubDto.SearchingRequest;
@@ -64,14 +63,20 @@ public class ClubController {
     @GetMapping("/clubs")
     public ResponseEntity<ClubFindResponse> findClubsByCondition(
             @RequestParam(value = "cursor-id", required = false) Long cursorId,
+            @RequestParam(value = "cursor-end-date", required = false) LocalDateTime cursorEndDate,
             @RequestParam(value = "condition", required = false) ClubFindCondition condition,
             @PageableDefault(size = 10, sort = "endDate", direction = ASC) Pageable pageable,
             @AuthAccount Account account){
 
         ClubFindResponse response;
+        ZonedDateTime convertedCursorEndDate = null;
 
         try {
-            response = clubQueryService.findClubsByCondition(cursorId, condition, account, pageable);
+            if (cursorEndDate != null) {
+                convertedCursorEndDate = ZonedDateTime.of(cursorEndDate, ZoneId.of("Asia/Seoul"));
+            }
+
+            response = clubQueryService.findClubsByCondition(cursorId, convertedCursorEndDate, condition, account, pageable);
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
