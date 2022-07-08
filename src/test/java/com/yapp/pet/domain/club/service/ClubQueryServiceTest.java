@@ -82,7 +82,7 @@ class ClubQueryServiceTest {
         String searchingType = "word";
 
         //when
-        List<SearchingResponse> result = clubQueryService.searchingClub(request, "category");
+        List<SearchingResponse> result = clubQueryService.searchingClub(request);
 
         //then
         assertThat(result).extracting("category")
@@ -109,7 +109,7 @@ class ClubQueryServiceTest {
         String searchingType = "category";
 
         //when
-        List<SearchingResponse> result = clubQueryService.searchingClub(request, "word");
+        List<SearchingResponse> result = clubQueryService.searchingClub(request);
 
         //then
         assertThat(result.get(0).getTitle()).contains("산책");
