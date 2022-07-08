@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,7 +64,8 @@ public class ClubController {
     @GetMapping("/clubs")
     public ResponseEntity<ClubFindResponse> findClubsByCondition(
             @RequestParam(value = "cursor-id", required = false) Long cursorId,
-            @RequestParam(value = "cursor-end-date", required = false) LocalDateTime cursorEndDate,
+            @RequestParam(value = "cursor-end-date", required = false)
+                @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime cursorEndDate,
             @RequestParam(value = "condition", required = false) ClubFindCondition condition,
             @PageableDefault(size = 10, sort = "endDate", direction = ASC) Pageable pageable,
             @AuthAccount Account account){

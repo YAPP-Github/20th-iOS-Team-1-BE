@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.util.StringUtils;
 
 import java.time.ZonedDateTime;
@@ -127,7 +128,7 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
                 .map(AccountClub::getClub)
                 .collect(Collectors.toList());
 
-        return new PageImpl<>(findClubs, pageable, findClubs.size());
+        return PageableExecutionUtils.getPage(findClubs, pageable, findClubs::size);
     }
 
     @Override
