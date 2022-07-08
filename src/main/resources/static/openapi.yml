@@ -1010,6 +1010,8 @@ components:
     SearchingSimpleClubResponse:
       type: object
       properties:
+        clubId:
+          type: integer
         category:
           type: string
           enum:
