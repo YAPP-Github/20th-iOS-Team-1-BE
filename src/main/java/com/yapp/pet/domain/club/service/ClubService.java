@@ -150,6 +150,10 @@ public class ClubService {
     }
 
     private boolean isEligibleBreeds(Club club, List<Pet> findPets) {
+        if (club.getEligibleBreeds() == null || club.getEligibleBreeds().isEmpty()) {
+            return true;
+        }
+        
         return findPets.stream()
                 .anyMatch(pet -> club.getEligibleBreeds().contains(pet.getBreed()));
     }
