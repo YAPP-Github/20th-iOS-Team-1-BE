@@ -48,13 +48,20 @@ public class ClubQueryService {
         List<ClubDocument> savedClubDocument = clubSearchRepository.findByTitleCondition(searchingRequest);
 
         return savedClubDocument.stream()
-                        .map(SearchingResponse::new)
-                        .map(dto -> dto.getDistanceBetweenAccountAndClub(searchingRequest.getStartLatitude(),
-                                                                         searchingRequest.getStartLongitude()))
-                        .sorted((dto1, dto2) -> {
-                            return dto1.getDistance() - dto2.getDistance();
-                        })
-                        .collect(Collectors.toList());
+                                .filter(document -> isParticipateBetweenMaxAndMin(searchingRequest.getParticipateMax(),
+                                                                                  searchingRequest.getParticipateMin(),
+                                                                                  document.getAccountClubs().size()))
+                                .map(SearchingResponse::new)
+                                .map(dto -> dto.getDistanceBetweenAccountAndClub(searchingRequest.getStartLatitude(),
+                                                                                 searchingRequest.getStartLongitude()))
+                                .sorted((dto1, dto2) -> {
+                                    return dto1.getDistance() - dto2.getDistance();
+                                })
+                                .collect(Collectors.toList());
+    }
+
+    public boolean isParticipateBetweenMaxAndMin(int max, int min, int target) {
+        return target >= min && target <= max;
     }
 
     public List<SearchingWithinRangeClubResponse> searchingRangeClub(SearchingWithinRangeClubRequest rangeRequest) {
