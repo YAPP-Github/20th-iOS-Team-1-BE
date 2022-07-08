@@ -111,7 +111,7 @@ public class ClubController {
     }
 
     @PostMapping("/clubs")
-    public long createClub(@AuthAccount Account account, ClubCreateRequest clubCreateRequest) {
+    public long createClub(@AuthAccount Account account, @RequestBody ClubCreateRequest clubCreateRequest) {
 
         long savedId = 0L;
 
