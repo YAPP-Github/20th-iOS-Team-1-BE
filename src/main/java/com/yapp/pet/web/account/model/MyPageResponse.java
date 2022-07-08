@@ -6,6 +6,7 @@ import com.yapp.pet.domain.common.Category;
 import com.yapp.pet.domain.pet.entity.Pet;
 import com.yapp.pet.domain.pet.entity.PetSex;
 import com.yapp.pet.domain.pet_tag.PetTag;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,25 +20,27 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class MyPageResponse {
 
-    private boolean myPage = false;
+    private boolean myPage;
 
     private AccountInfoResponse accountInfo;
 
     private List<PetInfoResponse> petInfos;
 
-    public MyPageResponse(Account account, List<Pet> pets) {
-
-        this.myPage = false;
-
+    @Builder
+    public MyPageResponse(Account account, List<Pet> pets, boolean myPage) {
+        this.myPage = myPage;
         this.accountInfo = new AccountInfoResponse(account);
-
         this.petInfos = pets.stream()
                 .map(PetInfoResponse::new)
                 .collect(Collectors.toList());
     }
 
-    public static MyPageResponse of(Account account, List<Pet> pets) {
-        return new MyPageResponse(account, pets);
+    public static MyPageResponse of(Account account, List<Pet> pets, boolean myPage) {
+        return MyPageResponse.builder()
+                .account(account)
+                .pets(pets)
+                .myPage(myPage)
+                .build();
     }
 
     @Getter
