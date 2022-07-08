@@ -9,9 +9,9 @@ import com.yapp.pet.web.account.model.AccountUpdateRequest;
 import com.yapp.pet.web.account.model.AccountValidationResponse;
 import com.yapp.pet.web.account.model.MyPageResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -72,7 +72,7 @@ public class AccountController {
 
     @PatchMapping("/accounts")
     public ResponseEntity<Void> updateAccount(@AuthAccount Account account,
-                                                    @ModelAttribute AccountUpdateRequest accountUpdateRequest){
+                                              @ModelAttribute AccountUpdateRequest accountUpdateRequest){
 
         try {
             accountService.updateAccount(account, accountUpdateRequest);
