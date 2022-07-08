@@ -626,12 +626,11 @@ paths:
       tags:
         - 댓글 (Comment)
       summary: 댓글 생성 API
-      parameters:
-        - name: commentRequest
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/CommentRequest'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentRequest'
       responses:
         '200':
           description: OK
