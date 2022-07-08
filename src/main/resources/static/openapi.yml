@@ -396,13 +396,11 @@ paths:
       tags:
         - 모임 (Club)
       summary: 모임 생성 API
-      parameters:
-        - name: clubCreateRequest
-          in: query
-          description: 생성할 모임의 정보들입니다
-          required: true
-          schema:
-            $ref: '#/components/schemas/ClubCreateRequest'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClubCreateRequest'
       responses:
         '200':
           description: OK

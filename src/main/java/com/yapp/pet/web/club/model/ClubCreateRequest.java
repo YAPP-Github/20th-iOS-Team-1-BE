@@ -1,5 +1,6 @@
 package com.yapp.pet.web.club.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yapp.pet.domain.club.entity.EligibleSex;
 import com.yapp.pet.domain.common.Category;
 import com.yapp.pet.domain.common.PetSizeType;
@@ -25,10 +26,10 @@ public class ClubCreateRequest {
 
     private String description;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startDate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endDate;
 
     private int maximumPeople;
