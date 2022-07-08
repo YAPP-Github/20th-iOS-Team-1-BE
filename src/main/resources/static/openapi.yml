@@ -53,20 +53,20 @@ paths:
               schema:
                 $ref: '#/components/schemas/ExceptionResponseInfo'
 
-  /api/accounts/my-page/{nickname}:
+  /api/accounts/my-page:
     get:
       tags:
         - 계정 (Account)
       summary: 마이페이지 조회 API
       description: 마이페이지 조회 시 요청 파라미터 닉네임 계정의 견주와 강아지 정보를 응답합니다. (타 계정의 마이페이지를 조회할 때는, 즉 myPage 필드가 false인 경우 수정버튼이 보이지 않아야 합니다.)
       parameters:
-        - in: path
+        - in: query
           name: nickname
-          required: true
+          required: false
           schema:
             type: string
             example: 재롱잔치
-          description: 해당 닉네임의 마이페이지를 조회
+          description: 닉네임값이 없으면 본인의 마이페이지 조회, 값이 존재하면 타인의 마이페이지 조회
       responses:
         '200':
           description: OK
