@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -66,6 +67,7 @@ class ClubQueryServiceTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("검색 타입이 카테고리일 경우 카테고리가 같은 모임 중에 사용자로부터 가까운 모임 순서대로 조회한다")
     void searchingClubByCategory() throws Exception {
         //given
@@ -93,6 +95,7 @@ class ClubQueryServiceTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("검색 타입이 검색어일 경우 모임 이름 중 검색어가 포함된 모임 중에 사용자로부터 가까운 모임 순서대로 조회한다")
     void searchingClubByWord() throws Exception {
         //given
@@ -365,6 +368,7 @@ class ClubQueryServiceTest {
 
     @Test
     @DisplayName("모임 상세 조회 - 조회 하는 유저가 리더인 경우")
+    @Transactional
     void findClubDetailAtLeader() {
         //given
         Long clubId = 1L;
@@ -384,6 +388,7 @@ class ClubQueryServiceTest {
 
     @Test
     @DisplayName("모임 상세 조회 - 조회 하는 유저가 리더가 아니지만, 모임에 참여한 경우")
+    @Transactional
     void findClubDetailAtNotLeaderAndParticipating() {
         //given
         Long clubId = 1L;
