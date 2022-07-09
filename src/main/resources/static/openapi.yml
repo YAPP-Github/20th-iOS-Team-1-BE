@@ -372,6 +372,13 @@ paths:
           schema:
             type: integer
           example: 10
+        - name: cursor-end-date
+          in: query
+          description: 모임 목록 화면에서 마지막 모임 endDate값에 해당합니다. (화면 기준 가장 아래 위치한 모임)
+          required: false
+          schema:
+            type: string
+          example: 2022-03-15 19:24:02
         - name: condition
           in: query
           description: 설명에 명시한 조회 조건입니다. (I_AM_PARTICIPATING , I_AM_LEADER, I_AM_PARTICIPATED_AND_EXCEED)

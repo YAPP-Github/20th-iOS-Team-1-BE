@@ -20,7 +20,7 @@ public interface ClubRepositoryCustom {
 
     List<Club> findExceedTimeClub();
 
-    Page<Club> findClubsByCondition(Long cursorId, ClubFindCondition condition, Account account, Pageable pageable);
+    Page<Club> findClubsByCondition(String customCursor, ClubFindCondition condition, Account account, Pageable pageable);
 
     Optional<Club> findClubDetailById(Long clubId);
 }
