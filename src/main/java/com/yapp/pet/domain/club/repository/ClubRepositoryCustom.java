@@ -5,7 +5,6 @@ import com.yapp.pet.domain.club.entity.Club;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +20,7 @@ public interface ClubRepositoryCustom {
 
     List<Club> findExceedTimeClub();
 
-    Page<Club> findClubsByCondition(Long cursorId, ZonedDateTime cursorEndDate, ClubFindCondition condition, Account account, Pageable pageable);
+    Page<Club> findClubsByCondition(String customCursor, ClubFindCondition condition, Account account, Pageable pageable);
 
     Optional<Club> findClubDetailById(Long clubId);
 }

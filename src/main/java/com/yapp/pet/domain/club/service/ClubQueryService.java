@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -85,13 +85,15 @@ public class ClubQueryService {
                              .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 club"));
     }
 
-    public ClubFindResponse findClubsByCondition(Long cursorId, ZonedDateTime cursorEndDate,
+    public ClubFindResponse findClubsByCondition(Long cursorId, LocalDateTime cursorEndDate,
                                                  ClubFindCondition condition, Account account, Pageable pageable){
+
+        String customCursor = generateCustomCursor(cursorEndDate, cursorId);
 
         Page<ClubInfo> findClubInfos
                 = clubRepository.findClubsByCondition(
-                        cursorId, cursorEndDate,
-                        condition, account, pageable
+                        customCursor, condition,
+                        account, pageable
                 )
                 .map(clubMapper::toInfo);
 
@@ -102,6 +104,30 @@ public class ClubQueryService {
         }
 
         return response;
+    }
+
+    private String generateCustomCursor(LocalDateTime cursorEndDate, Long cursorId){
+        if (cursorEndDate == null && cursorId == null) {
+            return null;
+        }
+
+        cursorEndDate = cursorEndDate.minusHours(9);
+
+        String customCursorEndDate;
+        String customCursorId;
+
+        customCursorEndDate = cursorEndDate.toString()
+                                                  .replaceAll("T", "")
+                                                  .replaceAll("-", "")
+                                                  .replaceAll(":", "") + "00";
+
+        customCursorEndDate = String.format("%1$" + 20 + "s", customCursorEndDate)
+                                    .replace(' ', '0');
+
+        customCursorId = String.format("%1$" + 10 + "s", cursorId)
+                               .replace(' ', '0');
+
+        return customCursorEndDate + customCursorId;
     }
 
     public ClubFindDetailResponse findClubDetail(Long clubId, Account loginAccount) {

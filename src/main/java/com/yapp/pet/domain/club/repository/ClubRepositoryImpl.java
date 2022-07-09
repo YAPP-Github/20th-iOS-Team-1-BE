@@ -1,10 +1,10 @@
 package com.yapp.pet.domain.club.repository;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.BooleanPath;
+import com.querydsl.core.types.dsl.*;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.accountclub.AccountClub;
@@ -15,7 +15,6 @@ import com.yapp.pet.domain.common.Category;
 import com.yapp.pet.domain.common.PetSizeType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.util.StringUtils;
@@ -107,8 +106,8 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
     }
 
     @Override
-    public Page<Club> findClubsByCondition(Long cursorId, ZonedDateTime cursorEndDate,
-                                           ClubFindCondition condition, Account loginAccount, Pageable pageable) {
+    public Page<Club> findClubsByCondition(String customCursor, ClubFindCondition condition,
+                                           Account loginAccount, Pageable pageable) {
 
         List<AccountClub> findAccountClubs = queryFactory.selectFrom(accountClub)
                 .innerJoin(accountClub.account, account).fetchJoin()
@@ -116,7 +115,7 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
                 .leftJoin(club.eligibleBreeds).fetchJoin()
                 .innerJoin(club.eligiblePetSizeTypes).fetchJoin()
                 .where(
-                        cursorEndDateAndCursorId(cursorEndDate, cursorId),
+                        customCursor(customCursor),
                         isParticipating(condition, loginAccount),
                         isLeader(condition, loginAccount),
                         isParticipatedAndExceed(condition, loginAccount)
@@ -214,14 +213,20 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
                             .and(club.longitude.between(upperLeftLongitude, bottomRightLongitude));
     }
 
-    private BooleanExpression cursorEndDateAndCursorId(ZonedDateTime cursorEndDate, Long cursorId){
-        if (cursorEndDate == null || cursorId == null) {
+    private BooleanExpression customCursor(String customCursor){
+        if (customCursor == null) {
             return null;
         }
 
-        return club.endDate.eq(cursorEndDate)
-                .and(club.id.gt(cursorId))
-                .or(club.endDate.gt(cursorEndDate));
+        StringTemplate stringTemplate = Expressions.stringTemplate(
+                "DATE_FORMAT({0}, {1})",
+                club.endDate,
+                ConstantImpl.create("%Y%m%d%H%i%s")
+        );
+
+        return StringExpressions.lpad(stringTemplate, 20, '0')
+                .concat(StringExpressions.lpad(club.id.stringValue(), 10, '0'))
+                .gt(customCursor);
     }
 
     private BooleanExpression isParticipating(ClubFindCondition condition, Account account){
