@@ -11,7 +11,6 @@ import com.yapp.pet.web.account.model.MyPageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -54,8 +53,8 @@ public class AccountController {
         return ResponseEntity.ok(accountId);
     }
 
-    @GetMapping("/accounts/my-page/{nickname}")
-    public ResponseEntity<MyPageResponse> myPage(@PathVariable("nickname") String nickname,
+    @GetMapping("/accounts/my-page")
+    public ResponseEntity<MyPageResponse> myPage(@RequestParam(value = "nickname", required = false) String nickname,
                                                  @AuthAccount Account account){
 
         MyPageResponse response;

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -25,17 +26,19 @@ public class AccountQueryService {
 
     public MyPageResponse getMyPageInfo(Account account, String nickname) {
 
-        Account findAccount = accountRepository.findByNickname(nickname).orElseThrow(EntityNotFoundException::new);
-
-        List<Pet> findPets = petRepository.findPetsByAccountId(findAccount.getId());
-
-        MyPageResponse response = MyPageResponse.of(findAccount, findPets);
-
-        if (account.isMe(findAccount)) {
-            response.setMyPage(true);
+        if (isMyPage(nickname)) {
+            List<Pet> findPets = petRepository.findPetsByAccountId(account.getId());
+            return MyPageResponse.of(account, findPets, true);
         }
 
-        return response;
+        Account findAccount = accountRepository.findByNickname(nickname).orElseThrow(EntityNotFoundException::new);
+        List<Pet> findPets = petRepository.findPetsByAccountId(findAccount.getId());
+
+        return MyPageResponse.of(findAccount, findPets, false);
+    }
+
+    private boolean isMyPage(String nickname){
+        return !StringUtils.hasText(nickname);
     }
 
     public AccountValidationResponse validateNickname(String nickname){
