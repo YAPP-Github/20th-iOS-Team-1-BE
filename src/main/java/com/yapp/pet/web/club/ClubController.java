@@ -1,9 +1,8 @@
 package com.yapp.pet.web.club;
 
 import com.yapp.pet.domain.account.entity.Account;
-import com.yapp.pet.domain.club.repository.CustomClubSearchRepositoryImpl;
-import com.yapp.pet.domain.club.service.ClubQueryService;
 import com.yapp.pet.domain.club.repository.ClubFindCondition;
+import com.yapp.pet.domain.club.service.ClubQueryService;
 import com.yapp.pet.domain.club.service.ClubService;
 import com.yapp.pet.global.annotation.AuthAccount;
 import com.yapp.pet.web.club.model.ClubCreateRequest;
@@ -14,9 +13,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.yapp.pet.web.club.model.SearchingClubDto.SearchingRequest;
@@ -64,6 +65,8 @@ public class ClubController {
     @GetMapping("/clubs")
     public ResponseEntity<ClubFindResponse> findClubsByCondition(
             @RequestParam(value = "cursor-id", required = false) Long cursorId,
+            @RequestParam(value = "cursor-end-date", required = false)
+                @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime cursorEndDate,
             @RequestParam(value = "condition", required = false) ClubFindCondition condition,
             @PageableDefault(size = 10, sort = "endDate", direction = ASC) Pageable pageable,
             @AuthAccount Account account){
@@ -71,7 +74,7 @@ public class ClubController {
         ClubFindResponse response;
 
         try {
-            response = clubQueryService.findClubsByCondition(cursorId, condition, account, pageable);
+            response = clubQueryService.findClubsByCondition(cursorId, cursorEndDate, condition, account, pageable);
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
