@@ -88,3 +88,5 @@ logging:
           elasticsearch:
             client:
               WIRE: TRACE
+
+TOGATHER_PRIVATE_IP : ENC(kRhINLnICycy74s94393nGaUq+fUBrzS)

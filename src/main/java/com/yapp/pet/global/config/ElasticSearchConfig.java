@@ -24,13 +24,13 @@ import java.util.Map;
 public class ElasticSearchConfig extends AbstractElasticsearchConfiguration {
 
     @Value("${TOGATHER_PRIVATE_IP}")
-    String ip;
+    String connectedUrl;
 
     @Override
     public RestHighLevelClient elasticsearchClient() {
 
         ClientConfiguration clientConfiguration = ClientConfiguration.builder()
-                                                                     .connectedTo(ip + ":9200")
+                                                                     .connectedTo(connectedUrl)
                                                                      .build();
         return RestClients.create(clientConfiguration).rest();
     }
