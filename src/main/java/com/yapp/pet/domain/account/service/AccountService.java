@@ -11,6 +11,8 @@ import com.yapp.pet.global.jwt.JwtService;
 import com.yapp.pet.global.mapper.AccountMapper;
 import com.yapp.pet.web.account.model.AccountSignUpRequest;
 import com.yapp.pet.web.account.model.AccountUpdateRequest;
+import com.yapp.pet.web.oauth.apple.AppleClient;
+import com.yapp.pet.web.oauth.apple.model.ApplePublicKeyResponse;
 import com.yapp.pet.web.oauth.apple.model.SignInResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,21 +34,27 @@ public class AccountService {
     private final JwtService jwtService;
     private final AccountImageService accountImageService;
 
-    private final AccountMapper accountMapper;
-
     private final AccountRepository accountRepository;
     private final TokenRepository tokenRepository;
+    private final AccountMapper accountMapper;
+    private final AppleClient appleClient;
 
-    public SignInResponse signIn(String idToken, Social social) {
+    public SignInResponse signInFromApple(String idToken, Social social) {
+        ApplePublicKeyResponse response = appleClient.getApplePublicKey();
+
+        String uniqueIdBySocial = jwtService.getSubjectByAppleToken(idToken, response);
+
+        return signIn(social, uniqueIdBySocial);
+    }
+
+    public SignInResponse signInFromKakao(String idToken, Social social) {
+        String uniqueIdBySocial = jwtService.getSubject(idToken);
+
+        return signIn(social, uniqueIdBySocial);
+    }
+
+    public SignInResponse signIn(Social social, String uniqueIdBySocial) {
         SignInResponse signInResponse = new SignInResponse();
-
-        String uniqueIdBySocial;
-
-        if (social.equals(Social.APPLE)) {
-            uniqueIdBySocial = jwtService.getSubjectByAppleToken(idToken);
-        } else {
-            uniqueIdBySocial = jwtService.getSubject(idToken);
-        }
 
         String createAccessToken = jwtService.createAccessToken(uniqueIdBySocial);
         String createRefreshToken = jwtService.createRefreshToken(uniqueIdBySocial);
