@@ -24,7 +24,7 @@ public class AppleController {
         SignInResponse signInResponse;
 
         try {
-            signInResponse = accountService.signInFromApple(appleRequest.getIdToken(), Social.APPLE);
+            signInResponse = accountService.signInFromApple(appleRequest, Social.APPLE);
         } catch (Exception e) {
             e.printStackTrace();
             throw e;

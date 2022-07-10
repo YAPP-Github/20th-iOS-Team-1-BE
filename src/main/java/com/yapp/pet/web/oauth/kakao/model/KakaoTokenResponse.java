@@ -28,6 +28,8 @@ public class KakaoTokenResponse {
     @JsonProperty("refresh_token_expires_in")
     private Integer refreshTokenExpiresIn;
 
+    private String email;
+
     private String scope;
 
 }
