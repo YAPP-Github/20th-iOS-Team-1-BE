@@ -822,6 +822,10 @@ components:
           type: string
           example: ioaf8vcksdfAC87dsal.ezZFD5nopjJ453fxfji6FCjVKcfkld.fovix5roxda3
           description: 애플에서 가져온 id_token값
+        email:
+          type: string
+          example: yapp@email.com
+          description: 이메일
 
 
     ############################################# Token #############################################
