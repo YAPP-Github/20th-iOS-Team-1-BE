@@ -43,6 +43,9 @@ public class Account extends BaseEntity {
     @Column(nullable = false, length = 10, unique = true)
     private String nickname;
 
+    @Column(unique = true)
+    private String email;
+
     @Column(nullable = false, length = 3)
     private Integer age;
 
@@ -57,24 +60,26 @@ public class Account extends BaseEntity {
     private String selfIntroduction;
 
     @Builder
-    public Account(Long id, Token token, AccountImage accountImage, Set<Category> interestCategories,
-                   String nickname, Integer age, AccountSex sex, Address address, String selfIntroduction) {
+    public Account(Long id, Token token, AccountImage accountImage, Set<Category> interestCategories, String nickname,
+                   String email, Integer age, AccountSex sex, Address address, String selfIntroduction) {
         this.token = token;
         this.accountImage = accountImage;
         this.interestCategories = interestCategories;
         this.nickname = nickname;
+        this.email = email;
         this.age = age;
         this.sex = sex;
         this.address = address;
         this.selfIntroduction = selfIntroduction;
     }
 
-    public static Account of(Token token) {
+    public static Account of(Token token, String email) {
         String temporaryNickname = UUID.randomUUID().toString().substring(0, 8);
 
         return Account.builder()
                 .token(token)
                 .nickname(temporaryNickname)
+                .email(email)
                 .age(0)
                 .sex(AccountSex.PRIVATE)
                 .build();

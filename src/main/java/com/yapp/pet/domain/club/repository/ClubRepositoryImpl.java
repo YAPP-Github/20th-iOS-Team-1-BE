@@ -120,7 +120,6 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
                         isLeader(condition, loginAccount),
                         isParticipatedAndExceed(condition, loginAccount)
                 )
-                .orderBy(club.endDate.asc(), club.id.asc())
                 .limit(pageable.getPageSize())
                 .fetch();
 

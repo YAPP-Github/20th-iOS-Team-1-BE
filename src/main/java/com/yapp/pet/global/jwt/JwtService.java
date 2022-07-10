@@ -3,7 +3,6 @@ package com.yapp.pet.global.jwt;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yapp.pet.global.exception.jwt.*;
-import com.yapp.pet.web.oauth.apple.AppleClient;
 import com.yapp.pet.web.oauth.apple.model.ApplePublicKeyResponse;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -36,14 +35,11 @@ public class JwtService {
 	private final Key key;
 	private final String issuer;
 
-	private final AppleClient appleClient;
-
 	public JwtService(@Value("${jwt.token.header-type}") String headerType,
 					  @Value("${jwt.token.issuer}") String issuer,
 					  @Value("${jwt.token.secret}") String secret,
 					  @Value("${jwt.token.access-time}") long accessTime,
-					  @Value("${jwt.token.refresh-time}") long refreshTime,
-					  AppleClient appleClient) {
+					  @Value("${jwt.token.refresh-time}") long refreshTime) {
 
 		byte[] keyBytes = Decoders.BASE64.decode(secret);
 		this.key = Keys.hmacShaKeyFor(keyBytes);
@@ -51,7 +47,6 @@ public class JwtService {
 		this.issuer = issuer;
 		this.accessTime = accessTime;
 		this.refreshTime = refreshTime;
-		this.appleClient = appleClient;
 	}
 
 	public String createAccessToken(String uniqueIdBySocial) {
@@ -113,10 +108,8 @@ public class JwtService {
 		}
 	}
 
-	public String getSubjectByAppleToken(String token) {
+	public String getSubjectByAppleToken(String token, ApplePublicKeyResponse response) {
 		try {
-			ApplePublicKeyResponse response = appleClient.getApplePublicKey();
-
 			String headerOfIdentityToken = token.substring(0, token.indexOf("."));
 
 			Map<String, String> header = new ObjectMapper().readValue(
