@@ -106,7 +106,7 @@ public class TokenServiceTest {
                 .refreshToken(accessToken)
                 .build();
 
-        Account account = Account.of(token);
+        Account account = Account.of(token, "yapp@email.com");
 
         //when & then
         assertThatExceptionOfType(NotRefreshTokenException.class)

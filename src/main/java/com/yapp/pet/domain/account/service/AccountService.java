@@ -13,7 +13,9 @@ import com.yapp.pet.web.account.model.AccountSignUpRequest;
 import com.yapp.pet.web.account.model.AccountUpdateRequest;
 import com.yapp.pet.web.oauth.apple.AppleClient;
 import com.yapp.pet.web.oauth.apple.model.ApplePublicKeyResponse;
+import com.yapp.pet.web.oauth.apple.model.AppleRequest;
 import com.yapp.pet.web.oauth.apple.model.SignInResponse;
+import com.yapp.pet.web.oauth.kakao.model.KakaoTokenResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -39,21 +41,21 @@ public class AccountService {
     private final AccountMapper accountMapper;
     private final AppleClient appleClient;
 
-    public SignInResponse signInFromApple(String idToken, Social social) {
+    public SignInResponse signInFromApple(AppleRequest appleRequest, Social social) {
         ApplePublicKeyResponse response = appleClient.getApplePublicKey();
 
-        String uniqueIdBySocial = jwtService.getSubjectByAppleToken(idToken, response);
+        String uniqueIdBySocial = jwtService.getSubjectByAppleToken(appleRequest.getIdToken(), response);
 
-        return signIn(social, uniqueIdBySocial);
+        return signIn(social, uniqueIdBySocial, appleRequest.getEmail());
     }
 
-    public SignInResponse signInFromKakao(String idToken, Social social) {
-        String uniqueIdBySocial = jwtService.getSubject(idToken);
+    public SignInResponse signInFromKakao(KakaoTokenResponse kakaoTokenResponse, Social social) {
+        String uniqueIdBySocial = jwtService.getSubject(kakaoTokenResponse.getIdToken());
 
-        return signIn(social, uniqueIdBySocial);
+        return signIn(social, uniqueIdBySocial,  kakaoTokenResponse.getEmail());
     }
 
-    public SignInResponse signIn(Social social, String uniqueIdBySocial) {
+    public SignInResponse signIn(Social social, String uniqueIdBySocial, String email) {
         SignInResponse signInResponse = new SignInResponse();
 
         String createAccessToken = jwtService.createAccessToken(uniqueIdBySocial);
@@ -75,7 +77,7 @@ public class AccountService {
             Token createToken = Token.of(uniqueIdBySocial, social, createRefreshToken);
             tokenRepository.save(createToken);
 
-            Account createAccount = Account.of(createToken);
+            Account createAccount = Account.of(createToken, email);
             accountRepository.save(createAccount);
 
             createToken.addAccount(createAccount);

@@ -38,7 +38,7 @@ public class KakaoController {
                                                 clientId, DEV_REDIRECT_URI, code, clientSecret);
 
         try {
-            signInResponse = accountService.signInFromKakao(kakaoTokenResponse.getIdToken(), Social.KAKAO);
+            signInResponse = accountService.signInFromKakao(kakaoTokenResponse, Social.KAKAO);
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
