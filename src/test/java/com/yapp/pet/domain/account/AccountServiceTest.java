@@ -149,11 +149,9 @@ public class AccountServiceTest {
     @Test
     @DisplayName("회원가입 - 첫 서비스 접근 시 Account 저장")
     void signUp(){
-        //given
-        String idToken = createIdToken("newUniqueId");
-
         //when
-        SignInResponse signInResponse = accountService.signIn(Social.APPLE, "uniqueIdByApple1");
+        SignInResponse signInResponse
+                = accountService.signIn(Social.APPLE, "uniqueIdByApple1", null);
 
         //then
         assertThat(signInResponse.getFirstAccount()).isTrue();
@@ -221,7 +219,8 @@ public class AccountServiceTest {
         String refreshToken = account.getToken().getRefreshToken();
 
         //when
-        SignInResponse signInResponse = accountService.signIn(Social.APPLE, "uniqueIdByApple2");
+        SignInResponse signInResponse
+                = accountService.signIn(Social.APPLE, "unique1", "yapp@email.com");
 
         //then
         assertThat(signInResponse.getFirstAccount()).isFalse();
