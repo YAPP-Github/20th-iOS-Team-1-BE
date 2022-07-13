@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import static com.yapp.pet.global.TogaetherConstants.S3_ACCOUNT_DIR_NAME;
 import static com.yapp.pet.global.TogaetherConstants.S3_PET_DIR_NAME;
 
 @Service
@@ -22,7 +23,10 @@ public class PetImageService {
 
         String origFilename = imageFile.getOriginalFilename();
         String filename = s3Utils.createFilename(origFilename);
-        String imageUrl = s3Utils.putS3(imageFile, filename, S3_PET_DIR_NAME);
+
+        s3Utils.putS3(imageFile, filename, S3_PET_DIR_NAME);
+
+        String imageUrl = s3Utils.getImageUrl(filename, S3_ACCOUNT_DIR_NAME);
         String s3Key = s3Utils.createS3Key(filename, S3_PET_DIR_NAME);
 
         PetImage petImage = PetImage.builder()

@@ -12,6 +12,7 @@ import com.yapp.pet.domain.account_image.AccountImage;
 import com.yapp.pet.domain.pet_image.PetImage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,12 +40,6 @@ public class S3Utils {
                                               .build();
     }
 
-    public List<String> multiUploadToS3(List<MultipartFile> uploadFiles, String filename, String dirname) {
-        return uploadFiles.stream()
-                          .map(file -> putS3(file, filename, dirname))
-                          .collect(Collectors.toList());
-    }
-
     public void deleteToS3(AccountImage accountImage){
         amazonS3Client.deleteObject(s3Properties.getBucket(), accountImage.getS3Key());
     }
@@ -53,7 +48,8 @@ public class S3Utils {
         amazonS3Client.deleteObject(s3Properties.getBucket(), petImage.getS3Key());
     }
 
-    public String putS3(MultipartFile uploadFile, String filename, String dirname) {
+    @Async
+    public void putS3(MultipartFile uploadFile, String filename, String dirname) {
         String s3Key = createS3Key(filename, dirname);
 
         ObjectMetadata metadata = new ObjectMetadata();
@@ -68,9 +64,11 @@ public class S3Utils {
         } catch (IOException e){
             e.printStackTrace();
         }
+    }
 
+    public String getImageUrl(String filename, String dirname){
         return amazonS3Client
-                .getUrl(s3Properties.getBucket(), s3Key)
+                .getUrl(s3Properties.getBucket(), createS3Key(filename, dirname))
                 .toString();
     }
 
