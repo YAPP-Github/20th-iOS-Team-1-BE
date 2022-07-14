@@ -35,4 +35,8 @@ public class CommentService {
 
         commentRepository.delete(savedComment);
     }
+
+    public void deleteAllComment(Account account) {
+        commentRepository.deleteCommentByAccountId(account.getId());
+    }
 }

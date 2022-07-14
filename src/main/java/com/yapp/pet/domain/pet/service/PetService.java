@@ -6,6 +6,7 @@ import com.yapp.pet.domain.pet.entity.Pet;
 import com.yapp.pet.domain.pet.repository.PetRepository;
 import com.yapp.pet.domain.pet_image.PetImage;
 import com.yapp.pet.domain.pet_image.PetImageService;
+import com.yapp.pet.domain.pet_tag.PetTag;
 import com.yapp.pet.domain.pet_tag.PetTagService;
 import com.yapp.pet.global.mapper.PetMapper;
 import com.yapp.pet.web.pet.model.PetRequest;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.yapp.pet.global.TogaetherConstants.YEAR_TO_MONTH;
 
@@ -89,6 +91,22 @@ public class PetService {
         }
 
         petRepository.delete(savedPet);
+    }
+
+    public void deleteAllPetInfo(Account account) {
+
+        List<Pet> pets = petRepository.findPetsByAccountId(account.getId());
+
+        pets.stream()
+            .map(p -> p.getTags()
+                       .stream()
+                       .map(PetTag::getId)
+                       .collect(Collectors.toList()))
+            .forEach(petTagService::deletePetTag);
+
+        petRepository.deletePetByIds(pets.stream()
+                                         .map(Pet::getId)
+                                         .collect(Collectors.toList()));
     }
 
     public void updatePetInfo(long petId, PetRequest request) {

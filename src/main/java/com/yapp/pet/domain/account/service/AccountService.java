@@ -4,6 +4,10 @@ import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.account.repository.AccountRepository;
 import com.yapp.pet.domain.account_image.AccountImage;
 import com.yapp.pet.domain.account_image.AccountImageService;
+import com.yapp.pet.domain.accountclub.AccountClubRepository;
+import com.yapp.pet.domain.club.service.ClubService;
+import com.yapp.pet.domain.comment.CommentService;
+import com.yapp.pet.domain.pet.service.PetService;
 import com.yapp.pet.domain.token.entity.Social;
 import com.yapp.pet.domain.token.entity.Token;
 import com.yapp.pet.domain.token.repository.TokenRepository;
@@ -40,6 +44,10 @@ public class AccountService {
     private final TokenRepository tokenRepository;
     private final AccountMapper accountMapper;
     private final AppleClient appleClient;
+
+    private final PetService petService;
+    private final CommentService commentService;
+    private final AccountClubRepository accountClubRepository;
 
     public SignInResponse signInFromApple(AppleRequest appleRequest, Social social) {
         ApplePublicKeyResponse response = appleClient.getApplePublicKey();
@@ -122,4 +130,16 @@ public class AccountService {
         return imageFile != null && !imageFile.isEmpty();
     }
 
+    public void delete(Account account) {
+        //petTag, pet 삭제
+        petService.deleteAllPetInfo(account);
+
+        //댓글삭제
+        commentService.deleteAllComment(account);
+
+        //accountClub 삭제
+        accountClubRepository.deleteAccountClubsByAccountId(account.getId());
+
+        accountRepository.delete(account);
+    }
 }

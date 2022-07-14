@@ -83,4 +83,11 @@ public class AccountController {
         return ResponseEntity.ok().build();
     }
 
+    @DeleteMapping("/accounts")
+    public ResponseEntity<Void> deleteAccount(@AuthAccount Account account) {
+        accountService.delete(account);
+
+        return ResponseEntity.ok().build();
+    }
+
 }
