@@ -23,10 +23,7 @@ public class PetImageService {
 
         String origFilename = imageFile.getOriginalFilename();
         String filename = s3Utils.createFilename(origFilename);
-
-        s3Utils.putS3(imageFile, filename, S3_PET_DIR_NAME);
-
-        String imageUrl = s3Utils.getImageUrl(filename, S3_ACCOUNT_DIR_NAME);
+        String imageUrl = s3Utils.putS3(imageFile, filename, S3_PET_DIR_NAME);
         String s3Key = s3Utils.createS3Key(filename, S3_PET_DIR_NAME);
 
         PetImage petImage = PetImage.builder()

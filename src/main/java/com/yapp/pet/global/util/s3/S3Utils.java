@@ -48,8 +48,7 @@ public class S3Utils {
         amazonS3Client.deleteObject(s3Properties.getBucket(), petImage.getS3Key());
     }
 
-    @Async
-    public void putS3(MultipartFile uploadFile, String filename, String dirname) {
+    public String putS3(MultipartFile uploadFile, String filename, String dirname) {
         String s3Key = createS3Key(filename, dirname);
 
         ObjectMetadata metadata = new ObjectMetadata();
@@ -64,11 +63,9 @@ public class S3Utils {
         } catch (IOException e){
             e.printStackTrace();
         }
-    }
 
-    public String getImageUrl(String filename, String dirname){
         return amazonS3Client
-                .getUrl(s3Properties.getBucket(), createS3Key(filename, dirname))
+                .getUrl(s3Properties.getBucket(), s3Key)
                 .toString();
     }
 
