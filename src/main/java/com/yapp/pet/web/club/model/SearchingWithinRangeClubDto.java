@@ -3,6 +3,7 @@ package com.yapp.pet.web.club.model;
 import com.yapp.pet.domain.common.Category;
 import lombok.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
@@ -13,9 +14,17 @@ public class SearchingWithinRangeClubDto {
     @Getter
     @Setter
     public static class SearchingWithinRangeClubRequest{
+
+        @NotNull
         private Double upperLeftLatitude;
+
+        @NotNull
         private Double upperLeftLongitude;
+
+        @NotNull
         private Double bottomRightLatitude;
+
+        @NotNull
         private Double bottomRightLongitude;
 
         @Builder

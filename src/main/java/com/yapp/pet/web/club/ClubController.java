@@ -52,7 +52,7 @@ public class ClubController {
 
     @GetMapping("/clubs/search/range")
     public ResponseEntity<List<SearchingWithinRangeClubResponse>> searchingWithinRange(
-            @ModelAttribute SearchingWithinRangeClubRequest request) {
+            @Valid @ModelAttribute SearchingWithinRangeClubRequest request) {
 
         return ResponseEntity.ok(clubQueryService.searchingRangeClub(request));
     }
