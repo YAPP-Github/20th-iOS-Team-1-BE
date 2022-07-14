@@ -39,8 +39,6 @@ public class CommentService {
     }
 
     public void deleteAllComment(Account account) {
-        List<Long> commentIds = commentRepository.findCommentIdsByAccountId(account.getId());
-
-        commentRepository.deleteCommentByIds(commentIds);
+        commentRepository.deleteCommentByAccountIds(account.getId());
     }
 }

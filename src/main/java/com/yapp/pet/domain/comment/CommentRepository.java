@@ -16,9 +16,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     @Modifying(clearAutomatically = true)
     @Transactional
-    @Query("delete from Comment c where c.id in :ids")
-    int deleteCommentByIds(@Param("ids") List<Long> ids);
-
-    @Query("select c.id from Comment c join c.account a where a.id = :id")
-    List<Long> findCommentIdsByAccountId(@Param("id") long accountId);
+    @Query("delete from Comment c where c.account.id = :id")
+    int deleteCommentByAccountIds(@Param("id") long id);
 }
