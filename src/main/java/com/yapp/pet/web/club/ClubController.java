@@ -58,8 +58,9 @@ public class ClubController {
     }
 
     @GetMapping("/clubs/search/simple/{club-id}")
-    public SearchingSimpleClubResponse searchingSimpleInfo(SearchingSimpleClubRequest request,
+    public SearchingSimpleClubResponse searchingSimpleInfo(@Valid @ModelAttribute SearchingSimpleClubRequest request,
                                                            @PathVariable("club-id") Long clubId) {
+
         return clubQueryService.searchingSimpleClub(request, clubId);
     }
 
