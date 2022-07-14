@@ -11,13 +11,10 @@ import com.yapp.pet.domain.accountclub.AccountClub;
 import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.club.entity.ClubStatus;
 import com.yapp.pet.domain.club.entity.EligibleSex;
-import com.yapp.pet.domain.common.Category;
-import com.yapp.pet.domain.common.PetSizeType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
-import org.springframework.util.StringUtils;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -28,8 +25,6 @@ import static com.yapp.pet.domain.account.entity.QAccount.account;
 import static com.yapp.pet.domain.accountclub.QAccountClub.accountClub;
 import static com.yapp.pet.domain.club.entity.QClub.club;
 import static com.yapp.pet.domain.club.repository.ClubFindCondition.*;
-import static com.yapp.pet.global.TogaetherConstants.ELIGIBLE_BREEDS_ALL;
-import static com.yapp.pet.web.club.model.SearchingClubDto.SearchingRequest;
 import static com.yapp.pet.web.club.model.SearchingWithinRangeClubDto.SearchingWithinRangeClubRequest;
 import static com.yapp.pet.web.club.model.SearchingWithinRangeClubDto.SearchingWithinRangeClubResponse;
 
@@ -39,49 +34,6 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
     private final JPAQueryFactory queryFactory;
 
     private static final int PAGE_SIZE = 10;
-
-    @Override
-    public List<Club> searchClubByWord(SearchingRequest searchingRequest) {
-
-        return queryFactory.selectFrom(accountClub)
-                           .join(accountClub.club, club).fetchJoin()
-                           .where(isLeader(accountClub.leader))
-                           .where(clubNameContains(searchingRequest.getSearchingWord()))
-                           .where(clubCategoryEq(searchingRequest.getCategory()))
-                           .where(clubStatusEq(searchingRequest.getStatus()))
-                           .where(clubPetTypeExist(searchingRequest.getEligibleBreed()))
-                           .where(clubPetSizeTypeExist(searchingRequest.getPetSizeType()))
-                           .where(clubEligibleSexEq(searchingRequest.getEligibleSex()))
-                           .where(clubParticipateRange(searchingRequest.getParticipateMin(),
-                                                       searchingRequest.getParticipateMax()))
-                           .offset(searchingRequest.getPage())
-                           .limit(PAGE_SIZE)
-                           .fetch()
-                           .stream()
-                           .map(AccountClub::getClub)
-                           .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<Club> searchClubByCategory(SearchingRequest searchingRequest) {
-
-        return queryFactory.selectFrom(accountClub)
-                           .join(accountClub.club, club).fetchJoin()
-                           .where(isLeader(accountClub.leader))
-                           .where(clubCategoryEq(searchingRequest.getCategory()))
-                           .where(clubStatusEq(searchingRequest.getStatus()))
-                           .where(clubPetTypeExist(searchingRequest.getEligibleBreed()))
-                           .where(clubPetSizeTypeExist(searchingRequest.getPetSizeType()))
-                           .where(clubEligibleSexEq(searchingRequest.getEligibleSex()))
-                           .where(clubParticipateRange(searchingRequest.getParticipateMin(),
-                                                       searchingRequest.getParticipateMax()))
-                           .offset(searchingRequest.getPage())
-                           .limit(PAGE_SIZE)
-                           .fetch()
-                           .stream()
-                           .map(AccountClub::getClub)
-                           .collect(Collectors.toList());
-    }
 
     @Override
     public List<SearchingWithinRangeClubResponse> searchClubByWithinRange(SearchingWithinRangeClubRequest rangeRequest) {
@@ -143,42 +95,6 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
                 .fetchFirst();
 
         return Optional.ofNullable(findAccountClub.getClub());
-    }
-
-    private BooleanExpression clubNameContains(String searchingWord) {
-        return StringUtils.hasText(searchingWord) ? club.title.contains(searchingWord) : null;
-    }
-
-    private BooleanExpression clubCategoryEq(Category category) {
-        return category == null ? null : club.category.eq(category);
-    }
-
-    private BooleanExpression isLeader(BooleanPath leader) {
-        return leader.isTrue();
-    }
-
-    private BooleanExpression clubPetSizeTypeExist(PetSizeType petSizeType) {
-        if (petSizeType == PetSizeType.ALL) {
-            return null;
-        }
-
-        return petSizeType == null ? null : club.eligiblePetSizeTypes.any().eq(petSizeType);
-    }
-
-    private BooleanExpression clubPetTypeExist(String eligibleBreed) {
-        if (eligibleBreed.equals(ELIGIBLE_BREEDS_ALL)) {
-            return null;
-        }
-
-        return eligibleBreed == null ? null : club.eligibleBreeds.any().eq(eligibleBreed);
-    }
-
-    private BooleanExpression clubParticipateRange(Integer min, Integer max) {
-        if(min == null || max == null) {
-            return null;
-        }
-
-        return club.accountClubs.size().between(min, max);
     }
 
     private BooleanExpression clubStatusEq(ClubStatus clubStatus) {
