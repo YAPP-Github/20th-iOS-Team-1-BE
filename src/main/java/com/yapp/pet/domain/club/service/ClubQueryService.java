@@ -61,7 +61,9 @@ public class ClubQueryService {
                                 .collect(Collectors.toList());
     }
 
-    public boolean isParticipateBetweenMaxAndMin(int max, int min, int target) {
+    public boolean isParticipateBetweenMaxAndMin(Integer max, Integer min, int target) {
+        if(max == null || min == null) return true;
+
         return target >= min && target <= max;
     }
 
@@ -143,5 +145,4 @@ public class ClubQueryService {
                 .commentInfos(findComments)
                 .build();
     }
-
 }
