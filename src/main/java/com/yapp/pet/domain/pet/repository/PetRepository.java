@@ -19,5 +19,5 @@ public interface PetRepository extends JpaRepository<Pet, Long>, PetRepositoryCu
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query("delete from Pet p where p.id in :ids")
-    void deletePetById(@Param("ids") List<Long> ids);
+    void deletePetByIds(@Param("ids") List<Long> ids);
 }

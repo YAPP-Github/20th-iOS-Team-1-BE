@@ -7,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @Slf4j
 @Service
@@ -39,6 +37,6 @@ public class CommentService {
     }
 
     public void deleteAllComment(Account account) {
-        commentRepository.deleteCommentByAccountIds(account.getId());
+        commentRepository.deleteCommentByAccountId(account.getId());
     }
 }

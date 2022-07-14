@@ -104,9 +104,9 @@ public class PetService {
                        .collect(Collectors.toList()))
             .forEach(petTagService::deletePetTag);
 
-        petRepository.deletePetById(pets.stream()
-                                        .map(Pet::getId)
-                                        .collect(Collectors.toList()));
+        petRepository.deletePetByIds(pets.stream()
+                                         .map(Pet::getId)
+                                         .collect(Collectors.toList()));
     }
 
     public void updatePetInfo(long petId, PetRequest request) {

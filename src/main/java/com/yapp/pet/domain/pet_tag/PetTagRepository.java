@@ -13,6 +13,6 @@ public interface PetTagRepository extends JpaRepository<PetTag, Long> {  //cover
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query("delete from PetTag pt where pt.id in :ids")
-    int deletePetTagByPetId(@Param("ids") List<Long> ids);
+    int deletePetTagByPetIds(@Param("ids") List<Long> ids);
 
 }

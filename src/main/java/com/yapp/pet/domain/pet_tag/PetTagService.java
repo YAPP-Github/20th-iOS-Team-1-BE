@@ -26,6 +26,6 @@ public class PetTagService {
     }
 
     public void deletePetTag(List<Long> petTagIds) {
-        petTagRepository.deletePetTagByPetId(petTagIds);
+        petTagRepository.deletePetTagByPetIds(petTagIds);
     }
 }
