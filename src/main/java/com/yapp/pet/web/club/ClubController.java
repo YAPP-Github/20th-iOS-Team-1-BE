@@ -17,6 +17,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class ClubController {
 
 
     @GetMapping("/clubs/search")
-    public ResponseEntity<List<SearchingResponse>> searchingByWord(@ModelAttribute SearchingRequest request) {
+    public ResponseEntity<List<SearchingResponse>> searchingByWord(@Valid @ModelAttribute SearchingRequest request) {
 
         log.info("category = {}", request.getCategory());
         log.info("petSizeType = {}", request.getPetSizeType());
