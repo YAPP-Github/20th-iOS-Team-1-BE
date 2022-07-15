@@ -6,7 +6,6 @@ import com.yapp.pet.domain.account.repository.AccountRepository;
 import com.yapp.pet.domain.account_image.AccountImage;
 import com.yapp.pet.domain.account_image.AccountImageService;
 import com.yapp.pet.domain.accountclub.AccountClubRepository;
-import com.yapp.pet.domain.club.service.ClubService;
 import com.yapp.pet.domain.comment.CommentService;
 import com.yapp.pet.domain.pet.service.PetService;
 import com.yapp.pet.domain.token.entity.Social;
@@ -107,7 +106,7 @@ public class AccountService {
 
         if (hasImageFile(request.getImageFile())) {
             eventPublisher.publishEvent(
-                    SignedUpEvent.of(EVENT_SIGN_UP, request.getImageFile(), account)
+                    SignedUpEvent.of(EVENT_SIGNED_UP, request.getImageFile(), account)
             );
         }
 
@@ -124,7 +123,7 @@ public class AccountService {
             }
 
             eventPublisher.publishEvent(
-                    SignedUpEvent.of(EVENT_SIGN_UP, request.getImageFile(), account)
+                    SignedUpEvent.of(EVENT_SIGNED_UP, request.getImageFile(), account)
             );
         }
 
