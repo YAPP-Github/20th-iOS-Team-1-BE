@@ -39,18 +39,18 @@ public class S3Utils {
                                               .build();
     }
 
-    public List<String> multiUploadToS3(List<MultipartFile> uploadFiles, String filename, String dirname) {
-        return uploadFiles.stream()
-                          .map(file -> putS3(file, filename, dirname))
-                          .collect(Collectors.toList());
-    }
-
     public void deleteToS3(AccountImage accountImage){
         amazonS3Client.deleteObject(s3Properties.getBucket(), accountImage.getS3Key());
     }
 
     public void deleteToS3(PetImage petImage) {
         amazonS3Client.deleteObject(s3Properties.getBucket(), petImage.getS3Key());
+    }
+
+    public List<String> multiUploadToS3(List<MultipartFile> uploadFiles, String filename, String dirname) {
+        return uploadFiles.stream()
+                .map(file -> putS3(file, filename, dirname))
+                .collect(Collectors.toList());
     }
 
     public String putS3(MultipartFile uploadFile, String filename, String dirname) {
