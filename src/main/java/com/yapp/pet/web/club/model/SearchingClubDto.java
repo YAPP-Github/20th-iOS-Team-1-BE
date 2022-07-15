@@ -22,28 +22,20 @@ public class SearchingClubDto {
     @Setter
     public static class SearchingRequest{
 
-        @NotNull
         private String searchingWord;
 
-        @NotNull
         private Category category;
 
-        @NotNull
         private String eligibleBreed;
 
-        @NotNull
         private PetSizeType petSizeType;
 
-        @NotNull
         private EligibleSex eligibleSex;
 
-        @NotNull
         private Integer participateMin;
 
-        @NotNull
         private Integer participateMax;
 
-        @NotNull
         private int page;
 
         @NotNull
@@ -52,7 +44,6 @@ public class SearchingClubDto {
         @NotNull
         private Double startLongitude;
 
-        @NotNull
         private ClubStatus status;
     }
 

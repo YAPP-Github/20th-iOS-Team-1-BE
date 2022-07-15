@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import static com.yapp.pet.global.TogaetherConstants.S3_ACCOUNT_DIR_NAME;
 import static com.yapp.pet.global.TogaetherConstants.S3_PET_DIR_NAME;
 
 @Service

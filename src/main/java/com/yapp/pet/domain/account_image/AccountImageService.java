@@ -18,7 +18,7 @@ public class AccountImageService {
 
     private final AccountImageRepository accountImageRepository;
 
-    public AccountImage create(MultipartFile imageFile) {
+    public void create(MultipartFile imageFile, Account account) {
 
         String origFilename = imageFile.getOriginalFilename();
         String filename = s3Utils.createFilename(origFilename);
@@ -33,8 +33,7 @@ public class AccountImageService {
                 .build();
 
         accountImageRepository.save(accountImage);
-
-        return accountImage;
+        account.addImage(accountImage);
     }
 
     public void delete(Account account){

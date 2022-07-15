@@ -16,4 +16,12 @@ public class Address {
     private String city;
     private String detail;
 
+    public void updateCity(String city){
+        this.city = city;
+    }
+
+    public void updateDetail(String detail){
+        this.detail = detail;
+    }
+
 }
