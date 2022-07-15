@@ -1,5 +1,6 @@
 package com.yapp.pet.domain.account.service;
 
+import com.yapp.pet.domain.account.event.SignedUpEvent;
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.account.repository.AccountRepository;
 import com.yapp.pet.domain.account_image.AccountImage;
@@ -22,12 +23,14 @@ import com.yapp.pet.web.oauth.apple.model.SignInResponse;
 import com.yapp.pet.web.oauth.kakao.model.KakaoTokenResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
+import static com.yapp.pet.domain.common.EventType.*;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
@@ -48,6 +51,8 @@ public class AccountService {
     private final PetService petService;
     private final CommentService commentService;
     private final AccountClubRepository accountClubRepository;
+
+    private final ApplicationEventPublisher eventPublisher;
 
     public SignInResponse signInFromApple(AppleRequest appleRequest, Social social) {
         ApplePublicKeyResponse response = appleClient.getApplePublicKey();
@@ -94,15 +99,16 @@ public class AccountService {
         return signInResponse;
     }
 
-    public Long signUp(Account account, AccountSignUpRequest signUpRequest) {
+    public Long signUp(Account account, AccountSignUpRequest request) {
 
-        Account updateAccount = accountMapper.toEntity(signUpRequest);
+        Account updateAccount = accountMapper.toEntity(request);
 
         account.signUp(updateAccount);
 
-        if (hasImageFile(signUpRequest.getImageFile())) {
-            AccountImage accountImage = accountImageService.create(signUpRequest.getImageFile());
-            account.addImage(accountImage);
+        if (hasImageFile(request.getImageFile())) {
+            eventPublisher.publishEvent(
+                    SignedUpEvent.of(EVENT_SIGN_UP, request.getImageFile(), account)
+            );
         }
 
         return account.getId();
@@ -117,8 +123,9 @@ public class AccountService {
                 accountImageService.delete(account);
             }
 
-            AccountImage createAccountImage = accountImageService.create(imageFile);
-            account.addImage(createAccountImage);
+            eventPublisher.publishEvent(
+                    SignedUpEvent.of(EVENT_SIGN_UP, request.getImageFile(), account)
+            );
         }
 
         Account updateAccount = accountMapper.toEntity(request);
