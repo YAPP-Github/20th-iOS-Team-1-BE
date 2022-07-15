@@ -12,7 +12,6 @@ import com.yapp.pet.domain.account_image.AccountImage;
 import com.yapp.pet.domain.pet_image.PetImage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -46,6 +45,12 @@ public class S3Utils {
 
     public void deleteToS3(PetImage petImage) {
         amazonS3Client.deleteObject(s3Properties.getBucket(), petImage.getS3Key());
+    }
+
+    public List<String> multiUploadToS3(List<MultipartFile> uploadFiles, String filename, String dirname) {
+        return uploadFiles.stream()
+                .map(file -> putS3(file, filename, dirname))
+                .collect(Collectors.toList());
     }
 
     public String putS3(MultipartFile uploadFile, String filename, String dirname) {

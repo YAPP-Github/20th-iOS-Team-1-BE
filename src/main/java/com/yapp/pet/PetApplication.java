@@ -11,7 +11,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableFeignClients(basePackages = "com.yapp.pet.web")
 @EnableScheduling
-@EnableAsync
 public class PetApplication {
 
 	public static void main(String[] args) {
