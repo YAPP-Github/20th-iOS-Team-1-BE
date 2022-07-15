@@ -2,6 +2,7 @@ package com.yapp.pet.domain.account.event;
 
 import com.yapp.pet.domain.account_image.AccountImageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ public class SignedUpEventHandler {
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Async
     public void saveImage(SignedUpEvent event){
         accountImageService.create(event.getImageFile(), event.getAccount());
     }
