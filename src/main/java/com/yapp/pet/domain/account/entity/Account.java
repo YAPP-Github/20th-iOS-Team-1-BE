@@ -113,8 +113,12 @@ public class Account extends BaseEntity {
             this.sex = updateAccount.getSex();
         }
 
-        if (updateAccount.getAddress() != null) {
-            this.address = updateAccount.getAddress();
+        if (updateAccount.getAddress().getCity() != null) {
+            this.address.updateCity(updateAccount.getAddress().getCity());
+        }
+
+        if (updateAccount.getAddress().getDetail() != null) {
+            this.address.updateDetail(updateAccount.getAddress().getDetail());
         }
 
         if (StringUtils.hasText(updateAccount.getSelfIntroduction())) {
