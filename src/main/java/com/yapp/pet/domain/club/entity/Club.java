@@ -16,6 +16,10 @@ import java.util.Set;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(indexes = {
+        @Index(name = "idx_latitude", columnList = "latitude"),
+        @Index(name = "idx_longitude", columnList = "longitude")
+})
 public class Club extends BaseEntity {
 
     @Id
