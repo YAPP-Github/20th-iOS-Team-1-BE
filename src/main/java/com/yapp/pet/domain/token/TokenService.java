@@ -44,7 +44,7 @@ public class TokenService {
         tokenRepository.delete(token);
         account.deleteToken();
 
-        token.getId();
+        return token.getId();
     }
 
     private Token getAndValidToken(Account account){
