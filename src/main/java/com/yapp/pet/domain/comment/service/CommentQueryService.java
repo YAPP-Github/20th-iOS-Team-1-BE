@@ -1,6 +1,8 @@
-package com.yapp.pet.domain.comment;
+package com.yapp.pet.domain.comment.service;
 
 import com.yapp.pet.domain.account.entity.Account;
+import com.yapp.pet.domain.comment.Comment;
+import com.yapp.pet.domain.comment.CommentRepository;
 import com.yapp.pet.domain.pet.entity.Pet;
 import com.yapp.pet.domain.pet.repository.PetRepository;
 import com.yapp.pet.web.comment.model.CommentResponse;

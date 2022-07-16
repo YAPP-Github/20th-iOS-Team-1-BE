@@ -6,7 +6,7 @@ import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.club.repository.ClubFindCondition;
 import com.yapp.pet.domain.club.repository.ClubRepository;
 import com.yapp.pet.domain.club.repository.ClubSearchRepository;
-import com.yapp.pet.domain.comment.CommentQueryService;
+import com.yapp.pet.domain.comment.service.CommentQueryService;
 import com.yapp.pet.global.mapper.ClubMapper;
 import com.yapp.pet.web.club.model.ClubFindDetailResponse;
 import com.yapp.pet.web.club.model.ClubFindResponse;

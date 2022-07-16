@@ -39,4 +39,6 @@ public final class TogaetherConstants {
     public static final int EARTH = 6371;
 
     public static final int YEAR_TO_MONTH = 12;
+
+    public static final int NUMBER_OF_LIMIT_REPORTS = 3;
 }

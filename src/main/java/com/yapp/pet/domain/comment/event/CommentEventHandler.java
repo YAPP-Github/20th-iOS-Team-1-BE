@@ -1,6 +1,6 @@
-package com.yapp.pet.domain.account.event;
+package com.yapp.pet.domain.comment.event;
 
-import com.yapp.pet.domain.account_image.AccountImageService;
+import com.yapp.pet.domain.comment.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -11,15 +11,15 @@ import org.springframework.transaction.event.TransactionalEventListener;
 
 @Component
 @RequiredArgsConstructor
-public class SignedUpEventHandler {
+public class CommentEventHandler {
 
-    private final AccountImageService accountImageService;
+    private final CommentRepository commentRepository;
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Async
-    public void saveImage(SignedUpEvent event){
-        accountImageService.create(event.getImageFile(), event.getAccount());
+    public void saveImage(CommentDeletedEvent event){
+        commentRepository.delete(event.getComment());
     }
 
 }
