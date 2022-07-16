@@ -27,24 +27,27 @@ public class PetController {
     private final PetService petService;
 
     @PostMapping("/pets")
-    public long register(@AuthAccount Account account, @Valid @ModelAttribute PetRequest request) {
+    public ResponseEntity<Long> register(@AuthAccount Account account, @Valid @ModelAttribute PetRequest request) {
         log.info("tags = {}", request.getTags());
-        return petService.addPet(account, request);
+
+        Long petId = petService.addPet(account, request);
+
+        return ResponseEntity.ok(petId);
     }
 
     @DeleteMapping("/pets/{pet-id}")
-    public ResponseEntity<Void> delete(@AuthAccount Account account, @PathVariable("pet-id") long petId) {
-        petService.deletePetInfo(petId);
+    public ResponseEntity<Long> delete(@AuthAccount Account account, @PathVariable("pet-id") long petId) {
+        Long deletedPetId = petService.deletePetInfo(petId);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(deletedPetId);
     }
 
     @PutMapping("/pets/{pet-id}")
-    public ResponseEntity<Void> update(@AuthAccount Account account, @PathVariable("pet-id") long petId,
+    public ResponseEntity<Long> update(@AuthAccount Account account, @PathVariable("pet-id") long petId,
                                        @Valid @ModelAttribute PetRequest request) {
 
-        petService.updatePetInfo(petId, request);
+        Long updatedPetId = petService.updatePetInfo(petId, request);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(updatedPetId);
     }
 }

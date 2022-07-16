@@ -27,10 +27,10 @@ public class TokenController {
     }
 
     @DeleteMapping("/tokens/expire")
-    public ResponseEntity<Void> expireRefreshToken(@AuthAccount Account account) {
-        tokenService.expireRefreshToken(account);
+    public ResponseEntity<Long> expireRefreshToken(@AuthAccount Account account) {
+        Long deletedTokenId = tokenService.expireRefreshToken(account);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(deletedTokenId);
     }
 
 }

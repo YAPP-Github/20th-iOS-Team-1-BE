@@ -25,15 +25,18 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/comments")
-    public long create(@AuthAccount Account account, @RequestBody CommentRequest commentRequest) {
-        return commentService.addComment(account, commentRequest);
+    public ResponseEntity<Long> create(@AuthAccount Account account, @RequestBody CommentRequest commentRequest) {
+
+        Long commentId = commentService.addComment(account, commentRequest);
+
+        return ResponseEntity.ok(commentId);
     }
 
     @DeleteMapping("/comments/{comment-id}")
-    public ResponseEntity<Void> delete(@AuthAccount Account account, @PathVariable("comment-id") long commentId) {
+    public ResponseEntity<Long> delete(@AuthAccount Account account, @PathVariable("comment-id") long commentId) {
 
-        commentService.deleteComment(account, commentId);
+        Long deletedCommentId = commentService.deleteComment(account, commentId);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(deletedCommentId);
     }
 }

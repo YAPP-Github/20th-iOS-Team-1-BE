@@ -16,7 +16,7 @@ public class CommentService {
     private final ClubQueryService clubQueryService;
     private final CommentQueryService commentQueryService;
 
-    public long addComment(Account account, CommentRequest commentRequest) {
+    public Long addComment(Account account, CommentRequest commentRequest) {
 
         Comment comment = Comment.of(commentRequest.getContent(), account,
                                 clubQueryService.findClubById(commentRequest.getClubId()));
@@ -26,7 +26,7 @@ public class CommentService {
         return comment.getId();
     }
 
-    public void deleteComment(Account account, long commentId) {
+    public Long deleteComment(Account account, long commentId) {
         Comment savedComment = commentQueryService.findCommentById(commentId);
 
         if (!account.isMe(savedComment.getAccount())) {
@@ -34,6 +34,8 @@ public class CommentService {
         }
 
         commentRepository.delete(savedComment);
+
+        return savedComment.getId();
     }
 
     public void deleteAllComment(Account account) {

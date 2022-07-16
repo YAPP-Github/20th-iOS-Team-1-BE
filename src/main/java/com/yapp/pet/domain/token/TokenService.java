@@ -38,11 +38,13 @@ public class TokenService {
         return tokenResponse;
     }
 
-    public void expireRefreshToken(Account account){
+    public Long expireRefreshToken(Account account){
         Token token = getAndValidToken(account);
 
         tokenRepository.delete(token);
         account.deleteToken();
+
+        token.getId();
     }
 
     private Token getAndValidToken(Account account){
