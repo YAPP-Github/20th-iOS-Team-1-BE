@@ -6,7 +6,7 @@ import com.yapp.pet.domain.account.repository.AccountRepository;
 import com.yapp.pet.domain.account_image.AccountImage;
 import com.yapp.pet.domain.account_image.AccountImageService;
 import com.yapp.pet.domain.accountclub.AccountClubRepository;
-import com.yapp.pet.domain.comment.CommentService;
+import com.yapp.pet.domain.comment.service.CommentService;
 import com.yapp.pet.domain.pet.service.PetService;
 import com.yapp.pet.domain.token.entity.Social;
 import com.yapp.pet.domain.token.entity.Token;
