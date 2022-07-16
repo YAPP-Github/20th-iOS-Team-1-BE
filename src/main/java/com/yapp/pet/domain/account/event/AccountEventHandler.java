@@ -11,7 +11,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 
 @Component
 @RequiredArgsConstructor
-public class SignedUpEventHandler {
+public class AccountEventHandler {
 
     private final AccountImageService accountImageService;
 
