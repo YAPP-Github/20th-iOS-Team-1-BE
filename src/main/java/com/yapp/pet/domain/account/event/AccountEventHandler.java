@@ -1,5 +1,6 @@
 package com.yapp.pet.domain.account.event;
 
+import com.yapp.pet.domain.account.service.AccountService;
 import com.yapp.pet.domain.account_image.AccountImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
@@ -14,12 +15,20 @@ import org.springframework.transaction.event.TransactionalEventListener;
 public class AccountEventHandler {
 
     private final AccountImageService accountImageService;
+    private final AccountService accountService;
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Async
     public void saveImage(SignedUpEvent event){
         accountImageService.create(event.getImageFile(), event.getAccount());
+    }
+
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Async
+    public void deleteAccount(AccountDeletedEvent event){
+        accountService.delete(event.getAccount());
     }
 
 }
