@@ -39,7 +39,7 @@ public class ClubService {
     private final CommentRepository commentRepository;
     private final ClubSearchRepository clubSearchRepository;
 
-    public void leaveClub(Long clubId, Account loginAccount) {
+    public Long leaveClub(Long clubId, Account loginAccount) {
 
         Club findClub = clubRepository.findById(clubId).orElseThrow(EntityNotFoundException::new);
 
@@ -49,6 +49,8 @@ public class ClubService {
                 .orElseThrow(NotParticipatingClubException::new);
 
         accountClubRepository.delete(accountClub);
+
+        return accountClub.getId();
     }
 
     public long createClub(Account account, ClubCreateRequest clubCreateRequest) {
@@ -77,7 +79,7 @@ public class ClubService {
         return savedClubDocument.getId();
     }
 
-    public void deleteClub(Long clubId, Account loginAccount) {
+    public Long deleteClub(Long clubId, Account loginAccount) {
 
         Club findClub = clubRepository.findById(clubId).orElseThrow(EntityNotFoundException::new);
 
@@ -90,6 +92,8 @@ public class ClubService {
         );
         accountClubRepository.deleteAllInBatch(findClub.getAccountClubs());
         clubRepository.delete(findClub);
+
+        return findClub.getId();
     }
 
     private boolean isLeader(Club findClub, Account loginAccount) {

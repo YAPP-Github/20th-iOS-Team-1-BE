@@ -102,21 +102,23 @@ public class ClubController {
     }
 
     @DeleteMapping("/clubs/leave/{club-id}")
-    public ResponseEntity<Void> leaveClub(@PathVariable("club-id") Long clubId,
+    public ResponseEntity<Long> leaveClub(@PathVariable("club-id") Long clubId,
                                           @AuthAccount Account account){
 
+        Long accountId;
+
         try {
-            clubService.leaveClub(clubId, account);
+            accountId = clubService.leaveClub(clubId, account);
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
         }
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(accountId);
     }
 
     @PostMapping("/clubs")
-    public long createClub(@AuthAccount Account account, @RequestBody ClubCreateRequest clubCreateRequest) {
+    public ResponseEntity<Long> createClub(@AuthAccount Account account, @RequestBody ClubCreateRequest clubCreateRequest) {
 
         long savedId = 0L;
 
@@ -128,21 +130,23 @@ public class ClubController {
             throw e;
         }
 
-        return savedId;
+        return ResponseEntity.ok(savedId);
     }
 
     @DeleteMapping("/clubs/{club-id}")
-    public ResponseEntity<Void> deleteClub(@PathVariable("club-id") Long clubId,
+    public ResponseEntity<Long> deleteClub(@PathVariable("club-id") Long clubId,
                                            @AuthAccount Account account){
 
+        Long deletedClubId;
+
         try {
-            clubService.deleteClub(clubId, account);
+            deletedClubId = clubService.deleteClub(clubId, account);
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
         }
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(deletedClubId);
     }
 
     @PostMapping("/clubs/participate/{club-id}")

@@ -36,7 +36,7 @@ public class PetService {
 
     private final PetMapper petMapper;
 
-    public long addPet(Account account, PetRequest petRequest) {
+    public Long addPet(Account account, PetRequest petRequest) {
 
         PetImage petImage = null; //없을 수도 있다
 
@@ -82,7 +82,7 @@ public class PetService {
         return new Age((currentYear - birthYear) + "살", birthYear, birthMonth);
     }
 
-    public void deletePetInfo(long petId) {
+    public Long deletePetInfo(long petId) {
         Pet savedPet = petRepository.findById(petId)
                                     .orElseThrow(() -> new IllegalArgumentException("존재하는 펫이 없습니다"));
 
@@ -91,6 +91,8 @@ public class PetService {
         }
 
         petRepository.delete(savedPet);
+
+        return savedPet.getId();
     }
 
     public void deleteAllPetInfo(Account account) {
@@ -109,7 +111,7 @@ public class PetService {
                                          .collect(Collectors.toList()));
     }
 
-    public void updatePetInfo(long petId, PetRequest request) {
+    public Long updatePetInfo(long petId, PetRequest request) {
         Pet savedPet = petRepository.findById(petId)
                                     .orElseThrow(() -> new IllegalArgumentException("존재하는 펫이 없습니다"));
 
@@ -133,6 +135,8 @@ public class PetService {
         updatePet.updateAge(calculateAge(updatePet.getAge().getBirthYear(), updatePet.getAge().getBirthMonth()));
 
         savedPet.update(updatePet);
+
+        return savedPet.getId();
     }
 
     private void updateTags(Pet pet, List<String> tags) {

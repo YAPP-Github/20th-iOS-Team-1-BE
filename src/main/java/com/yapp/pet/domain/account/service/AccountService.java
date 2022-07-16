@@ -113,7 +113,7 @@ public class AccountService {
         return account.getId();
     }
 
-    public void updateAccount(Account account, AccountUpdateRequest request) {
+    public Long updateAccount(Account account, AccountUpdateRequest request) {
         AccountImage accountImage = account.getAccountImage();
         MultipartFile imageFile = request.getImageFile();
 
@@ -130,13 +130,15 @@ public class AccountService {
         Account updateAccount = accountMapper.toEntity(request);
 
         account.update(updateAccount);
+
+        return account.getId();
     }
 
     private boolean hasImageFile(MultipartFile imageFile){
         return imageFile != null && !imageFile.isEmpty();
     }
 
-    public void delete(Account account) {
+    public Long delete(Account account) {
         //petTag, pet 삭제
         petService.deleteAllPetInfo(account);
 
@@ -147,5 +149,7 @@ public class AccountService {
         accountClubRepository.deleteAccountClubsByAccountId(account.getId());
 
         accountRepository.delete(account);
+
+        return account.getId();
     }
 }

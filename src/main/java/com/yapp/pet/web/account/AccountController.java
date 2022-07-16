@@ -70,24 +70,26 @@ public class AccountController {
     }
 
     @PatchMapping("/accounts")
-    public ResponseEntity<Void> updateAccount(@AuthAccount Account account,
+    public ResponseEntity<Long> updateAccount(@AuthAccount Account account,
                                               @ModelAttribute AccountUpdateRequest accountUpdateRequest){
 
+        Long accountId;
+
         try {
-            accountService.updateAccount(account, accountUpdateRequest);
+            accountId = accountService.updateAccount(account, accountUpdateRequest);
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
         }
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(accountId);
     }
 
     @DeleteMapping("/accounts")
-    public ResponseEntity<Void> deleteAccount(@AuthAccount Account account) {
-        accountService.delete(account);
+    public ResponseEntity<Long> deleteAccount(@AuthAccount Account account) {
+        Long accountId = accountService.delete(account);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(accountId);
     }
 
 }

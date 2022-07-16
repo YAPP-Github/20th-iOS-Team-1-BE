@@ -223,6 +223,12 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+                description: 회원 고유 id 값입니다. (pk)
+                example: 3
         '401':
           description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
           content:
@@ -237,6 +243,12 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+                description: 회원 고유 id 값입니다. (pk)
+                example: 3
         '401':
           description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
           content:
@@ -276,6 +288,12 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+                description: 토큰 고유 id 값입니다. (pk)
+                example: 3
         '401':
           description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
           content:
@@ -487,6 +505,12 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+                description: 모임 고유 id 값입니다. (pk)
+                example: 3
         '401':
           description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
           content:
@@ -511,6 +535,12 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+                description: 모임을 떠난 계정의 고유 id 값입니다. (pk)
+                example: 3
         '401':
           description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
           content:
@@ -606,6 +636,12 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+                description: 삭제한 애완견 고유 식별자 값입니다.
+                example: 5
         '401':
           description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
           content:
@@ -633,6 +669,12 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+                description: 수정된 애완견 고유 식별자 값입니다.
+                example: 5
         '401':
           description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
           content:
@@ -683,6 +725,12 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+                description: 삭제된 댓글 고유 식별자 값입니다.
+                example: 5
         '401':
           description: 토큰이 없거나 문제있는 경우에 아래와 같은 포맷으로 응답합니다. (아래는 토큰이 만료된 경우 예시입니다.)
           content:
