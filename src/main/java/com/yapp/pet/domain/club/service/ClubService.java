@@ -96,6 +96,17 @@ public class ClubService {
         return findClub.getId();
     }
 
+    public void deleteClub(Long clubId){
+
+        Club findClub = clubRepository.findById(clubId).orElseThrow(EntityNotFoundException::new);
+
+        commentRepository.deleteAllInBatch(
+                commentRepository.findCommentByClubId(findClub.getId())
+        );
+        accountClubRepository.deleteAllInBatch(findClub.getAccountClubs());
+        clubRepository.delete(findClub);
+    }
+
     private boolean isLeader(Club findClub, Account loginAccount) {
         return findClub.getAccountClubs().stream()
                 .filter(AccountClub::isLeader)
