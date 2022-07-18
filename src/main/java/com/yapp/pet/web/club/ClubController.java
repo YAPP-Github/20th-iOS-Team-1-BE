@@ -156,15 +156,9 @@ public class ClubController {
         ClubParticipateResponse response;
 
         try {
-            response = clubService.isEligibleClub(clubId, loginAccount);
+            response = clubService.participateClub(clubId, loginAccount);
 
-            if (!response.isEligible()) {
-                return ResponseEntity.badRequest().body(response);
-            }
-
-            long savedAccountClubId = clubService.participateClub(clubId, loginAccount);
-
-            clubService.updateAccountClubDocument(savedAccountClubId);
+            clubService.updateAccountClubDocument(response.getClubId());
         } catch (Exception e) {
             e.printStackTrace();
             throw e;

@@ -13,6 +13,8 @@ public class ClubParticipateResponse {
 
     private ClubParticipateRejectReason rejectReason;
 
+    private Long clubId;
+
     public ClubParticipateResponse(boolean eligible, ClubParticipateRejectReason rejectReason) {
         this.eligible = eligible;
         this.rejectReason = rejectReason;
