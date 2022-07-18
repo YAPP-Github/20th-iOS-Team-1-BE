@@ -133,7 +133,7 @@ public class ClubServiceTest {
         Account loginAccount = accountRepository.findById(3L).get();
 
         //when
-        ClubParticipateResponse response = clubService.isEligibleClub(clubId, loginAccount);
+        ClubParticipateResponse response = clubService.participateClub(clubId, loginAccount);
 
         //then
         assertThat(response.isEligible()).isFalse();
@@ -148,7 +148,7 @@ public class ClubServiceTest {
         Account loginAccount = accountRepository.findById(2L).get();
 
         //when
-        ClubParticipateResponse response = clubService.isEligibleClub(clubId, loginAccount);
+        ClubParticipateResponse response = clubService.participateClub(clubId, loginAccount);
 
         //then
         assertThat(response.isEligible()).isFalse();
@@ -163,7 +163,7 @@ public class ClubServiceTest {
         Account loginAccount = accountRepository.findById(5L).get();
 
         //when
-        ClubParticipateResponse response = clubService.isEligibleClub(clubId, loginAccount);
+        ClubParticipateResponse response = clubService.participateClub(clubId, loginAccount);
 
         //then
         assertThat(response.isEligible()).isFalse();
@@ -178,11 +178,26 @@ public class ClubServiceTest {
         Account loginAccount = accountRepository.findById(4L).get();
 
         //when
-        ClubParticipateResponse response = clubService.isEligibleClub(clubId, loginAccount);
+        ClubParticipateResponse response = clubService.participateClub(clubId, loginAccount);
 
         //then
         assertThat(response.isEligible()).isFalse();
         assertThat(response.getRejectReason()).isEqualTo(NOT_ELIGIBLE_BREEDS);
+    }
+
+    @Test
+    @DisplayName("모임 참여 실패 - 인원이 다 찬 모임은 참여할 수 없다.")
+    void notParticipateClubByFull() {
+        //given
+        Long clubId = 7L;
+        Account loginAccount = accountRepository.findById(4L).get();
+
+        //when
+        ClubParticipateResponse response = clubService.participateClub(clubId, loginAccount);
+
+        //then
+        assertThat(response.isEligible()).isFalse();
+        assertThat(response.getRejectReason()).isEqualTo(FULL);
     }
 
     @Test
@@ -193,7 +208,7 @@ public class ClubServiceTest {
         Account loginAccount = accountRepository.findById(6L).get();
 
         //when
-        ClubParticipateResponse response = clubService.isEligibleClub(clubId, loginAccount);
+        ClubParticipateResponse response = clubService.participateClub(clubId, loginAccount);
 
         //then
         assertThat(response.isEligible()).isTrue();
