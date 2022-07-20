@@ -1,12 +1,10 @@
 package com.yapp.pet.domain.club.service;
 
 import com.yapp.pet.domain.account.entity.Account;
-import com.yapp.pet.domain.account.entity.AccountSex;
 import com.yapp.pet.domain.accountclub.AccountClub;
 import com.yapp.pet.domain.accountclub.AccountClubRepository;
 import com.yapp.pet.domain.club.document.ClubDocument;
 import com.yapp.pet.domain.club.entity.Club;
-import com.yapp.pet.domain.club.entity.EligibleSex;
 import com.yapp.pet.domain.club.repository.ClubRepository;
 import com.yapp.pet.domain.club.repository.ClubSearchRepository;
 import com.yapp.pet.domain.comment.CommentRepository;
@@ -25,8 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
-import static com.yapp.pet.web.club.model.ClubParticipateRejectReason.*;
-
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -38,6 +34,8 @@ public class ClubService {
     private final PetRepository petRepository;
     private final CommentRepository commentRepository;
     private final ClubSearchRepository clubSearchRepository;
+
+    private final ClubValidator validator;
 
     public Long leaveClub(Long clubId, Account loginAccount) {
 
@@ -113,73 +111,23 @@ public class ClubService {
                 .anyMatch(ac -> ac.getAccount().equals(loginAccount));
     }
 
-    public ClubParticipateResponse isEligibleClub(Long clubId, Account loginAccount) {
-        Club findClub = clubRepository.findById(clubId).orElseThrow(EntityNotFoundException::new);
+    public ClubParticipateResponse participateClub(Long clubId, Account loginAccount) {
+        Club findClub = clubRepository.findClubDetailById(clubId).orElseThrow(EntityNotFoundException::new);
         List<Pet> findPets = petRepository.findPetsByAccountId(loginAccount.getId());
 
-        if (hasNotPet(findPets)) {
-            return ClubParticipateResponse.of(false, HAS_NOT_PET);
+        ClubParticipateResponse response = validator.participationValidate(findClub, findPets, loginAccount);
+        response.setClubId(findClub.getId());
+
+        if (!response.isEligible()) {
+            return response;
         }
-
-        if (!isEligibleSex(loginAccount, findClub)) {
-            return ClubParticipateResponse.of(false, NOT_ELIGIBLE_SEX);
-        }
-
-        if (!isEligiblePetSizeType(findClub, findPets)) {
-            return ClubParticipateResponse.of(false, NOT_ELIGIBLE_PET_SIZE_TYPE);
-        }
-
-        if (!isEligibleBreeds(findClub, findPets)) {
-            return ClubParticipateResponse.of(false, NOT_ELIGIBLE_BREEDS);
-        }
-
-        return ClubParticipateResponse.of(true, null);
-    }
-
-    private boolean hasNotPet(List<Pet> findPets) {
-        return findPets == null || findPets.isEmpty();
-    }
-
-    private boolean isEligibleSex(Account loginAccount, Club club) {
-        AccountSex accountSex = loginAccount.getSex();
-        EligibleSex eligibleSex = club.getEligibleSex();
-
-        if (eligibleSex == EligibleSex.ALL) {
-            return true;
-        }
-
-        if (eligibleSex == EligibleSex.MAN && accountSex == AccountSex.MAN) {
-            return true;
-        }
-
-        if (eligibleSex == EligibleSex.WOMAN && accountSex == AccountSex.WOMAN) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private boolean isEligiblePetSizeType(Club club, List<Pet> findPets) {
-        return findPets.stream()
-                .anyMatch(pet -> club.getEligiblePetSizeTypes().contains(pet.getSizeType()));
-    }
-
-    private boolean isEligibleBreeds(Club club, List<Pet> findPets) {
-        if (club.getEligibleBreeds() == null || club.getEligibleBreeds().isEmpty()) {
-            return true;
-        }
-        
-        return findPets.stream()
-                .anyMatch(pet -> club.getEligibleBreeds().contains(pet.getBreed()));
-    }
-
-    public long participateClub(Long clubId, Account loginAccount){
-        Club findClub = clubRepository.findById(clubId).orElseThrow(EntityNotFoundException::new);
 
         AccountClub accountClub = AccountClub.of(loginAccount, findClub);
         accountClub.addClub(findClub);
 
-        return accountClubRepository.save(accountClub).getId();
+        accountClubRepository.save(accountClub);
+
+        return response;
     }
 
     public void updateAccountClubDocument(Long accountClubId) {
