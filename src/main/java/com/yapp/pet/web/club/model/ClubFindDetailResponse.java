@@ -93,7 +93,7 @@ public class ClubFindDetailResponse {
             this.id = account.getId();
             this.nickname = account.getNickname();
 
-            if (account.getAccountImage().getPath() != null) {
+            if (account.getAccountImage() != null) {
                 this.imageUrl = account.getAccountImage().getPath();
             }
         }
