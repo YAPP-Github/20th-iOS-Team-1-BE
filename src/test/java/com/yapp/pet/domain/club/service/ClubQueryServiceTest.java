@@ -186,7 +186,7 @@ class ClubQueryServiceTest {
         assertThat(clubInfo2.getClubId()).isEqualTo(4);
 
         assertThat(clubInfo1.getTitle()).isEqualTo("쿄쿄량 산책할사람");
-        assertThat(clubInfo1.getMaximumPeople()).isEqualTo(2);
+        assertThat(clubInfo1.getMaximumPeople()).isEqualTo(3);
         assertThat(clubInfo1.getParticipants()).isEqualTo(2);
         assertThat(clubInfo1.getEligiblePetSizeTypes().size()).isEqualTo(2); // LARGE, MEDIUM
         assertThat(clubInfo1.getEligibleBreeds().size()).isEqualTo(2); // 말티즈, 리트리버

@@ -1349,6 +1349,9 @@ components:
         clubDetailInfo:
           type: object
           properties:
+            id:
+              type: integer
+              example: 1
             title:
               type: string
               example: "박람회 모임"
@@ -1400,6 +1403,9 @@ components:
         leaderInfo:
           type: object
           properties:
+            id:
+              type: integer
+              example: 1
             nickname:
               type: string
               example: "재롱잔치"
@@ -1411,9 +1417,11 @@ components:
           items:
             type: object
           example:
-            - nickname: 재롱잔치
+            - id: 1
+              nickname: 재롱잔치
               imageUrl: "https://togaether.s3.ap-northeast-2.amazonaws.com/account/파일이름.jpg"
-            - nickname: 밀란이네 시트콤
+            - id: 2
+              nickname: 밀란이네 시트콤
               imageUrl: "https://togaether.s3.ap-northeast-2.amazonaws.com/account/파일이름.jpg"
         commentInfos:
           type: array
