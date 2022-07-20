@@ -921,6 +921,9 @@ components:
         accountInfo:
           type: object
           properties:
+            id:
+              type: integer
+              example: 1
             nickname:
               type: string
               example: 재롱잔치
@@ -950,7 +953,8 @@ components:
           items:
             type: object
           example:
-            - nickname: 재롱이
+            - id: 1
+              nickname: 재롱이
               breed: 말티즈
               age: 3살
               sex: MALE
@@ -959,7 +963,8 @@ components:
                 - 산책 좋아함
                 - 귀여움
               imageUrl: https://pet.com
-            - nickname: 밀란이
+            - id: 2
+              nickname: 밀란이
               breed: 리트리버
               age: 4살
               sex: FEMALE
@@ -1428,11 +1433,13 @@ components:
           items:
             type: object
           example:
-            - content: 댓글1
+            - id: 1
+              content: 댓글1
               author: "누군가"
               leader: false
               updatedTime: "2022-06-25T15:46:08.962Z"
-            - content: 댓글2
+            - id: 2
+              content: 댓글2
               author: "재롱잔치"
               leader: true
               updatedTime: "2022-06-25T15:46:08.962Z"
