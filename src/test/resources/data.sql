@@ -1,35 +1,14 @@
-delete from account_club;
-alter table account_club auto_increment = 1;
-
-delete from interest_categories;
-alter table interest_categories auto_increment = 1;
-
-delete from pet_tag;
-alter table pet_tag auto_increment = 1;
-
-delete from pet;
-alter table pet auto_increment = 1;
-
-delete from comment;
-alter table comment auto_increment = 1;
-
-delete from account;
-alter table account auto_increment = 1;
-
-delete from account_image;
-alter table account_image auto_increment = 1;
-
-delete from token;
-alter table token auto_increment = 1;
-
-delete from eligible_pet_size_types;
-alter table eligible_pet_size_types auto_increment = 1;
-
-delete from eligible_pet_breeds;
-alter table eligible_pet_breeds auto_increment = 1;
-
-delete from club;
-alter table club auto_increment = 1;
+delete from account_club; alter table account_club auto_increment = 1;
+delete from interest_categories; alter table interest_categories auto_increment = 1;
+delete from pet_tag; alter table pet_tag auto_increment = 1;
+delete from pet; alter table pet auto_increment = 1;
+delete from comment; alter table comment auto_increment = 1;
+delete from account; alter table account auto_increment = 1;
+delete from account_image; alter table account_image auto_increment = 1;
+delete from token; alter table token auto_increment = 1;
+delete from eligible_pet_size_types; alter table eligible_pet_size_types auto_increment = 1;
+delete from eligible_pet_breeds; alter table eligible_pet_breeds auto_increment = 1;
+delete from club; alter table club auto_increment = 1;
 
 insert into token (refresh_token, social_type, unique_id_by_social) values ('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJ5YXBwIiwic3ViIjoidW5pcXVlMSIsImF1ZCI6IlJFRlJFU0giLCJleHAiOjE2Njg2NjY4NTIsImlhdCI6MTY1NTUyNjg1MiwiYXV0aCI6IlVTRVIifQ.kHnI8FuhqZpAYpVAuBieczAAXzXXk-E1dNMEO8gvMjTCiswEgBjeLpHyKyh6V-y8-WFET68l6I_GOk776ldKtQ', 'KAKAO', 'unique1');
 insert into token (refresh_token, social_type, unique_id_by_social) values ('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJ5YXBwIiwic3ViIjoidW5pcXVlMiIsImF1ZCI6IlJFRlJFU0giLCJleHAiOjE2Njg2NjY5NzAsImlhdCI6MTY1NTUyNjk3MCwiYXV0aCI6IlVTRVIifQ.7_QVjo2DtC5CFpIjHVUf7Q-La5wAGBZWbOC-R57C6DXS1kpIPiYtKyYo2HAnTuANU4zjv7AZA62iUr-FnmdHQQ', 'APPLE', 'unique2');
@@ -109,6 +88,8 @@ insert into eligible_pet_breeds (club_id, eligible_breeds) values (1, '리트리
 
 insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (1, 'LARGE');
 insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (1, 'MEDIUM');
+insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (2, 'ALL');
+insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (3, 'ALL');
 insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (4, 'SMALL');
 insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (5, 'LARGE');
 insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (5, 'MEDIUM');
