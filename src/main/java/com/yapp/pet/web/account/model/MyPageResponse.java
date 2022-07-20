@@ -48,6 +48,8 @@ public class MyPageResponse {
     @NoArgsConstructor
     public static class AccountInfoResponse {
 
+        private Long id;
+
         private String nickname;
 
         private String address;
@@ -63,6 +65,7 @@ public class MyPageResponse {
         private String imageUrl;
 
         public AccountInfoResponse(Account account) {
+            this.id = account.getId();
             this.nickname = account.getNickname();
             this.address = account.getAddress().getCity() + " " + account.getAddress().getDetail();
             this.age = account.getAge() + "살";
@@ -85,6 +88,8 @@ public class MyPageResponse {
     @NoArgsConstructor
     public static class PetInfoResponse {
 
+        private Long id;
+
         private String nickname;
 
         private String breed;
@@ -98,6 +103,7 @@ public class MyPageResponse {
         private String imageUrl;
 
         public PetInfoResponse(Pet pet) {
+            this.id = pet.getId();
             this.nickname = pet.getName();
             this.breed = pet.getBreed();
             this.age = pet.getAge().getAge();

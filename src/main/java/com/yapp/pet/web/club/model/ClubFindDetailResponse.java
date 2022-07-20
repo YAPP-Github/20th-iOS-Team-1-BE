@@ -65,6 +65,7 @@ public class ClubFindDetailResponse {
     @Setter
     @NoArgsConstructor
     public static class ClubDetailInfo{
+        private Long id;
         private String title;
         private String description;
         private Category category;
@@ -84,12 +85,17 @@ public class ClubFindDetailResponse {
     @Setter
     @NoArgsConstructor
     public static class AccountInfo{
+        private Long id;
         private String nickname;
         private String imageUrl;
 
         public AccountInfo(Account account){
+            this.id = account.getId();
             this.nickname = account.getNickname();
-            this.imageUrl = account.getAccountImage().getPath();
+
+            if (account.getAccountImage().getPath() != null) {
+                this.imageUrl = account.getAccountImage().getPath();
+            }
         }
     }
 

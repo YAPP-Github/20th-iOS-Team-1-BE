@@ -35,7 +35,8 @@ public class CommentQueryService {
         List<Pet> savedPet = petRepository.findPetsByAccountId(account.getId());
 
         return comments.stream()
-                       .map(comment -> new CommentResponse(comment.getContent(),
+                       .map(comment -> new CommentResponse(comment.getId(),
+                                                           comment.getContent(),
                                                            comment.getAccount().getNickname(),
                                                            comment.getClub().getAccountClubs().stream()
                                                                   .anyMatch(ac -> (ac.isLeader() && ac.getAccount()
