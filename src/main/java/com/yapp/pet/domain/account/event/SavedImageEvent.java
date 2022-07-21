@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @NoArgsConstructor
-public class SignedUpEvent {
+public class SavedImageEvent {
 
     private EventType type;
 
@@ -16,13 +16,13 @@ public class SignedUpEvent {
 
     private Account account;
 
-    public SignedUpEvent(EventType type, MultipartFile imageFile, Account account) {
+    public SavedImageEvent(EventType type, MultipartFile imageFile, Account account) {
         this.type = type;
         this.imageFile = imageFile;
         this.account = account;
     }
 
-    public static SignedUpEvent of(EventType type, MultipartFile imageFile, Account account){
-        return new SignedUpEvent(type, imageFile, account);
+    public static SavedImageEvent of(EventType type, MultipartFile imageFile, Account account){
+        return new SavedImageEvent(type, imageFile, account);
     }
 }

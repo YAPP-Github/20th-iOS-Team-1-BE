@@ -1,6 +1,6 @@
 package com.yapp.pet.domain.account.service;
 
-import com.yapp.pet.domain.account.event.SignedUpEvent;
+import com.yapp.pet.domain.account.event.SavedImageEvent;
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.account.repository.AccountRepository;
 import com.yapp.pet.domain.account_image.AccountImage;
@@ -106,7 +106,7 @@ public class AccountService {
 
         if (hasImageFile(request.getImageFile())) {
             eventPublisher.publishEvent(
-                    SignedUpEvent.of(EVENT_SIGNED_UP, request.getImageFile(), account)
+                    SavedImageEvent.of(EVENT_SIGNED_UP, request.getImageFile(), account)
             );
         }
 
