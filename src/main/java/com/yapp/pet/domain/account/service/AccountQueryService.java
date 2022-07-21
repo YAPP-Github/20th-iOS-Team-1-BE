@@ -52,7 +52,10 @@ public class AccountQueryService {
     }
 
     private boolean isSatisfyLengthCondition(String nickname){
-        return 2 <= nickname.length() && nickname.length() <= 10;
+        final int NICKNAME_MIN_LENGTH = 2;
+        final int NICKNAME_MAX_LENGTH = 10;
+
+        return NICKNAME_MIN_LENGTH <= nickname.length() && nickname.length() <= NICKNAME_MAX_LENGTH;
     }
 
     private boolean isUnique(String nickname){
