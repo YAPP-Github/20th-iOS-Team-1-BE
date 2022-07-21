@@ -47,9 +47,4 @@ public class KakaoController {
         return ResponseEntity.ok(signInResponse);
     }
 
-    @GetMapping("/test")
-    public void test(){
-        throw new EntityNotFoundException();
-    }
-
 }
