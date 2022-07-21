@@ -12,7 +12,6 @@ public interface AccountMapper {
 
     @Mapping(target = "address.city", source = "city")
     @Mapping(target = "address.detail", source = "detail")
-    @ValueMapping(target = "sex", source = "sex")
     Account toEntity(AccountSignUpRequest signUpRequest);
 
     @Mapping(target = "address.city", source = "city")

@@ -123,7 +123,7 @@ public class AccountService {
             }
 
             eventPublisher.publishEvent(
-                    SignedUpEvent.of(EVENT_SIGNED_UP, request.getImageFile(), account)
+                    SavedImageEvent.of(EVENT_SIGNED_UP, request.getImageFile(), account)
             );
         }
 
