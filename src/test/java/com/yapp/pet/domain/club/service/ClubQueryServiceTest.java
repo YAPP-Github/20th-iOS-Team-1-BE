@@ -8,6 +8,7 @@ import com.yapp.pet.domain.club.entity.EligibleSex;
 import com.yapp.pet.domain.club.repository.jpa.ClubRepository;
 import com.yapp.pet.domain.common.Category;
 import com.yapp.pet.domain.common.PetSizeType;
+import com.yapp.pet.web.club.model.ClubFindByConditionRequest;
 import com.yapp.pet.web.club.model.ClubFindDetailResponse;
 import com.yapp.pet.web.club.model.ClubFindResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -163,12 +164,15 @@ class ClubQueryServiceTest {
         //given, 실제로는 10개씩 페이징 하지만 테스트에선 2로 테스트
         PageRequest pageRequest = PageRequest.of(0, 2, Sort.by(ASC, "endDate"));
 
+        ClubFindByConditionRequest request = ClubFindByConditionRequest.builder()
+                .condition(I_AM_PARTICIPATING)
+                .cursorEndDate(null)
+                .cursorId(null)
+                .build();
+
         //when, 현재 accountWithTokenAndImage가 종료되지않고 참여중인 club은 1,4,5
         ClubFindResponse response
-                = clubQueryService.findClubsByCondition(
-                        null, null,
-                        I_AM_PARTICIPATING, accountWithTokenAndImage, pageRequest
-        );
+                = clubQueryService.findClubsByCondition(request, accountWithTokenAndImage, pageRequest);
 
         Page<ClubInfo> clubInfos = response.getClubInfos();
         List<ClubInfo> content = clubInfos.getContent();
@@ -209,12 +213,15 @@ class ClubQueryServiceTest {
         PageRequest pageRequest = PageRequest.of(0, 2, Sort.by(ASC, "endDate"));
         LocalDateTime cursorDate = LocalDateTime.of(2022, 7, 1, 18, 0, 0);
 
+        ClubFindByConditionRequest request = ClubFindByConditionRequest.builder()
+                .condition(I_AM_PARTICIPATING)
+                .cursorEndDate(cursorDate)
+                .cursorId(4L)
+                .build();
+
         //when, 현재 accountWithTokenAndImage가 종료되지않고 참여중인 club은 1,4,5
         ClubFindResponse response
-                = clubQueryService.findClubsByCondition(
-                        4L, cursorDate,
-                        I_AM_PARTICIPATING, accountWithTokenAndImage, pageRequest
-        );
+                = clubQueryService.findClubsByCondition(request, accountWithTokenAndImage, pageRequest);
 
         Page<ClubInfo> clubInfos = response.getClubInfos();
         List<ClubInfo> content = clubInfos.getContent();
@@ -233,12 +240,15 @@ class ClubQueryServiceTest {
         PageRequest pageRequest = PageRequest.of(0, 2, Sort.by(ASC, "endDate"));
         LocalDateTime cursorDate = LocalDateTime.of(2022, 8, 5, 18, 0, 0);
 
+        ClubFindByConditionRequest request = ClubFindByConditionRequest.builder()
+                .condition(I_AM_PARTICIPATING)
+                .cursorEndDate(cursorDate)
+                .cursorId(5L)
+                .build();
+
         //when, 현재 accountWithTokenAndImage가 종료되지않고 참여중인 club은 1,4,5
         ClubFindResponse response
-                = clubQueryService.findClubsByCondition(
-                5L, cursorDate,
-                I_AM_PARTICIPATING, accountWithTokenAndImage, pageRequest
-        );
+                = clubQueryService.findClubsByCondition(request, accountWithTokenAndImage, pageRequest);
 
         Page<ClubInfo> clubInfos = response.getClubInfos();
 
@@ -253,12 +263,15 @@ class ClubQueryServiceTest {
         //given, 실제로는 10개씩 페이징 하지만 테스트에선 2로 테스트
         PageRequest pageRequest = PageRequest.of(0, 2, Sort.by(ASC, "endDate"));
 
+        ClubFindByConditionRequest request = ClubFindByConditionRequest.builder()
+                .condition(I_AM_LEADER)
+                .cursorEndDate(null)
+                .cursorId(null)
+                .build();
+
         //when, 현재 accountWithTokenAndImage가 만든 클럽 중 종료되지 않은 클럽은 1,4,5
         ClubFindResponse response
-                = clubQueryService.findClubsByCondition(
-                null, null,
-                I_AM_LEADER, accountWithTokenAndImage, pageRequest
-        );
+                = clubQueryService.findClubsByCondition(request, accountWithTokenAndImage, pageRequest);
 
         Page<ClubInfo> clubInfos = response.getClubInfos();
         List<ClubInfo> content = clubInfos.getContent();
@@ -281,12 +294,15 @@ class ClubQueryServiceTest {
         PageRequest pageRequest = PageRequest.of(0, 2, Sort.by(ASC, "endDate"));
         LocalDateTime cursorDate = LocalDateTime.of(2022, 7, 1, 18, 0, 0);
 
+        ClubFindByConditionRequest request = ClubFindByConditionRequest.builder()
+                .condition(I_AM_LEADER)
+                .cursorEndDate(cursorDate)
+                .cursorId(4L)
+                .build();
+
         //when, 현재 accountWithTokenAndImage가 만든 클럽 중 종료되지 않은 클럽은 1,4,5
         ClubFindResponse response
-                = clubQueryService.findClubsByCondition(
-                4L, cursorDate,
-                I_AM_LEADER, accountWithTokenAndImage, pageRequest
-        );
+                = clubQueryService.findClubsByCondition(request, accountWithTokenAndImage, pageRequest);
 
         Page<ClubInfo> clubInfos = response.getClubInfos();
         List<ClubInfo> content = clubInfos.getContent();
@@ -305,12 +321,15 @@ class ClubQueryServiceTest {
         //given, 실제로는 10개씩 페이징 하지만 테스트에선 2로 테스트
         PageRequest pageRequest = PageRequest.of(0, 2, Sort.by(ASC, "endDate"));
 
+        ClubFindByConditionRequest request = ClubFindByConditionRequest.builder()
+                .condition(I_AM_PARTICIPATED_AND_EXCEED)
+                .cursorEndDate(null)
+                .cursorId(null)
+                .build();
+
         //when, 현재 accountWithTokenAndImage가 참여했고, 종료된 클럽은 6,7
         ClubFindResponse response
-                = clubQueryService.findClubsByCondition(
-                null, null,
-                I_AM_PARTICIPATED_AND_EXCEED, accountWithTokenAndImage, pageRequest
-        );
+                = clubQueryService.findClubsByCondition(request, accountWithTokenAndImage, pageRequest);
 
         Page<ClubInfo> clubInfos = response.getClubInfos();
         List<ClubInfo> content = clubInfos.getContent();
@@ -335,12 +354,15 @@ class ClubQueryServiceTest {
         PageRequest pageRequest = PageRequest.of(0, 2, Sort.by(ASC, "endDate"));
         LocalDateTime cursorDate = LocalDateTime.of(2022, 10, 5, 18, 0, 0);
 
+        ClubFindByConditionRequest request = ClubFindByConditionRequest.builder()
+                .condition(I_AM_PARTICIPATED_AND_EXCEED)
+                .cursorEndDate(cursorDate)
+                .cursorId(7L)
+                .build();
+
         //when, 현재 accountWithTokenAndImage가 참여했고, 종료된 클럽은 6,7
         ClubFindResponse response
-                = clubQueryService.findClubsByCondition(
-                7L, cursorDate,
-                I_AM_PARTICIPATED_AND_EXCEED, accountWithTokenAndImage, pageRequest
-        );
+                = clubQueryService.findClubsByCondition(request, accountWithTokenAndImage, pageRequest);
 
         Page<ClubInfo> clubInfos = response.getClubInfos();
 
