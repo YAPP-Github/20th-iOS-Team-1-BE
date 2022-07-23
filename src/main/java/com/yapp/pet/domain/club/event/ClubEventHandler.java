@@ -18,7 +18,7 @@ public class ClubEventHandler {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Async
-    public void saveImage(ClubDeletedEvent event){
+    public void deleteClub(ClubDeletedEvent event){
         clubService.deleteClub(event.getClubId());
     }
 
