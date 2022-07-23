@@ -5,13 +5,12 @@ import com.yapp.pet.domain.account.entity.AccountSex;
 import com.yapp.pet.domain.account.repository.AccountRepository;
 import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.club.entity.EligibleSex;
-import com.yapp.pet.domain.club.repository.ClubRepository;
+import com.yapp.pet.domain.club.repository.jpa.ClubRepository;
 import com.yapp.pet.domain.common.Category;
 import com.yapp.pet.domain.common.PetSizeType;
 import com.yapp.pet.web.club.model.ClubFindDetailResponse;
 import com.yapp.pet.web.club.model.ClubFindResponse;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 

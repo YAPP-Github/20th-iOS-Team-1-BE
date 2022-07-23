@@ -5,7 +5,7 @@ import com.yapp.pet.domain.account.event.AccountDeletedEvent;
 import com.yapp.pet.domain.account.repository.AccountRepository;
 import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.club.event.ClubDeletedEvent;
-import com.yapp.pet.domain.club.repository.ClubRepository;
+import com.yapp.pet.domain.club.repository.jpa.ClubRepository;
 import com.yapp.pet.domain.comment.Comment;
 import com.yapp.pet.domain.comment.CommentRepository;
 import com.yapp.pet.domain.comment.event.CommentDeletedEvent;

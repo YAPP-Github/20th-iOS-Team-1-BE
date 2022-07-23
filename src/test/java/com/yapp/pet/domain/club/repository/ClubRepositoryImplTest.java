@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.BooleanPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.yapp.pet.domain.accountclub.AccountClub;
+import com.yapp.pet.domain.club.repository.jpa.ClubRepository;
 import com.yapp.pet.domain.common.Category;
 import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.club.entity.ClubStatus;

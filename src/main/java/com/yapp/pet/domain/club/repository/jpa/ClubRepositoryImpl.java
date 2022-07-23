@@ -1,4 +1,4 @@
-package com.yapp.pet.domain.club.repository;
+package com.yapp.pet.domain.club.repository.jpa;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.ConstantImpl;
@@ -11,6 +11,7 @@ import com.yapp.pet.domain.accountclub.AccountClub;
 import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.club.entity.ClubStatus;
 import com.yapp.pet.domain.club.entity.EligibleSex;
+import com.yapp.pet.domain.club.repository.ClubFindCondition;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
