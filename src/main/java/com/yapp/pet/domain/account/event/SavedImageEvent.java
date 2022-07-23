@@ -1,7 +1,6 @@
 package com.yapp.pet.domain.account.event;
 
 import com.yapp.pet.domain.account.entity.Account;
-import com.yapp.pet.domain.common.EventType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,19 +9,16 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 public class SavedImageEvent {
 
-    private EventType type;
-
     private MultipartFile imageFile;
 
     private Account account;
 
-    public SavedImageEvent(EventType type, MultipartFile imageFile, Account account) {
-        this.type = type;
+    public SavedImageEvent(MultipartFile imageFile, Account account) {
         this.imageFile = imageFile;
         this.account = account;
     }
 
-    public static SavedImageEvent of(EventType type, MultipartFile imageFile, Account account){
-        return new SavedImageEvent(type, imageFile, account);
+    public static SavedImageEvent of(MultipartFile imageFile, Account account){
+        return new SavedImageEvent(imageFile, account);
     }
 }
