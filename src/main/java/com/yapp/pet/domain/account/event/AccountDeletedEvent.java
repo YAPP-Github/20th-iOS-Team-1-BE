@@ -12,7 +12,7 @@ public class AccountDeletedEvent {
 
     private Account account;
 
-    public static AccountDeletedEvent of(Account account) {
+    public static AccountDeletedEvent from(Account account) {
         return new AccountDeletedEvent(account);
     }
 }
