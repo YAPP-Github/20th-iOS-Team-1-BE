@@ -5,7 +5,6 @@ import com.yapp.pet.web.account.model.AccountSignUpRequest;
 import com.yapp.pet.web.account.model.AccountUpdateRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.ValueMapping;
 
 @Mapper(componentModel = "spring")
 public interface AccountMapper {
