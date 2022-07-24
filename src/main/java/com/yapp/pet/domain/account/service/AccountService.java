@@ -138,13 +138,11 @@ public class AccountService {
     }
 
     public Long delete(Account account) {
-        //petTag, pet 삭제
+
         petService.deleteAllPetInfo(account);
 
-        //댓글삭제
         commentService.deleteAllComment(account);
 
-        //accountClub 삭제
         accountClubRepository.deleteAccountClubsByAccountId(account.getId());
 
         accountRepository.delete(account);
