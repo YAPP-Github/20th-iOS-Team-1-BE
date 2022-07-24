@@ -25,8 +25,8 @@ spring:
           physical-strategy: org.hibernate.boot.model.naming.MySQL5InnoDBDialect
         format_sql: true
         show_sql: true
-    open-in-view: false
         use_sql_comments: true
+    open-in-view: false
 
 jasypt:
   encryptor:

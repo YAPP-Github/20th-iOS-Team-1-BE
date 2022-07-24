@@ -90,8 +90,8 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
                 .selectFrom(accountClub)
                 .innerJoin(accountClub.account, account).fetchJoin()
                 .innerJoin(accountClub.club, club).fetchJoin()
-                .leftJoin(club.eligibleBreeds).fetchJoin()
                 .innerJoin(club.eligiblePetSizeTypes).fetchJoin()
+                .leftJoin(club.eligibleBreeds).fetchJoin()
                 .where(club.id.eq(clubId))
                 .fetchFirst();
 
