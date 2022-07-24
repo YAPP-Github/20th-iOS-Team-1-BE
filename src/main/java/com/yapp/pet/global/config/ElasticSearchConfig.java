@@ -1,7 +1,7 @@
 package com.yapp.pet.global.config;
 
 import com.yapp.pet.domain.club.document.AccountClubDocument;
-import com.yapp.pet.domain.club.repository.ClubSearchRepository;
+import com.yapp.pet.domain.club.repository.elasticsearch.ClubSearchRepository;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

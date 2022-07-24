@@ -20,6 +20,7 @@ spring:
         dialect: org.hibernate.dialect.MySQL57Dialect
         naming:
           physical-strategy: org.hibernate.boot.model.naming.MySQL5InnoDBDialect
+    open-in-view: false
 
 jasypt:
   encryptor:

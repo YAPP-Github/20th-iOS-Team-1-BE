@@ -21,6 +21,7 @@ public class TokenController {
 
     @PostMapping("/tokens/re-issuance")
     public ResponseEntity<TokenResponse> reIssuance(@AuthAccount Account account) {
+
         TokenResponse tokenResponse = tokenService.reIssuance(account);
 
         return ResponseEntity.ok(tokenResponse);
@@ -28,6 +29,7 @@ public class TokenController {
 
     @DeleteMapping("/tokens/expire")
     public ResponseEntity<Long> expireRefreshToken(@AuthAccount Account account) {
+
         Long deletedTokenId = tokenService.expireRefreshToken(account);
 
         return ResponseEntity.ok(deletedTokenId);

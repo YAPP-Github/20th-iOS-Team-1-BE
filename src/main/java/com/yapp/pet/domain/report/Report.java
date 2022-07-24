@@ -22,16 +22,12 @@ public class Report extends BaseEntity {
     @Column(name = "report_id")
     private Long id;
 
-    @Column(name = "reporter_acoount_id")
     private Long reporterAccountId;
 
-    @Column(name = "reported_acoount_id")
     private Long reportedAccountId;
 
-    @Column(name = "reported_club_id")
     private Long reportedClubId;
 
-    @Column(name = "reported_comment_id")
     private Long reportedCommentId;
 
     @Column(length = 100)

@@ -3,7 +3,9 @@ package com.yapp.pet.domain.club.service;
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.account.entity.AccountSex;
 import com.yapp.pet.domain.club.entity.Club;
+import com.yapp.pet.domain.club.entity.ClubStatus;
 import com.yapp.pet.domain.club.entity.EligibleSex;
+import com.yapp.pet.domain.common.PetSizeType;
 import com.yapp.pet.domain.pet.entity.Pet;
 import com.yapp.pet.web.club.model.ClubParticipateResponse;
 import org.springframework.stereotype.Component;
@@ -44,7 +46,7 @@ public class ClubValidator {
     }
 
     private boolean isFull(Club club){
-        return club.getMaximumPeople() <= club.getAccountClubs().size();
+        return club.getStatus().equals(ClubStatus.PERSONNEL_FULL);
     }
 
     private boolean isEligibleSex(Account loginAccount, Club club) {
@@ -67,6 +69,10 @@ public class ClubValidator {
     }
 
     private boolean isEligiblePetSizeType(Club club, List<Pet> findPets) {
+        if (club.getEligiblePetSizeTypes().contains(PetSizeType.ALL)) {
+            return true;
+        }
+
         return findPets.stream()
                 .anyMatch(pet -> club.getEligiblePetSizeTypes().contains(pet.getSizeType()));
     }

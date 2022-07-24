@@ -1,6 +1,6 @@
 package com.yapp.pet.domain.account.service;
 
-import com.yapp.pet.domain.account.event.SignedUpEvent;
+import com.yapp.pet.domain.account.event.SavedImageEvent;
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.account.repository.AccountRepository;
 import com.yapp.pet.domain.account_image.AccountImage;
@@ -29,7 +29,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
-import static com.yapp.pet.domain.common.EventType.*;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
@@ -106,7 +105,7 @@ public class AccountService {
 
         if (hasImageFile(request.getImageFile())) {
             eventPublisher.publishEvent(
-                    SignedUpEvent.of(EVENT_SIGNED_UP, request.getImageFile(), account)
+                    SavedImageEvent.of(request.getImageFile(), account)
             );
         }
 
@@ -123,7 +122,7 @@ public class AccountService {
             }
 
             eventPublisher.publishEvent(
-                    SignedUpEvent.of(EVENT_SIGNED_UP, request.getImageFile(), account)
+                    SavedImageEvent.of(request.getImageFile(), account)
             );
         }
 

@@ -18,7 +18,7 @@ public class CommentEventHandler {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Async
-    public void saveImage(CommentDeletedEvent event){
+    public void deleteComment(CommentDeletedEvent event){
         commentRepository.delete(event.getComment());
     }
 

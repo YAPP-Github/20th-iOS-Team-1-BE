@@ -32,9 +32,9 @@ public class AuthAccountResolver implements HandlerMethodArgumentResolver {
         return hasAnnotation && isAccountType;
     }
 
-    @Override // JwtFilter에서 모두 검증하므로, 검증 로직은 추가하지 않음
+    @Override
     public Account resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
 
         String jwt = JwtUtils.resolveTokenByWebRequest(webRequest);
         String sub = jwtService.getSubject(jwt);

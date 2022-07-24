@@ -1,7 +1,8 @@
-package com.yapp.pet.domain.club.repository;
+package com.yapp.pet.domain.club.repository.jpa;
 
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.club.entity.Club;
+import com.yapp.pet.domain.club.repository.ClubFindCondition;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

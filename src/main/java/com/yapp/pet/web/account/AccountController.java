@@ -25,14 +25,7 @@ public class AccountController {
     @GetMapping("/accounts/validate-nickname/{nickname}")
     public ResponseEntity<AccountValidationResponse> validateNickname(@PathVariable("nickname") String nickname){
 
-        AccountValidationResponse response;
-
-        try {
-            response = accountQueryService.validateNickname(nickname);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
+        AccountValidationResponse response = accountQueryService.validateNickname(nickname);
 
         return ResponseEntity.ok(response);
     }
@@ -41,14 +34,7 @@ public class AccountController {
     public ResponseEntity<Long> signUp(@AuthAccount Account account,
                                        @Valid @ModelAttribute AccountSignUpRequest accountSignUpRequest) {
 
-        Long accountId;
-
-        try {
-            accountId = accountService.signUp(account, accountSignUpRequest);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
+        Long accountId = accountService.signUp(account, accountSignUpRequest);
 
         return ResponseEntity.ok(accountId);
     }
@@ -57,14 +43,7 @@ public class AccountController {
     public ResponseEntity<MyPageResponse> myPage(@RequestParam(value = "nickname", required = false) String nickname,
                                                  @AuthAccount Account account){
 
-        MyPageResponse response;
-
-        try {
-            response = accountQueryService.getMyPageInfo(account, nickname);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
+        MyPageResponse response = accountQueryService.getMyPageInfo(account, nickname);
 
         return ResponseEntity.ok(response);
     }
@@ -73,20 +52,14 @@ public class AccountController {
     public ResponseEntity<Long> updateAccount(@AuthAccount Account account,
                                               @ModelAttribute AccountUpdateRequest accountUpdateRequest){
 
-        Long accountId;
-
-        try {
-            accountId = accountService.updateAccount(account, accountUpdateRequest);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
+        Long accountId = accountService.updateAccount(account, accountUpdateRequest);
 
         return ResponseEntity.ok(accountId);
     }
 
     @DeleteMapping("/accounts")
     public ResponseEntity<Long> deleteAccount(@AuthAccount Account account) {
+
         Long accountId = accountService.delete(account);
 
         return ResponseEntity.ok(accountId);

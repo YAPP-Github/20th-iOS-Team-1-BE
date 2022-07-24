@@ -1,4 +1,4 @@
-package com.yapp.pet.domain.club.repository;
+package com.yapp.pet.domain.club.repository.jpa;
 
 import com.yapp.pet.domain.club.entity.Club;
 import org.springframework.data.jpa.repository.EntityGraph;

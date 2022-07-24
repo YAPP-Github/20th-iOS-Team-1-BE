@@ -5,7 +5,7 @@ import com.yapp.pet.domain.account.event.AccountDeletedEvent;
 import com.yapp.pet.domain.account.repository.AccountRepository;
 import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.club.event.ClubDeletedEvent;
-import com.yapp.pet.domain.club.repository.ClubRepository;
+import com.yapp.pet.domain.club.repository.jpa.ClubRepository;
 import com.yapp.pet.domain.comment.Comment;
 import com.yapp.pet.domain.comment.CommentRepository;
 import com.yapp.pet.domain.comment.event.CommentDeletedEvent;
@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
-import static com.yapp.pet.domain.common.EventType.*;
 import static com.yapp.pet.global.TogaetherConstants.NUMBER_OF_LIMIT_REPORTS;
 
 @Service
@@ -60,14 +59,17 @@ public class ReportService {
         findClubReports.add(report);
 
         if(isReportedMoreThanThree(findClubReports)){
-            reportRepository.deleteAll(findClubReports);
-
-            eventPublisher.publishEvent(
-                    ClubDeletedEvent.of(EVENT_CLUB_DELETED, findClub.getId())
-            );
+            deleteReportAndClub(findClubReports, findClub);
         }
 
         return true;
+    }
+
+    private void deleteReportAndClub(List<Report> findClubReports, Club findClub) {
+        reportRepository.deleteAll(findClubReports);
+        eventPublisher.publishEvent(
+                ClubDeletedEvent.from(findClub.getId())
+        );
     }
 
     public Boolean createCommentReport(Long commentId, Account reporterAccount){
@@ -89,14 +91,17 @@ public class ReportService {
         findCommentReports.add(report);
 
         if(isReportedMoreThanThree(findCommentReports)){
-            reportRepository.deleteAll(findCommentReports);
-
-            eventPublisher.publishEvent(
-                    CommentDeletedEvent.of(EVENT_COMMENT_DELETED, findComment)
-            );
+            deleteReportAndComment(findCommentReports, findComment);
         }
 
         return true;
+    }
+
+    private void deleteReportAndComment(List<Report> findCommentReports, Comment findComment) {
+        reportRepository.deleteAll(findCommentReports);
+        eventPublisher.publishEvent(
+                CommentDeletedEvent.from(findComment)
+        );
     }
 
     public Boolean createAccountReport(Long reportedAccountId, Account reporterAccount){
@@ -119,14 +124,17 @@ public class ReportService {
         findAccountReports.add(report);
 
         if(isReportedMoreThanThree(findAccountReports)){
-            reportRepository.deleteAll(findAccountReports);
-
-            eventPublisher.publishEvent(
-                    AccountDeletedEvent.of(EVENT_ACCOUNT_DELETED, findReportedAccount)
-            );
+            deleteReportAndAccount(findAccountReports, findReportedAccount);
         }
 
         return true;
+    }
+
+    private void deleteReportAndAccount(List<Report> findAccountReports, Account findReportedAccount) {
+        reportRepository.deleteAll(findAccountReports);
+        eventPublisher.publishEvent(
+                AccountDeletedEvent.from(findReportedAccount)
+        );
     }
 
 }

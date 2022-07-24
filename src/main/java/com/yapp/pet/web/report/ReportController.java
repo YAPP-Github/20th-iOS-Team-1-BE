@@ -20,14 +20,8 @@ public class ReportController {
     @PostMapping("/reports/club/{club-id}")
     public ResponseEntity<Boolean> createClubReport(@PathVariable("club-id") Long clubId,
                                                     @AuthAccount Account account){
-        Boolean response;
 
-        try {
-            response = reportService.createClubReport(clubId, account);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
+        Boolean response = reportService.createClubReport(clubId, account);
 
         return ResponseEntity.ok(response);
     }
@@ -35,14 +29,8 @@ public class ReportController {
     @PostMapping("/reports/comment/{comment-id}")
     public ResponseEntity<Boolean> createCommentReport(@PathVariable("comment-id") Long commentId,
                                                        @AuthAccount Account account){
-        Boolean response;
 
-        try {
-            response = reportService.createCommentReport(commentId, account);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
+        Boolean response = reportService.createCommentReport(commentId, account);
 
         return ResponseEntity.ok(response);
     }
@@ -50,14 +38,8 @@ public class ReportController {
     @PostMapping("/reports/account/{account-id}")
     public ResponseEntity<Boolean> createAccountReport(@PathVariable("account-id") Long reportedAccountId,
                                                        @AuthAccount Account account){
-        Boolean response;
 
-        try {
-            response = reportService.createAccountReport(reportedAccountId, account);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
+        Boolean response = reportService.createAccountReport(reportedAccountId, account);
 
         return ResponseEntity.ok(response);
     }

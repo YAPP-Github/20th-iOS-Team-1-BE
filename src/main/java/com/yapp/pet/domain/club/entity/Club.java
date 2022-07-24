@@ -50,6 +50,8 @@ public class Club extends BaseEntity {
     @Column(nullable = false)
     private int maximumPeople;
 
+    private int participants;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private EligibleSex eligibleSex;
@@ -95,9 +97,18 @@ public class Club extends BaseEntity {
         this.endDate = endDate;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.participants = 1;
     }
 
     public void updateStatus(ClubStatus status) {
         this.status = status;
+    }
+
+    public void addPerson() {
+        this.participants++;
+    }
+
+    public void subtractPerson() {
+        this.participants--;
     }
 }

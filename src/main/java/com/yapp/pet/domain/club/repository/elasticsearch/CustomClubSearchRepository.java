@@ -1,4 +1,4 @@
-package com.yapp.pet.domain.club.repository;
+package com.yapp.pet.domain.club.repository.elasticsearch;
 
 import com.yapp.pet.domain.club.document.ClubDocument;
 

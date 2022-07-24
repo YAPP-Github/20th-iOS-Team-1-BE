@@ -31,25 +31,14 @@ public class KakaoController {
 
     @GetMapping("/auth/kakao/callback")
     public ResponseEntity<SignInResponse> callbackOfKakao(@RequestParam String code){
-        SignInResponse signInResponse;
 
         KakaoTokenResponse kakaoTokenResponse
                 = kakaoClient.requestKakaoToken(KAKAO_CONTENT_TYPE, GRANT_TYPE,
                                                 clientId, DEV_REDIRECT_URI, code, clientSecret);
 
-        try {
-            signInResponse = accountService.signInFromKakao(kakaoTokenResponse, Social.KAKAO);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
+        SignInResponse signInResponse = accountService.signInFromKakao(kakaoTokenResponse, Social.KAKAO);
 
         return ResponseEntity.ok(signInResponse);
-    }
-
-    @GetMapping("/test")
-    public void test(){
-        throw new EntityNotFoundException();
     }
 
 }

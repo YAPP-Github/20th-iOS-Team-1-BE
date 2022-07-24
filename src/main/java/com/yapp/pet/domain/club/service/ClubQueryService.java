@@ -4,10 +4,11 @@ import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.club.document.ClubDocument;
 import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.club.repository.ClubFindCondition;
-import com.yapp.pet.domain.club.repository.ClubRepository;
-import com.yapp.pet.domain.club.repository.ClubSearchRepository;
+import com.yapp.pet.domain.club.repository.jpa.ClubRepository;
+import com.yapp.pet.domain.club.repository.elasticsearch.ClubSearchRepository;
 import com.yapp.pet.domain.comment.service.CommentQueryService;
 import com.yapp.pet.global.mapper.ClubMapper;
+import com.yapp.pet.web.club.model.ClubFindByConditionRequest;
 import com.yapp.pet.web.club.model.ClubFindDetailResponse;
 import com.yapp.pet.web.club.model.ClubFindResponse;
 import com.yapp.pet.web.comment.model.CommentResponse;
@@ -87,14 +88,13 @@ public class ClubQueryService {
                              .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 club"));
     }
 
-    public ClubFindResponse findClubsByCondition(Long cursorId, LocalDateTime cursorEndDate,
-                                                 ClubFindCondition condition, Account account, Pageable pageable){
+    public ClubFindResponse findClubsByCondition(ClubFindByConditionRequest request, Account account, Pageable pageable){
 
-        String customCursor = generateCustomCursor(cursorEndDate, cursorId);
+        String customCursor = generateCustomCursor(request.getCursorEndDate(), request.getCursorId());
 
         Page<ClubInfo> findClubInfos
                 = clubRepository.findClubsByCondition(
-                        customCursor, condition,
+                        customCursor, request.getCondition(),
                         account, pageable
                 )
                 .map(clubMapper::toInfo);
