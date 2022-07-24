@@ -35,11 +35,6 @@ public class ClubController {
     @GetMapping("/clubs/search")
     public ResponseEntity<List<SearchingResponse>> searchingByWord(@Valid @ModelAttribute SearchingRequest request) {
 
-        log.info("category = {}", request.getCategory());
-        log.info("petSizeType = {}", request.getPetSizeType());
-        log.info("eligibleSex = {}", request.getEligibleSex());
-        log.info("EligibleBreed = {}", request.getEligibleBreed());
-
         return ResponseEntity.ok(clubQueryService.searchingClub(request));
     }
 
