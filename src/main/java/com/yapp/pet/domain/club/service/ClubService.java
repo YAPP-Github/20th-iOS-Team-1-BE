@@ -64,7 +64,7 @@ public class ClubService {
 
     public long createClub(Account account, ClubCreateRequest clubCreateRequest) {
 
-        if (petRepository.findPetsByAccountId(account.getId()).size() <= 0) {
+        if (hasNotPet(account)) {
             throw new NotHaveAnyPetException();
         }
 
@@ -77,6 +77,10 @@ public class ClubService {
         club.addAccountClub(accountClub);
 
         return club.getId();
+    }
+
+    private boolean hasNotPet(Account account) {
+        return petRepository.findPetsByAccountId(account.getId()).size() <= 0;
     }
 
     public long createClubDocument(long clubId) {
