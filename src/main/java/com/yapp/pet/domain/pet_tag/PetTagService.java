@@ -16,13 +16,10 @@ public class PetTagService {
 
     private final PetTagRepository petTagRepository;
 
-    public PetTag createPetTag(Pet pet, String name) {
-        log.info("petTag name = {}", name);
+    public void createPetTag(Pet pet, String name) {
 
         PetTag petTag = PetTag.of(pet, name);
         pet.addTag(petTag);
-
-        return petTagRepository.save(petTag);
     }
 
     public void deletePetTag(List<Long> petTagIds) {
