@@ -21,4 +21,6 @@ public interface ClubRepositoryCustom {
     Page<Club> findClubsByCondition(String customCursor, ClubFindCondition condition, Account account, Pageable pageable);
 
     Optional<Club> findClubDetailById(Long clubId);
+
+    Optional<Club> findClubDetailByIdWithLock(Long clubId);
 }

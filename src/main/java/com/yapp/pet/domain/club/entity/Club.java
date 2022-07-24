@@ -50,6 +50,7 @@ public class Club extends BaseEntity {
     @Column(nullable = false)
     private int maximumPeople;
 
+    @Column(nullable = false)
     private int participants;
 
     @Enumerated(EnumType.STRING)

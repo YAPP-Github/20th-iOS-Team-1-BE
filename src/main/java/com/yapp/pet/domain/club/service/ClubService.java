@@ -124,7 +124,7 @@ public class ClubService {
     }
 
     public ClubParticipateResponse participateClub(Long clubId, Account loginAccount) {
-        Club findClub = clubRepository.findClubDetailById(clubId).orElseThrow(EntityNotFoundException::new);
+        Club findClub = clubRepository.findClubDetailByIdWithLock(clubId).orElseThrow(EntityNotFoundException::new);
         List<Pet> findPets = petRepository.findPetsByAccountId(loginAccount.getId());
 
         ClubParticipateResponse response = validator.participationValidate(findClub, findPets, loginAccount);
