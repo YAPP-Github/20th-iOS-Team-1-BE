@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 
+import javax.persistence.LockModeType;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -93,6 +94,21 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
                 .innerJoin(club.eligiblePetSizeTypes).fetchJoin()
                 .leftJoin(club.eligibleBreeds).fetchJoin()
                 .where(club.id.eq(clubId))
+                .fetchFirst();
+
+        return Optional.ofNullable(findAccountClub.getClub());
+    }
+
+    @Override
+    public Optional<Club> findClubDetailByIdWithLock(Long clubId) {
+        AccountClub findAccountClub = queryFactory
+                .selectFrom(accountClub)
+                .innerJoin(accountClub.account, account).fetchJoin()
+                .innerJoin(accountClub.club, club).fetchJoin()
+                .innerJoin(club.eligiblePetSizeTypes).fetchJoin()
+                .leftJoin(club.eligibleBreeds).fetchJoin()
+                .where(club.id.eq(clubId))
+                .setLockMode(LockModeType.PESSIMISTIC_WRITE)
                 .fetchFirst();
 
         return Optional.ofNullable(findAccountClub.getClub());

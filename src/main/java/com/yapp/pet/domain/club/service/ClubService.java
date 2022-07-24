@@ -72,8 +72,9 @@ public class ClubService {
         clubRepository.save(club);
 
         AccountClub accountClub = AccountClub.of(account, club);
-        accountClub.addClub(club);
         accountClubRepository.save(accountClub);
+
+        club.addAccountClub(accountClub);
 
         return club.getId();
     }
@@ -123,7 +124,7 @@ public class ClubService {
     }
 
     public ClubParticipateResponse participateClub(Long clubId, Account loginAccount) {
-        Club findClub = clubRepository.findClubDetailById(clubId).orElseThrow(EntityNotFoundException::new);
+        Club findClub = clubRepository.findClubDetailByIdWithLock(clubId).orElseThrow(EntityNotFoundException::new);
         List<Pet> findPets = petRepository.findPetsByAccountId(loginAccount.getId());
 
         ClubParticipateResponse response = validator.participationValidate(findClub, findPets, loginAccount);
@@ -133,11 +134,10 @@ public class ClubService {
             return response;
         }
 
-        findClub.addPerson();
-
         AccountClub accountClub = AccountClub.of(loginAccount, findClub);
-        accountClub.addClub(findClub);
         accountClubRepository.save(accountClub);
+
+        findClub.addAccountClub(accountClub);
 
         if (isFullClub(findClub)) {
             findClub.updateStatus(ClubStatus.PERSONNEL_FULL);

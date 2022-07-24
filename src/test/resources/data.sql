@@ -47,28 +47,28 @@ insert into interest_categories (account_id, interest_categories) values (2, 'DO
 insert into interest_categories (account_id, interest_categories) values (3, 'ETC');
 
 -- 국립중앙박물관 위도 경도
-insert into club (category, description, title, meeting_place, status, maximum_people, eligible_sex, start_date, end_date, latitude, longitude)
-values ('WALK', 'description', '쿄쿄량 산책할사람', 'place', 'AVAILABLE', 3, 'MAN', '2021-01-01', '2021-01-02 09:00:00', 37.523717, 126.981598);
+insert into club (category, description, title, meeting_place, status, maximum_people, eligible_sex, start_date, end_date, latitude, longitude, participants)
+values ('WALK', 'description', '쿄쿄량 산책할사람', 'place', 'AVAILABLE', 3, 'MAN', '2021-01-01', '2021-01-02 09:00:00', 37.523717, 126.981598, 2);
 
 -- 중앙대학교병원 위도 경도
-insert into club (category, description, eligible_sex, end_date, latitude, longitude, maximum_people, meeting_place, start_date, status, title)
-values ('DOG_CAFE', 'description', 'WOMAN', '2022-02-05 09:00:00', 37.506706, 126.961290, 3, 'ㅁㄴㅇ', '2022-02-01', 'AVAILABLE', '산책할사람 코코랑');
+insert into club (category, description, eligible_sex, end_date, latitude, longitude, maximum_people, meeting_place, start_date, status, title, participants)
+values ('DOG_CAFE', 'description', 'WOMAN', '2022-02-05 09:00:00', 37.506706, 126.961290, 3, 'ㅁㄴㅇ', '2022-02-01', 'AVAILABLE', '산책할사람 코코랑', 1);
 
 -- 동작대교
-insert into club (category, description, eligible_sex, end_date, latitude, longitude, maximum_people, meeting_place, start_date, status, title)
-values ('PLAY_GROUND', 'description', 'ALL', '2022-01-05 09:00:00', 37.510033, 126.981571, 3, 'ㅁㄴㅇ', '2022-01-01', 'AVAILABLE', '코코랑 산책');
+insert into club (category, description, eligible_sex, end_date, latitude, longitude, maximum_people, meeting_place, start_date, status, title, participants)
+values ('PLAY_GROUND', 'description', 'ALL', '2022-01-05 09:00:00', 37.510033, 126.981571, 3, 'ㅁㄴㅇ', '2022-01-01', 'AVAILABLE', '코코랑 산책', 1);
 
-insert into club (category, description, eligible_sex, end_date, latitude, longitude, maximum_people, meeting_place, start_date, status, title)
-values ('PLAY_GROUND', 'description', 'ALL', '2022-07-01 09:00:00', 37.510033, 126.981571, 3, 'ㅁㄴㅇ', '2022-06-01', 'AVAILABLE', '모임ㅁㅁㅁ');
+insert into club (category, description, eligible_sex, end_date, latitude, longitude, maximum_people, meeting_place, start_date, status, title, participants)
+values ('PLAY_GROUND', 'description', 'ALL', '2022-07-01 09:00:00', 37.510033, 126.981571, 3, 'ㅁㄴㅇ', '2022-06-01', 'AVAILABLE', '모임ㅁㅁㅁ', 1);
 
-insert into club (category, description, eligible_sex, end_date, latitude, longitude, maximum_people, meeting_place, start_date, status, title)
-values ('PLAY_GROUND', 'description', 'ALL', '2022-08-05 09:00:00', 37.510033, 126.981571, 10, 'ㅁㄴㅇ', '2022-05-01', 'AVAILABLE', '박람회 가실 분');
+insert into club (category, description, eligible_sex, end_date, latitude, longitude, maximum_people, meeting_place, start_date, status, title, participants)
+values ('PLAY_GROUND', 'description', 'ALL', '2022-08-05 09:00:00', 37.510033, 126.981571, 10, 'ㅁㄴㅇ', '2022-05-01', 'AVAILABLE', '박람회 가실 분', 1);
 
-insert into club (category, description, eligible_sex, end_date, latitude, longitude, maximum_people, meeting_place, start_date, status, title)
-values ('PLAY_GROUND', 'description', 'ALL', '2022-09-05 09:00:00', 37.510033, 126.981571, 5, 'ㅁㄴㅇ', '2022-04-01', 'END', '재롱이 구경하실 분들');
+insert into club (category, description, eligible_sex, end_date, latitude, longitude, maximum_people, meeting_place, start_date, status, title, participants)
+values ('PLAY_GROUND', 'description', 'ALL', '2022-09-05 09:00:00', 37.510033, 126.981571, 5, 'ㅁㄴㅇ', '2022-04-01', 'END', '재롱이 구경하실 분들', 1);
 
-insert into club (category, description, eligible_sex, end_date, latitude, longitude, maximum_people, meeting_place, start_date, status, title)
-values ('PLAY_GROUND', 'description', 'ALL', '2022-10-05 09:00:00', 37.510033, 126.981571, 1, 'ㅁㄴㅇ', '2022-03-01', 'END', '수다');
+insert into club (category, description, eligible_sex, end_date, latitude, longitude, maximum_people, meeting_place, start_date, status, title, participants)
+values ('PLAY_GROUND', 'description', 'ALL', '2022-10-05 09:00:00', 37.510033, 126.981571, 1, 'ㅁㄴㅇ', '2022-03-01', 'PERSONNEL_FULL', '수다', 1);
 
 -- 1번 account는 6개의 club(1,4,5,6,7,8)의 방장임 / 6,7,8 club은 종료된 모임
 insert into account_club (leader, account_id, club_id) values (true, 1, 1);
@@ -96,6 +96,7 @@ insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (5
 insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (5, 'SMALL');
 insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (6, 'SMALL');
 insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (7, 'SMALL');
+insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (7, 'MEDIUM');
 
 insert into pet_image (name, origin_name, path, s3Key) values ('90419_펫이미지1', '펫이미지1', 'https://acjic.com', '디렉터리4+파일명4');
 
