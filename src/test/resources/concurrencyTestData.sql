@@ -39,8 +39,8 @@ values (10, '재롱잔치', 'MAN', 1, '인천광역시', '남동구', '저는 �
 insert into account (age, nickname, sex, token_id, city, detail, self_introduction)
 values (20, '밀란이네 시트콤', 'MAN', 2, '서울시', '강남구', '밀란이 견주에요~');
 
-insert into club (category, description, title, meeting_place, status, maximum_people, eligible_sex, start_date, end_date, latitude, longitude)
-values ('WALK', 'description', '쿄쿄량 산책할사람', 'place', 'AVAILABLE', 2, 'MAN', '2021-01-01', '2021-01-02 09:00:00', 37.523717, 126.981598);
+insert into club (category, description, title, meeting_place, status, maximum_people, eligible_sex, start_date, end_date, latitude, longitude, participants)
+values ('WALK', 'description', '쿄쿄량 산책할사람', 'place', 'AVAILABLE', 2, 'MAN', '2021-01-01', '2021-01-02 09:00:00', 37.523717, 126.981598, 1);
 
 insert into account_club (leader, account_id, club_id) values (true, 1, 1);
 

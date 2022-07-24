@@ -2,9 +2,9 @@ package com.yapp.pet.domain.club;
 
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.account.repository.AccountRepository;
-import com.yapp.pet.domain.accountclub.AccountClub;
 import com.yapp.pet.domain.accountclub.AccountClubRepository;
-import com.yapp.pet.domain.club.repository.ClubRepository;
+import com.yapp.pet.domain.club.entity.Club;
+import com.yapp.pet.domain.club.repository.jpa.ClubRepository;
 import com.yapp.pet.domain.club.service.ClubService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -67,8 +67,8 @@ public class ClubParticipationConcurrencyTest {
         countDownLatch.await();
 
         //then
-        List<AccountClub> accountClubs = accountClubRepository.findAccountClubByClubId(CLUB_ID);
-        long participationAccountCount = accountClubs.size();
+        Club findClub = clubRepository.findById(CLUB_ID).get();
+        long participationAccountCount = findClub.getParticipants();
 
         assertThat(participationAccountCount).isEqualTo(CLUB_MAXIMUM_PEOPLE);
     }
