@@ -5,6 +5,7 @@ import com.yapp.pet.domain.accountclub.AccountClub;
 import com.yapp.pet.domain.accountclub.AccountClubRepository;
 import com.yapp.pet.domain.club.document.ClubDocument;
 import com.yapp.pet.domain.club.entity.Club;
+import com.yapp.pet.domain.club.entity.ClubStatus;
 import com.yapp.pet.domain.club.repository.jpa.ClubRepository;
 import com.yapp.pet.domain.club.repository.elasticsearch.ClubSearchRepository;
 import com.yapp.pet.domain.comment.CommentRepository;
@@ -39,7 +40,7 @@ public class ClubService {
 
     public Long leaveClub(Long clubId, Account loginAccount) {
 
-        Club findClub = clubRepository.findById(clubId).orElseThrow(EntityNotFoundException::new);
+        Club findClub = clubRepository.findClubDetailById(clubId).orElseThrow(EntityNotFoundException::new);
 
         AccountClub accountClub = findClub.getAccountClubs().stream()
                 .filter(ac -> ac.getAccount().equals(loginAccount))
@@ -48,7 +49,17 @@ public class ClubService {
 
         accountClubRepository.delete(accountClub);
 
+        if (isFullClub(findClub)) {
+            findClub.updateStatus(ClubStatus.AVAILABLE);
+        }
+
+        findClub.subtractPerson();
+
         return accountClub.getId();
+    }
+
+    private boolean isFullClub(Club club) {
+        return club.getParticipants() == club.getMaximumPeople();
     }
 
     public long createClub(Account account, ClubCreateRequest clubCreateRequest) {
@@ -122,10 +133,15 @@ public class ClubService {
             return response;
         }
 
+        findClub.addPerson();
+
         AccountClub accountClub = AccountClub.of(loginAccount, findClub);
         accountClub.addClub(findClub);
-
         accountClubRepository.save(accountClub);
+
+        if (isFullClub(findClub)) {
+            findClub.updateStatus(ClubStatus.PERSONNEL_FULL);
+        }
 
         return response;
     }

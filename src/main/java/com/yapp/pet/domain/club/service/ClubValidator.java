@@ -3,6 +3,7 @@ package com.yapp.pet.domain.club.service;
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.account.entity.AccountSex;
 import com.yapp.pet.domain.club.entity.Club;
+import com.yapp.pet.domain.club.entity.ClubStatus;
 import com.yapp.pet.domain.club.entity.EligibleSex;
 import com.yapp.pet.domain.common.PetSizeType;
 import com.yapp.pet.domain.pet.entity.Pet;
@@ -45,7 +46,7 @@ public class ClubValidator {
     }
 
     private boolean isFull(Club club){
-        return club.getMaximumPeople() <= club.getAccountClubs().size();
+        return club.getStatus().equals(ClubStatus.PERSONNEL_FULL);
     }
 
     private boolean isEligibleSex(Account loginAccount, Club club) {

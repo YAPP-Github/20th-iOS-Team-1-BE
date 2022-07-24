@@ -4,14 +4,12 @@ import com.yapp.pet.domain.account_image.AccountImage;
 import com.yapp.pet.domain.common.BaseEntity;
 import com.yapp.pet.domain.common.Category;
 import com.yapp.pet.domain.token.entity.Token;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -135,4 +133,16 @@ public class Account extends BaseEntity {
         return this.nickname.equals(account.getNickname());
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Account)) return false;
+        Account account = (Account) o;
+        return getId().equals(account.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
 }
