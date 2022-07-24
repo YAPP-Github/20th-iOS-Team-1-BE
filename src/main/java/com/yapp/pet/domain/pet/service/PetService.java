@@ -38,7 +38,7 @@ public class PetService {
 
     public Long addPet(Account account, PetRequest petRequest) {
 
-        PetImage petImage = null; //없을 수도 있다
+        PetImage petImage = null;
 
         if (hasImageFile(petRequest.getImageFile())) {
             petImage = petImageService.create(petRequest.getImageFile());
@@ -115,7 +115,6 @@ public class PetService {
         Pet savedPet = petRepository.findById(petId)
                                     .orElseThrow(() -> new IllegalArgumentException("존재하는 펫이 없습니다"));
 
-        PetImage petImage = savedPet.getPetImage();
         MultipartFile imageFile = request.getImageFile();
 
         if (hasImageFile(imageFile)) {
@@ -126,11 +125,6 @@ public class PetService {
         updateTags(savedPet, request.getTags());
 
         Pet updatePet = petMapper.toEntity(request);
-
-        log.info("age = {}", updatePet.getAge());
-        log.info("sex = {}", updatePet.getSex());
-        log.info("sizeType = {}", updatePet.getSizeType());
-        log.info("petImage = {}", updatePet.getPetImage());
 
         updatePet.updateAge(calculateAge(updatePet.getAge().getBirthYear(), updatePet.getAge().getBirthMonth()));
 
