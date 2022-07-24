@@ -21,14 +21,7 @@ public class AppleController {
     @PostMapping("/auth/apple")
     public ResponseEntity<SignInResponse> appleLogin(@RequestBody AppleRequest appleRequest){
 
-        SignInResponse signInResponse;
-
-        try {
-            signInResponse = accountService.signInFromApple(appleRequest, Social.APPLE);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
+        SignInResponse signInResponse = accountService.signInFromApple(appleRequest, Social.APPLE);
 
         return ResponseEntity.ok(signInResponse);
     }

@@ -63,14 +63,7 @@ public class ClubController {
             @PageableDefault(size = 10, sort = "endDate", direction = ASC) Pageable pageable,
             @AuthAccount Account account){
 
-        ClubFindResponse response;
-
-        try {
-            response = clubQueryService.findClubsByCondition(request, account, pageable);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
+        ClubFindResponse response = clubQueryService.findClubsByCondition(request, account, pageable);
 
         return ResponseEntity.ok(response);
     }
@@ -79,14 +72,7 @@ public class ClubController {
     public ResponseEntity<ClubFindDetailResponse> findClubDetail(@PathVariable("club-id") Long clubId,
                                                                  @AuthAccount Account account){
 
-        ClubFindDetailResponse response;
-
-        try {
-            response = clubQueryService.findClubDetail(clubId, account);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
+        ClubFindDetailResponse response = clubQueryService.findClubDetail(clubId, account);
 
         return ResponseEntity.ok(response);
     }
@@ -95,14 +81,7 @@ public class ClubController {
     public ResponseEntity<Long> leaveClub(@PathVariable("club-id") Long clubId,
                                           @AuthAccount Account account){
 
-        Long accountId;
-
-        try {
-            accountId = clubService.leaveClub(clubId, account);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
+        Long accountId = clubService.leaveClub(clubId, account);
 
         return ResponseEntity.ok(accountId);
     }
@@ -110,15 +89,9 @@ public class ClubController {
     @PostMapping("/clubs")
     public ResponseEntity<Long> createClub(@AuthAccount Account account, @RequestBody ClubCreateRequest clubCreateRequest) {
 
-        long savedId = 0L;
+        long savedId = clubService.createClub(account, clubCreateRequest);
 
-        try {
-            savedId = clubService.createClub(account, clubCreateRequest);
-            clubService.createClubDocument(savedId);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
+        clubService.createClubDocument(savedId);
 
         return ResponseEntity.ok(savedId);
     }
@@ -127,14 +100,7 @@ public class ClubController {
     public ResponseEntity<Long> deleteClub(@PathVariable("club-id") Long clubId,
                                            @AuthAccount Account account){
 
-        Long deletedClubId;
-
-        try {
-            deletedClubId = clubService.deleteClub(clubId, account);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
+        Long deletedClubId = clubService.deleteClub(clubId, account);
 
         return ResponseEntity.ok(deletedClubId);
     }
@@ -143,16 +109,9 @@ public class ClubController {
     public ResponseEntity<ClubParticipateResponse> participateClub(@PathVariable("club-id") Long clubId,
                                                                    @AuthAccount Account loginAccount){
 
-        ClubParticipateResponse response;
+        ClubParticipateResponse response = clubService.participateClub(clubId, loginAccount);
 
-        try {
-            response = clubService.participateClub(clubId, loginAccount);
-
-            clubService.updateAccountClubDocument(response.getClubId());
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
+        clubService.updateAccountClubDocument(response.getClubId());
 
         return ResponseEntity.ok(response);
     }
