@@ -52,7 +52,7 @@ public class SearchingSimpleClubDto {
         private int distance;
         private ClubStatus clubStatus;
 
-        public SearchingSimpleClubResponse(Club club, int participants) {
+        public SearchingSimpleClubResponse(Club club, int participants, Double userLatitude, Double userLongitude) {
             this.clubId = club.getId();
             this.category = club.getCategory();
             this.title = club.getTitle();
@@ -67,12 +67,8 @@ public class SearchingSimpleClubDto {
             this.latitude = club.getLatitude();
             this.longitude = club.getLongitude();
             this.meetingPlace = club.getMeetingPlace();
-        }
-
-        public SearchingSimpleClubResponse getDistanceBetweenAccountAndClub(Double userLatitude, Double userLongitude) {
-            distance = (int) DistanceUtil.getDistanceBetweenUserAndClub(userLatitude, latitude,
-                                                                        userLongitude, longitude);
-            return this;
+            this.distance = (int) DistanceUtil.getDistanceBetweenUserAndClub(userLatitude, latitude,
+                                                                             userLongitude, longitude);
         }
     }
 }

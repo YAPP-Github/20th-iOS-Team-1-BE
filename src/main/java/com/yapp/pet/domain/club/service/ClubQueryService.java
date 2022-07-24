@@ -79,8 +79,8 @@ public class ClubQueryService {
     public SearchingSimpleClubResponse searchingSimpleClub(SearchingSimpleClubRequest simpleRequest, Long clubId) {
         Club savedClub = findClubById(clubId);
 
-        return new SearchingSimpleClubResponse(savedClub, savedClub.getAccountClubs().size())
-                .getDistanceBetweenAccountAndClub(simpleRequest.getUserLatitude(), simpleRequest.getUserLongitude());
+        return new SearchingSimpleClubResponse(savedClub, savedClub.getAccountClubs().size(),
+                                               simpleRequest.getUserLatitude(), simpleRequest.getUserLongitude());
     }
 
     public Club findClubById(long clubId) {
