@@ -44,11 +44,8 @@ public class AccountClub extends BaseEntity {
                 .build();
     }
 
-    public void addClub(Club club) {
-        if(club.getParticipants() == 1){
-            leader = true;
-        }
-        club.getAccountClubs().add(this);
+    public void setLeader() {
+        this.leader = true;
     }
 
 }

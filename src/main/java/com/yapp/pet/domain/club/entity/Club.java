@@ -97,15 +97,20 @@ public class Club extends BaseEntity {
         this.endDate = endDate;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.participants = 1;
+    }
+
+    public void addAccountClub(AccountClub accountClub) {
+        this.participants++;
+
+        if(this.participants == 1){
+            accountClub.setLeader();
+        }
+
+        this.accountClubs.add(accountClub);
     }
 
     public void updateStatus(ClubStatus status) {
         this.status = status;
-    }
-
-    public void addPerson() {
-        this.participants++;
     }
 
     public void subtractPerson() {
