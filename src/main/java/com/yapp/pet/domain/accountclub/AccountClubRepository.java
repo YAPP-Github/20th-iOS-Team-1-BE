@@ -14,4 +14,7 @@ public interface AccountClubRepository extends JpaRepository<AccountClub, Long> 
     @Transactional
     @Query("delete from AccountClub ac where ac.account.id = :id")
     int deleteAccountClubsByAccountId(@Param("id") long accountId);
+
+    @Query("select ac from AccountClub ac where ac.club.id = :clubId")
+    List<AccountClub> findAccountClubByClubId(@Param("clubId") Long clubId);
 }
