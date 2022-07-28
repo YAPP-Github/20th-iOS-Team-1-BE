@@ -24,7 +24,7 @@ public class CommentResponse {
 
     private ZonedDateTime updatedTime;
 
-    private List<String> petType;
+    private List<String> breeds;
 
     private String imageUrl;
 }

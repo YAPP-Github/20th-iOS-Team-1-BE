@@ -1438,11 +1438,18 @@ components:
               author: "누군가"
               leader: false
               updatedTime: "2022-06-25T15:46:08.962Z"
+              breeds:
+                - 골든리트리버
+              imageUrl: "https://togaether.s3.ap-northeast-2.amazonaws.com/account/파일이름.jpg"
             - id: 2
               content: 댓글2
               author: "재롱잔치"
               leader: true
               updatedTime: "2022-06-25T15:46:08.962Z"
+              breeds:
+                - 골든리트리버
+                - 말티즈
+              imageUrl: "https://togaether.s3.ap-northeast-2.amazonaws.com/account/파일이름.jpg"
     ClubCreateRequest:
       type: object
       properties:
