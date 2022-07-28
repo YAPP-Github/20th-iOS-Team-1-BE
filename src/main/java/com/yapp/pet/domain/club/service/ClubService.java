@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
 import java.util.List;
 
 @Service
@@ -62,7 +63,7 @@ public class ClubService {
         return club.getParticipants() == club.getMaximumPeople();
     }
 
-    public long createClub(Account account, ClubCreateRequest clubCreateRequest) {
+    public long createClub(Account account, @Valid ClubCreateRequest clubCreateRequest) {
 
         if (hasNotPet(account)) {
             throw new NotHaveAnyPetException();
