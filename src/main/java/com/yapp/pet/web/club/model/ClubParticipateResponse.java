@@ -15,6 +15,8 @@ public class ClubParticipateResponse {
 
     private Long clubId;
 
+    private Long accountClubId;
+
     public ClubParticipateResponse(boolean eligible, ClubParticipateRejectReason rejectReason) {
         this.eligible = eligible;
         this.rejectReason = rejectReason;

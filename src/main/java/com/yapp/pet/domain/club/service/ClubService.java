@@ -140,6 +140,7 @@ public class ClubService {
 
         AccountClub accountClub = AccountClub.of(loginAccount, findClub);
         accountClubRepository.save(accountClub);
+        response.setAccountClubId(accountClub.getId());
 
         findClub.addAccountClub(accountClub);
 

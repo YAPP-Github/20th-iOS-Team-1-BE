@@ -106,7 +106,7 @@ public class ClubController {
 
         ClubParticipateResponse response = clubService.participateClub(clubId, loginAccount);
 
-        clubService.updateAccountClubDocument(response.getClubId());
+        clubService.updateAccountClubDocument(response.getAccountClubId());
 
         return ResponseEntity.ok(response);
     }
