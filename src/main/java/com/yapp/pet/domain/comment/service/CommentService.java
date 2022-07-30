@@ -19,14 +19,12 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final ClubQueryService clubQueryService;
 
-    public Long addComment(Account account, CommentRequest commentRequest) {
+    public void addComment(Account account, CommentRequest commentRequest) {
 
         Comment comment = Comment.of(commentRequest.getContent(), account,
                                 clubQueryService.findClubById(commentRequest.getClubId()));
 
         commentRepository.save(comment);
-
-        return comment.getId();
     }
 
     public Long deleteComment(Account account, long commentId) {

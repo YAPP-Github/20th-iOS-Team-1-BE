@@ -710,7 +710,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponseInfo'
+                $ref: '#/components/schemas/ClubFindDetailResponse'
   /api/comments/{comment-id}:
     delete:
       tags:

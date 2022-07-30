@@ -1,8 +1,10 @@
 package com.yapp.pet.web.comment;
 
 import com.yapp.pet.domain.account.entity.Account;
+import com.yapp.pet.domain.club.service.ClubQueryService;
 import com.yapp.pet.domain.comment.service.CommentService;
 import com.yapp.pet.global.annotation.AuthAccount;
+import com.yapp.pet.web.club.model.ClubFindDetailResponse;
 import com.yapp.pet.web.comment.model.CommentRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,12 +24,12 @@ public class CommentController {
 
     private final CommentService commentService;
 
+    private final ClubQueryService clubQueryService;
+
     @PostMapping("/comments")
-    public ResponseEntity<Long> create(@AuthAccount Account account, @RequestBody CommentRequest commentRequest) {
+    public ResponseEntity<ClubFindDetailResponse> create(@AuthAccount Account account, @RequestBody CommentRequest commentRequest) {
 
-        Long commentId = commentService.addComment(account, commentRequest);
-
-        return ResponseEntity.ok(commentId);
+        return ResponseEntity.ok(clubQueryService.findClubDetail(commentRequest.getClubId(), account));
     }
 
     @DeleteMapping("/comments/{comment-id}")
