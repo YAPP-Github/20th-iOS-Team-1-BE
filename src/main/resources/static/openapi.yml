@@ -1351,6 +1351,10 @@ components:
           type: boolean
           example: true
           description: 현재 로그인한 유저가, 조회하는 모임의 리더(방장)인경우 true를 리턴합니다.(모임을 삭제할래요 버튼 노출 판단)
+        accountSex:
+          type: string
+          example: MAN
+          description: 로그인한 사용자의 성별
         clubDetailInfo:
           type: object
           properties:
