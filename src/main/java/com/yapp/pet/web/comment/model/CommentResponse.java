@@ -1,6 +1,7 @@
 package com.yapp.pet.web.comment.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +12,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class CommentResponse {
 
     private Long id;
@@ -27,4 +27,16 @@ public class CommentResponse {
     private List<String> breeds;
 
     private String imageUrl;
+
+    @Builder
+    public CommentResponse(Long id, String content, String author, boolean leader, ZonedDateTime updatedTime,
+                           List<String> breeds, String imageUrl) {
+        this.id = id;
+        this.content = content;
+        this.author = author;
+        this.leader = leader;
+        this.updatedTime = updatedTime;
+        this.breeds = breeds;
+        this.imageUrl = imageUrl;
+    }
 }
