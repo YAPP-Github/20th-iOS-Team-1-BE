@@ -27,7 +27,7 @@ paths:
 
   ############################################# Account #############################################
 
-  /api/accounts/validate-nickname/{nickname}:
+  /api/accounts/validation/{nickname}:
     get:
       tags:
         - 계정 (Account)
