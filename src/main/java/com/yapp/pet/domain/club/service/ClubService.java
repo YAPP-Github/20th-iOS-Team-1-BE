@@ -63,7 +63,7 @@ public class ClubService {
         return club.getParticipants() == club.getMaximumPeople();
     }
 
-    public long createClub(Account account, @Valid ClubCreateRequest clubCreateRequest) {
+    public long createClub(Account account, ClubCreateRequest clubCreateRequest) {
 
         if (hasNotPet(account)) {
             throw new NotHaveAnyPetException();

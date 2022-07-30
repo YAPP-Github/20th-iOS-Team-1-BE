@@ -82,7 +82,7 @@ public class ClubController {
     }
 
     @PostMapping("/clubs")
-    public ResponseEntity<Long> createClub(@AuthAccount Account account, @RequestBody ClubCreateRequest clubCreateRequest) {
+    public ResponseEntity<Long> createClub(@AuthAccount Account account, @Valid @RequestBody ClubCreateRequest clubCreateRequest) {
 
         long savedId = clubService.createClub(account, clubCreateRequest);
 
