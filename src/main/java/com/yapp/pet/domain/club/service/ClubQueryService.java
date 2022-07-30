@@ -3,8 +3,8 @@ package com.yapp.pet.domain.club.service;
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.club.document.ClubDocument;
 import com.yapp.pet.domain.club.entity.Club;
-import com.yapp.pet.domain.club.repository.jpa.ClubRepository;
 import com.yapp.pet.domain.club.repository.elasticsearch.ClubSearchRepository;
+import com.yapp.pet.domain.club.repository.jpa.ClubRepository;
 import com.yapp.pet.domain.comment.service.CommentQueryService;
 import com.yapp.pet.global.mapper.ClubMapper;
 import com.yapp.pet.web.club.model.ClubFindByConditionRequest;
@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.yapp.pet.web.club.model.ClubFindDetailResponse.*;
+import static com.yapp.pet.web.club.model.ClubFindDetailResponse.ClubDetailInfo;
 import static com.yapp.pet.web.club.model.ClubFindResponse.ClubInfo;
 import static com.yapp.pet.web.club.model.SearchingClubDto.SearchingRequest;
 import static com.yapp.pet.web.club.model.SearchingClubDto.SearchingResponse;
@@ -73,20 +73,11 @@ public class ClubQueryService {
         return clubRepository.searchClubByWithinRange(rangeRequest);
     }
 
-    public List<Club> exceedTimeClub() {
-        return clubRepository.findExceedTimeClub();
-    }
-
     public SearchingSimpleClubResponse searchingSimpleClub(SearchingSimpleClubRequest simpleRequest, Long clubId) {
-        Club savedClub = findClubById(clubId);
+        Club savedClub = clubRepository.findByIdWrapper(clubId);
 
         return new SearchingSimpleClubResponse(savedClub, savedClub.getAccountClubs().size(),
                                                simpleRequest.getUserLatitude(), simpleRequest.getUserLongitude());
-    }
-
-    public Club findClubById(long clubId) {
-        return clubRepository.findById(clubId)
-                             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 club"));
     }
 
     public ClubFindResponse findClubsByCondition(ClubFindByConditionRequest request, Account account, Pageable pageable){
