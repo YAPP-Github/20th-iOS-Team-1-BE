@@ -9,4 +9,8 @@ public class FailureGetLockException extends BusinessException {
         super(ExceptionStatus.FAILURE_GET_LOCK_EXCEPTION);
     }
 
+    public FailureGetLockException(InterruptedException e) {
+        super(ExceptionStatus.FAILURE_GET_LOCK_EXCEPTION, e.getMessage());
+    }
+
 }
