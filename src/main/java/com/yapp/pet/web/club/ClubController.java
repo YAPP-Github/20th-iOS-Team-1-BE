@@ -1,6 +1,7 @@
 package com.yapp.pet.web.club;
 
 import com.yapp.pet.domain.account.entity.Account;
+import com.yapp.pet.domain.club.service.ClubParticipationService;
 import com.yapp.pet.domain.club.service.ClubQueryService;
 import com.yapp.pet.domain.club.service.ClubService;
 import com.yapp.pet.global.annotation.AuthAccount;
@@ -31,6 +32,7 @@ public class ClubController {
 
     private final ClubQueryService clubQueryService;
     private final ClubService clubService;
+    private final ClubParticipationService clubParticipationService;
 
     @GetMapping("/clubs/search")
     public ResponseEntity<List<SearchingResponse>> searchingByWord(@Valid @ModelAttribute SearchingRequest request) {
@@ -104,7 +106,8 @@ public class ClubController {
     public ResponseEntity<ClubParticipateResponse> participateClub(@PathVariable("club-id") Long clubId,
                                                                    @AuthAccount Account loginAccount){
 
-        ClubParticipateResponse response = clubService.participateClub(clubId, loginAccount);
+        ClubParticipateResponse response
+                = clubParticipationService.participateClubWithPessimisticLock(clubId, loginAccount);
 
         clubService.updateAccountClubDocument(response.getAccountClubId());
 
