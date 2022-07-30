@@ -96,7 +96,7 @@ public class ClubParticipationService {
             response = participateClub(loginAccount, findClub);
 
         } catch (InterruptedException e) {
-            throw new FailureGetLockException();
+            throw new FailureGetLockException(e);
         } finally {
             lock.unlock();
         }
