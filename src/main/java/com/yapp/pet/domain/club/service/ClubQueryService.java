@@ -3,7 +3,6 @@ package com.yapp.pet.domain.club.service;
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.club.document.ClubDocument;
 import com.yapp.pet.domain.club.entity.Club;
-import com.yapp.pet.domain.club.repository.ClubFindCondition;
 import com.yapp.pet.domain.club.repository.jpa.ClubRepository;
 import com.yapp.pet.domain.club.repository.elasticsearch.ClubSearchRepository;
 import com.yapp.pet.domain.comment.service.CommentQueryService;
@@ -62,10 +61,12 @@ public class ClubQueryService {
                                 .collect(Collectors.toList());
     }
 
-    public boolean isParticipateBetweenMaxAndMin(Integer max, Integer min, int target) {
-        if(max == null || min == null) return true;
+    private boolean isParticipateBetweenMaxAndMin(Integer max, Integer min, int target) {
+        if(max == null || min == null) {
+            return true;
+        }
 
-        return target >= min && target <= max;
+        return min <= target && target <= max;
     }
 
     public List<SearchingWithinRangeClubResponse> searchingRangeClub(SearchingWithinRangeClubRequest rangeRequest) {
