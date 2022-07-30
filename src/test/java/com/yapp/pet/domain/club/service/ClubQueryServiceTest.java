@@ -125,7 +125,7 @@ class ClubQueryServiceTest {
     @DisplayName("모임 종료 시간이 지난 모임들을 조회할 수 있다")
     void convertStatusAvailableToEnd() throws Exception {
         //when
-        List<Club> savedClubs = clubQueryService.exceedTimeClub();
+        List<Club> savedClubs = clubRepository.findExceedTimeClub();
 
         //then
         assertThat(savedClubs.get(0).getEndDate()).isBefore(ZonedDateTime.now());
