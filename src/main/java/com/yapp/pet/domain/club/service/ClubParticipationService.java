@@ -8,15 +8,18 @@ import com.yapp.pet.domain.club.entity.ClubStatus;
 import com.yapp.pet.domain.club.repository.jpa.ClubRepository;
 import com.yapp.pet.domain.pet.entity.Pet;
 import com.yapp.pet.domain.pet.repository.PetRepository;
+import com.yapp.pet.global.exception.club.FailureGetLockException;
 import com.yapp.pet.web.club.model.ClubParticipateResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static com.yapp.pet.global.TogaetherConstants.*;
 
@@ -76,4 +79,33 @@ public class ClubParticipationService {
 
         return participateClub(loginAccount, findClub);
     }
+
+    public ClubParticipateResponse participateClubWithDistributedLock(Long clubId, Account loginAccount) {
+
+        ClubParticipateResponse response;
+
+        RLock lock = redissonClient.getLock(PARTICIPATE_CLUB_LOCK_NAME);
+
+        try {
+            if (FailureGetLock(lock)) {
+                log.info("모임 참여 시 Lock 획득 실패");
+                throw new FailureGetLockException();
+            }
+
+            Club findClub = clubRepository.findClubDetailById(clubId).orElseThrow(EntityNotFoundException::new);
+            response = participateClub(loginAccount, findClub);
+
+        } catch (InterruptedException e) {
+            throw new FailureGetLockException();
+        } finally {
+            lock.unlock();
+        }
+
+        return response;
+    }
+
+    private boolean FailureGetLock(RLock lock) throws InterruptedException {
+        return !lock.tryLock(WAIT_TIME, LEASE_TIME, TimeUnit.SECONDS);
+    }
+
 }
