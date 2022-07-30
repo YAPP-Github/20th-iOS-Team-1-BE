@@ -5,7 +5,7 @@ import com.yapp.pet.domain.account.repository.AccountRepository;
 import com.yapp.pet.domain.accountclub.AccountClubRepository;
 import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.club.repository.jpa.ClubRepository;
-import com.yapp.pet.domain.club.service.ClubService;
+import com.yapp.pet.domain.club.service.ClubParticipationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ClubParticipationConcurrencyTest {
 
     @Autowired
-    ClubService clubService;
+    ClubParticipationService clubService;
 
     @Autowired
     AccountRepository accountRepository;
@@ -84,7 +84,7 @@ public class ClubParticipationConcurrencyTest {
 
         @Override
         public void run() {
-            clubService.participateClub(CLUB_ID, account);
+            clubService.participateClubWithPessimisticLock(CLUB_ID, account);
             countDownLatch.countDown();
         }
     }
