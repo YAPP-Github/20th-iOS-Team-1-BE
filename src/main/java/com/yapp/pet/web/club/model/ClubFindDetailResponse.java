@@ -1,6 +1,7 @@
 package com.yapp.pet.web.club.model;
 
 import com.yapp.pet.domain.account.entity.Account;
+import com.yapp.pet.domain.account.entity.AccountSex;
 import com.yapp.pet.domain.accountclub.AccountClub;
 import com.yapp.pet.domain.club.entity.EligibleSex;
 import com.yapp.pet.domain.common.Category;
@@ -27,6 +28,8 @@ public class ClubFindDetailResponse {
 
     private boolean leader;
 
+    private AccountSex accountSex;
+
     private ClubDetailInfo clubDetailInfo;
 
     private AccountInfo leaderInfo;
@@ -40,6 +43,8 @@ public class ClubFindDetailResponse {
                                   ClubDetailInfo clubDetailInfo){
         this.participating = accountClubs.stream()
                 .anyMatch(ac -> ac.getAccount().equals(loginAccount));
+
+        this.accountSex = loginAccount.getSex();
 
         this.clubDetailInfo = clubDetailInfo;
 
