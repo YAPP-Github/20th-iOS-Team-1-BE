@@ -29,7 +29,11 @@ public class CommentController {
     @PostMapping("/comments")
     public ResponseEntity<ClubFindDetailResponse> create(@AuthAccount Account account, @RequestBody CommentRequest commentRequest) {
 
-        return ResponseEntity.ok(clubQueryService.findClubDetail(commentRequest.getClubId(), account));
+        commentService.addComment(account, commentRequest);
+
+        ClubFindDetailResponse clubDetailInfo = clubQueryService.findClubDetail(commentRequest.getClubId(), account);
+
+        return ResponseEntity.ok(clubDetailInfo);
     }
 
     @DeleteMapping("/comments/{comment-id}")
