@@ -23,6 +23,7 @@ public class TokenRepositoryImpl implements TokenRepositoryCustom{
                         .selectFrom(token)
                         .join(token.account, account).fetchJoin()
                         .leftJoin(account.accountImage, accountImage).fetchJoin()
+                        .leftJoin(account.interestCategories).fetchJoin()
                         .where(uniqueIdBySocialEq(uniqueIdBySocial))
                         .fetchOne()
         );
