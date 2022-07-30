@@ -22,7 +22,7 @@ public class AccountController {
     private final AccountService accountService;
     private final AccountQueryService accountQueryService;
 
-    @GetMapping("/accounts/validate-nickname/{nickname}")
+    @GetMapping("/accounts/validation/{nickname}")
     public ResponseEntity<AccountValidationResponse> validateNickname(@PathVariable("nickname") String nickname){
 
         AccountValidationResponse response = accountQueryService.validateNickname(nickname);

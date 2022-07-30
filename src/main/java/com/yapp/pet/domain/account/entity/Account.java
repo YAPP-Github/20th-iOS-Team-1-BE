@@ -133,6 +133,10 @@ public class Account extends BaseEntity {
         return this.nickname.equals(account.getNickname());
     }
 
+    public boolean hasImage() {
+        return accountImage != null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
