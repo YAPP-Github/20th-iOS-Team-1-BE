@@ -73,9 +73,9 @@ public class ClubService {
         clubRepository.save(club);
 
         AccountClub accountClub = AccountClub.of(account, club);
-        accountClubRepository.save(accountClub);
-
         club.addAccountClub(accountClub);
+
+        accountClubRepository.save(accountClub);
 
         return club.getId();
     }
