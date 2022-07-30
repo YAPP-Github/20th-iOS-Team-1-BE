@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +21,7 @@ public class Scheduler {
 
     @Scheduled(cron = "0 0/10 * * * *")
     public void exceedClub() {
+        log.info("스케줄러 시작 시간 = {}", ZonedDateTime.now());
         List<Club> exceedTimeClub = clubRepository.findExceedTimeClub();
 
         if (exceedTimeClub.isEmpty()) {
