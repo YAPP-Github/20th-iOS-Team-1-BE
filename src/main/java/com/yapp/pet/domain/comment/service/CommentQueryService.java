@@ -29,11 +29,6 @@ public class CommentQueryService {
 
     private final PetRepository petRepository;
 
-    public Comment findCommentById(long commentId) {
-        return commentRepository.findById(commentId)
-                                .orElseThrow(NoSuchElementException::new);
-    }
-
     public List<CommentResponse> findComment(long clubId) {
         List<Comment> comments = commentRepository.findCommentByClubId(clubId);
 
