@@ -50,6 +50,7 @@ class CommentQueryServiceTest {
                                                 .build();
 
         Account account = Account.builder()
+                                 .id(1L)
                                  .nickname("account1")
                                  .accountImage(accountImage)
                                  .build();
@@ -58,24 +59,25 @@ class CommentQueryServiceTest {
                         .title("title1")
                         .build();
 
-        List<Comment> comments = List.of(Comment.of("content", account, club));
+        List<Comment> savedComments = List.of(Comment.of("content", account, club));
+
         List<Pet> pets = new ArrayList<>();
 
         //when
         when(commentRepository.findCommentByClubId(anyLong()))
-                .thenReturn(comments);
+                .thenReturn(savedComments);
         when(petRepository.findPetsByAccountId(anyLong()))
                 .thenReturn(pets);
 
-        List<CommentResponse> comment = commentQueryService.findComment(1L, account);
+        List<CommentResponse> comments = commentQueryService.findComment(1L, account);
 
         verify(commentRepository, times(1)).findCommentByClubId(anyLong());
         verify(petRepository, times(1)).findPetsByAccountId(any());
 
         //then
         assertAll(
-                () -> assertEquals(comment.size(), 1),
-                () -> assertEquals(comment.get(0).getBreeds().size(), 0)
+                () -> assertEquals(comments.size(), 1),
+                () -> assertEquals(comments.get(0).getBreeds().size(), 0)
         );
     }
 
@@ -84,6 +86,7 @@ class CommentQueryServiceTest {
     void testFindCommentImageNull() throws Exception {
         //given
         Account account = Account.builder()
+                                 .id(1L)
                                  .nickname("account1")
                                  .build();
 
@@ -91,22 +94,23 @@ class CommentQueryServiceTest {
                         .title("title1")
                         .build();
 
-        List<Comment> comments = List.of(Comment.of("content", account, club));
+        List<Comment> savedComments = List.of(Comment.of("content", account, club));
+
         List<Pet> pets = List.of(Pet.builder()
                                     .name("pet1")
                                     .build());
 
         //when
         when(commentRepository.findCommentByClubId(anyLong()))
-                .thenReturn(comments);
+                .thenReturn(savedComments);
         when(petRepository.findPetsByAccountId(anyLong()))
                 .thenReturn(pets);
 
-        List<CommentResponse> comment = commentQueryService.findComment(1L, account);
+        List<CommentResponse> comments = commentQueryService.findComment(1L, account);
 
         //then
         assertAll(
-                () -> assertEquals(comment.size(), 1),
-                () -> assertThat(comment.get(0).getImageUrl()).isNull());
+                () -> assertEquals(comments.size(), 1),
+                () -> assertThat(comments.get(0).getImageUrl()).isNull());
     }
 }
