@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -37,24 +38,26 @@ public class CommentQueryService {
     public List<CommentResponse> findComment(long clubId, Account account) {
         List<Comment> comments = commentRepository.findCommentByClubId(clubId);
 
-        List<Pet> savedPet = petRepository.findPetsByAccountId(account.getId());
-
         return comments.stream()
                        .map(comment -> new CommentResponse(comment.getId(),
                                                            comment.getContent(),
                                                            comment.getAccount().getNickname(),
                                                            isLeader(comment.getClub(), comment),
-                                                           comment.getUpdatedAt() != null ? comment.getUpdatedAt()
-                                                                                                   .atZone(ZoneId.of(
-                                                                                                           "Asia/Seoul")) : null,
-                                                           savedPet.stream()
-                                                                   .filter(Objects::nonNull)
-                                                                   .map(Pet::getBreed)
-                                                                   .collect(Collectors.toList()),
+                                                           comment.getUpdatedAt() != null ? ZonedDateTime.of(
+                                                                   comment.getUpdatedAt(), ZoneId.of("UTC")) : null,
+                                                           findPetInfoForComment(comment.getAccount().getId()),
                                                            comment.getAccount().hasImage() ? comment.getAccount()
                                                                                                     .getAccountImage()
                                                                                                     .getPath() : null))
                        .collect(Collectors.toList());
+    }
+
+    private List<String> findPetInfoForComment(long accountId) {
+        return petRepository.findPetsByAccountId(accountId)
+                            .stream()
+                            .filter(Objects::nonNull)
+                            .map(Pet::getBreed)
+                            .collect(Collectors.toList());
     }
 
     private boolean isLeader(Club club, Comment comment) {
