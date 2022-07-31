@@ -93,4 +93,29 @@ class CommentServiceTest {
                 NotDeleteCommentException.class, () -> commentService.deleteComment(deleteAccount, anyLong())
         );
     }
+
+    @Test
+    @DisplayName("deleteComment() : 자기 자신의 댓글을 삭제할 수 있다")
+    void testDeleteComment() throws Exception {
+        //given
+        Account account = Account.builder()
+                                 .id(1L)
+                                 .nickname("account1")
+                                 .build();
+
+        Club club = Club.builder()
+                        .title("title1")
+                        .build();
+
+        Comment comment = Comment.of("content1", account, club);
+
+        //when
+        when(commentRepository.findById(anyLong()))
+                .thenReturn(Optional.of(comment));
+
+        commentService.deleteComment(account, anyLong());
+
+        //then
+        verify(commentRepository, times(1)).delete(comment);
+    }
 }
