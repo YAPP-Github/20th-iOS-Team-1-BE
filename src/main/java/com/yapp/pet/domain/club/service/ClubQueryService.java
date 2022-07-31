@@ -128,7 +128,7 @@ public class ClubQueryService {
         Club findClub = clubRepository.findClubDetailById(clubId).orElseThrow(EntityNotFoundException::new);
         ClubDetailInfo clubDetailInfo = clubMapper.toDetailInfo(findClub);
 
-        List<CommentResponse> findComments = commentQueryService.findComment(clubId, loginAccount);
+        List<CommentResponse> findComments = commentQueryService.findComment(clubId);
 
         return ClubFindDetailResponse.builder()
                 .accountClubs(findClub.getAccountClubs())

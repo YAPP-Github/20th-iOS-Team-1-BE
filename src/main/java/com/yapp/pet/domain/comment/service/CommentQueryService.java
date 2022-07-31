@@ -34,7 +34,7 @@ public class CommentQueryService {
                                 .orElseThrow(NoSuchElementException::new);
     }
 
-    public List<CommentResponse> findComment(long clubId, Account account) {
+    public List<CommentResponse> findComment(long clubId) {
         List<Comment> comments = commentRepository.findCommentByClubId(clubId);
 
         return comments.stream()

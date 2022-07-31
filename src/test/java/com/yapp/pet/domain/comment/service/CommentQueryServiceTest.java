@@ -69,7 +69,7 @@ class CommentQueryServiceTest {
         when(petRepository.findPetsByAccountId(anyLong()))
                 .thenReturn(pets);
 
-        List<CommentResponse> comments = commentQueryService.findComment(1L, account);
+        List<CommentResponse> comments = commentQueryService.findComment(1L);
 
         verify(commentRepository, times(1)).findCommentByClubId(anyLong());
         verify(petRepository, times(1)).findPetsByAccountId(any());
@@ -106,7 +106,7 @@ class CommentQueryServiceTest {
         when(petRepository.findPetsByAccountId(anyLong()))
                 .thenReturn(pets);
 
-        List<CommentResponse> comments = commentQueryService.findComment(1L, account);
+        List<CommentResponse> comments = commentQueryService.findComment(1L);
 
         //then
         assertAll(
