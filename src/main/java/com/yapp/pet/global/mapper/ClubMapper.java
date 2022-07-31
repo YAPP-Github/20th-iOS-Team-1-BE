@@ -27,6 +27,6 @@ public interface ClubMapper {
 
     @Named("toZonedDateTime")
     default ZonedDateTime toZonedDateTime(LocalDateTime localDateTime) {
-        return ZonedDateTime.of(localDateTime, ZoneId.of("Asia/Seoul"));
+        return ZonedDateTime.of(localDateTime, ZoneId.of("UTC"));
     }
 }
