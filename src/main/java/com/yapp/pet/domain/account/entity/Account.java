@@ -58,8 +58,9 @@ public class Account extends BaseEntity {
     private String selfIntroduction;
 
     @Builder
-    public Account(Token token, AccountImage accountImage, Set<Category> interestCategories, String nickname,
+    public Account(Long id, Token token, AccountImage accountImage, Set<Category> interestCategories, String nickname,
                    String email, Integer age, AccountSex sex, Address address, String selfIntroduction) {
+        this.id = id;
         this.token = token;
         this.accountImage = accountImage;
         this.interestCategories = interestCategories;
