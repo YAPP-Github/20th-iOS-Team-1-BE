@@ -8,6 +8,7 @@ import com.yapp.pet.domain.pet_image.PetImage;
 import com.yapp.pet.domain.pet_image.PetImageService;
 import com.yapp.pet.domain.pet_tag.PetTag;
 import com.yapp.pet.domain.pet_tag.PetTagService;
+import com.yapp.pet.global.exception.pet.NotFoundPetException;
 import com.yapp.pet.global.mapper.PetMapper;
 import com.yapp.pet.web.pet.model.PetRequest;
 import lombok.RequiredArgsConstructor;
@@ -84,7 +85,7 @@ public class PetService {
 
     public Long deletePetInfo(long petId) {
         Pet savedPet = petRepository.findById(petId)
-                                    .orElseThrow(() -> new IllegalArgumentException("존재하는 펫이 없습니다"));
+                                    .orElseThrow(NotFoundPetException::new);
 
         if (savedPet.getPetImage() != null) {
             petImageService.delete(savedPet);
@@ -113,7 +114,7 @@ public class PetService {
 
     public Long updatePetInfo(long petId, PetRequest request) {
         Pet savedPet = petRepository.findById(petId)
-                                    .orElseThrow(() -> new IllegalArgumentException("존재하는 펫이 없습니다"));
+                                    .orElseThrow(NotFoundPetException::new);
 
         MultipartFile imageFile = request.getImageFile();
 
