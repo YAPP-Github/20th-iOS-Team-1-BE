@@ -11,24 +11,20 @@ import com.yapp.pet.global.exception.jwt.NotFoundTokenException;
 import com.yapp.pet.global.exception.jwt.NotRefreshTokenException;
 import com.yapp.pet.global.jwt.JwtService;
 import com.yapp.pet.global.jwt.TokenType;
+import com.yapp.pet.support.AbstractIntegrationTest;
 import com.yapp.pet.web.token.model.TokenResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-@SpringBootTest
-@Transactional
-@Sql({"/data.sql"})
-public class TokenServiceTest {
+@DisplayName("TokenService Integration Test")
+public class TokenServiceIntegrationTest extends AbstractIntegrationTest {
 
     @Autowired
     TokenService tokenService;

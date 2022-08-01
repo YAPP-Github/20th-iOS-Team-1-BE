@@ -13,6 +13,7 @@ import com.yapp.pet.domain.token.repository.TokenRepository;
 import com.yapp.pet.global.jwt.JwtService;
 import com.yapp.pet.global.jwt.TokenType;
 import com.yapp.pet.global.util.s3.S3Utils;
+import com.yapp.pet.support.AbstractIntegrationTest;
 import com.yapp.pet.web.account.model.AccountSignUpRequest;
 import com.yapp.pet.web.account.model.AccountUpdateRequest;
 import com.yapp.pet.web.account.model.AccountValidationResponse;
@@ -47,10 +48,8 @@ import static com.yapp.pet.web.account.model.MyPageResponse.AccountInfoResponse;
 import static com.yapp.pet.web.account.model.MyPageResponse.PetInfoResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-@Transactional
-@Sql({"/data.sql"})
-public class AccountServiceTest {
+@DisplayName("AccountService Integration Test")
+public class AccountServiceTest extends AbstractIntegrationTest {
 
     @Autowired
     AccountService accountService;

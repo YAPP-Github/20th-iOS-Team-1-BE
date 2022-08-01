@@ -8,6 +8,7 @@ import com.yapp.pet.domain.club.repository.jpa.ClubRepository;
 import com.yapp.pet.domain.club.service.ClubParticipationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +23,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Sql({"/concurrencyTestData.sql"})
+@Tag("integrationTest")
+@DisplayName("ClubParticipationConcurrency Integration Test")
 public class ClubParticipationConcurrencyTest {
 
     @Autowired

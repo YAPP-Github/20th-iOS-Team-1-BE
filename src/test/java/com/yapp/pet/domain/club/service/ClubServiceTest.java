@@ -11,6 +11,7 @@ import com.yapp.pet.domain.comment.CommentRepository;
 import com.yapp.pet.global.exception.club.NotLeaderException;
 import com.yapp.pet.global.exception.club.NotParticipatingClubException;
 import com.yapp.pet.global.exception.common.ExceptionStatus;
+import com.yapp.pet.support.AbstractIntegrationTest;
 import com.yapp.pet.web.club.model.ClubParticipateResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,10 +27,8 @@ import static com.yapp.pet.web.club.model.ClubParticipateRejectReason.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-@SpringBootTest
-@Transactional
-@Sql({"/data.sql"})
-public class ClubServiceTest {
+@DisplayName("ClubService Integration Test")
+public class ClubServiceTest extends AbstractIntegrationTest {
 
     @Autowired
     ClubRepository clubRepository;

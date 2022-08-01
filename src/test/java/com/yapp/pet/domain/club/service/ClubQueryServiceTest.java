@@ -8,6 +8,7 @@ import com.yapp.pet.domain.club.entity.EligibleSex;
 import com.yapp.pet.domain.club.repository.jpa.ClubRepository;
 import com.yapp.pet.domain.common.Category;
 import com.yapp.pet.domain.common.PetSizeType;
+import com.yapp.pet.support.AbstractIntegrationTest;
 import com.yapp.pet.web.club.model.ClubFindByConditionRequest;
 import com.yapp.pet.web.club.model.ClubFindDetailResponse;
 import com.yapp.pet.web.club.model.ClubFindResponse;
@@ -37,9 +38,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.data.domain.Sort.Direction.ASC;
 
-@SpringBootTest
-@Sql({"/data.sql"})
-class ClubQueryServiceTest {
+@DisplayName("ClubQueryService Integration Test")
+class ClubQueryServiceTest extends AbstractIntegrationTest {
 
     @Autowired
     ClubRepository clubRepository;

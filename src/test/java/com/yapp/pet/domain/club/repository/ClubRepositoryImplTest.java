@@ -13,6 +13,7 @@ import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.club.entity.ClubStatus;
 import com.yapp.pet.domain.club.entity.EligibleSex;
 import com.yapp.pet.domain.common.PetSizeType;
+import com.yapp.pet.support.AbstractIntegrationTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +35,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest
-@Transactional
-@Sql({"/data.sql"})
-class ClubRepositoryImplTest {
+@DisplayName("ClubRepositoryImpl Integration Test")
+class ClubRepositoryImplTest extends AbstractIntegrationTest {
 
     @Autowired
     JPAQueryFactory queryFactory;
