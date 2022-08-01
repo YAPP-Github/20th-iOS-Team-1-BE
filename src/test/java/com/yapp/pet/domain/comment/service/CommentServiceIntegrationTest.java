@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@DisplayName("CommentService Integration Test")
 public class CommentServiceIntegrationTest extends AbstractIntegrationTest {
 
     @Autowired

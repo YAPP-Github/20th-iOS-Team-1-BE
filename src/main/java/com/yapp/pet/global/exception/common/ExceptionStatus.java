@@ -35,7 +35,11 @@ public enum ExceptionStatus{
 
 	//Comment
 
-	NOT_DELETE_COMMENT_EXCEPTION(403, "자기 자신의 댓글만을 삭제할 수 있습니다", FORBIDDEN);
+	NOT_DELETE_COMMENT_EXCEPTION(403, "자기 자신의 댓글만을 삭제할 수 있습니다", FORBIDDEN),
+
+	//Pet
+
+	NOT_FOUND_PET_EXCEPTION(400, "펫이 존재하지 않습니다", BAD_REQUEST);
 
 	private final int status;
 	private final String message;
