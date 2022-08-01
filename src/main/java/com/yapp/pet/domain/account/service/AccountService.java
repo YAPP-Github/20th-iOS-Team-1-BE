@@ -126,9 +126,8 @@ public class AccountService {
             );
         }
 
-        Account updateAccount = accountMapper.toEntity(request);
-
-        account.update(updateAccount);
+        account.update(accountMapper.toEntity(request));
+        accountRepository.save(account);
 
         return account.getId();
     }
