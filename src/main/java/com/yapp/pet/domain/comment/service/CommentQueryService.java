@@ -33,16 +33,18 @@ public class CommentQueryService {
         List<Comment> comments = commentRepository.findCommentByClubId(clubId);
 
         return comments.stream()
-                       .map(comment -> new CommentResponse(comment.getId(),
-                                                           comment.getContent(),
-                                                           comment.getAccount().getNickname(),
-                                                           isLeader(comment.getClub(), comment),
-                                                           comment.getUpdatedAt() != null ? ZonedDateTime.of(
-                                                                   comment.getUpdatedAt(), ZoneId.of("UTC")) : null,
-                                                           findPetInfoForComment(comment.getAccount().getId()),
-                                                           comment.getAccount().hasImage() ? comment.getAccount()
-                                                                                                    .getAccountImage()
-                                                                                                    .getPath() : null))
+                       .map(comment -> CommentResponse.builder()
+                                                      .id(comment.getId())
+                                                      .content(comment.getContent())
+                                                      .author(comment.getAccount().getNickname())
+                                                      .leader(isLeader(comment.getClub(), comment))
+                                                      .updatedTime(comment.getUpdatedAt() != null ? ZonedDateTime.of(
+                                                              comment.getUpdatedAt(), ZoneId.of("UTC")) : null)
+                                                      .breeds(findPetInfoForComment(comment.getAccount().getId()))
+                                                      .imageUrl(comment.getAccount().hasImage() ? comment.getAccount()
+                                                                                                         .getAccountImage()
+                                                                                                         .getPath() : null)
+                                                      .build())
                        .collect(Collectors.toList());
     }
 
