@@ -39,7 +39,7 @@ public enum ExceptionStatus{
 
 	//Pet
 
-	NOT_FOUND_PET_EXCEPTION(400, "삭제할 펫이 없습니다", BAD_REQUEST);
+	NOT_FOUND_PET_EXCEPTION(400, "펫이 존재하지 않습니다", BAD_REQUEST);
 
 	private final int status;
 	private final String message;
