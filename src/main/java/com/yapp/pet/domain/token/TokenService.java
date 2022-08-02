@@ -1,6 +1,7 @@
 package com.yapp.pet.domain.token;
 
 import com.yapp.pet.domain.account.entity.Account;
+import com.yapp.pet.domain.account.repository.AccountRepository;
 import com.yapp.pet.domain.token.entity.Token;
 import com.yapp.pet.domain.token.repository.TokenRepository;
 import com.yapp.pet.global.exception.jwt.NotFoundTokenException;
@@ -21,6 +22,7 @@ public class TokenService {
     private final JwtService jwtService;
 
     private final TokenRepository tokenRepository;
+    private final AccountRepository accountRepository;
 
     public TokenResponse reIssuance(Account account){
         TokenResponse tokenResponse = new TokenResponse();
@@ -41,8 +43,10 @@ public class TokenService {
     public Long expireRefreshToken(Account account){
         Token token = getAndValidToken(account);
 
-        tokenRepository.delete(token);
         account.deleteToken();
+
+        accountRepository.deleteToken(account.getId());
+        tokenRepository.delete(token);
 
         return token.getId();
     }
