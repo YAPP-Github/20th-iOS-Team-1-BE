@@ -225,7 +225,8 @@ class ClubRepositoryImplTest extends AbstractIntegrationTest {
                                          .collect(Collectors.toList());
 
         //then
-        assertThat(result).isEmpty();
+        assertThat(result).flatExtracting("eligiblePetSizeTypes")
+                          .isNotIn(userFilter);
     }
 
     @Test
