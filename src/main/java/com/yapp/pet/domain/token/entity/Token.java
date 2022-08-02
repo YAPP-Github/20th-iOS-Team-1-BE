@@ -57,4 +57,8 @@ public class Token extends BaseEntity {
         this.account = account;
     }
 
+    public void deleteAccount() {
+        this.account = null;
+    }
+
 }

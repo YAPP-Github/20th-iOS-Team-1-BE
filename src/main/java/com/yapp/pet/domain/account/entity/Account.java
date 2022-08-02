@@ -92,6 +92,7 @@ public class Account extends BaseEntity {
     }
 
     public void deleteToken(){
+        this.token.deleteAccount();
         this.token = null;
     }
 
