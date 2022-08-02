@@ -4,6 +4,7 @@ import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.club.repository.jpa.ClubRepository;
 import com.yapp.pet.domain.comment.Comment;
 import com.yapp.pet.domain.comment.CommentRepository;
+import com.yapp.pet.global.exception.comment.NotDeleteCommentException;
 import com.yapp.pet.web.comment.model.CommentRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +33,7 @@ public class CommentService {
                                                 .orElseThrow(EntityNotFoundException::new);
 
         if (!account.isMe(savedComment.getAccount())) {
-            throw new IllegalArgumentException("당사자만 지울 수 있다");
+            throw new NotDeleteCommentException();
         }
 
         commentRepository.delete(savedComment);

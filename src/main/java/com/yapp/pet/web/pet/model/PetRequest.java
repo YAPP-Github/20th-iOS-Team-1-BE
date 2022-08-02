@@ -2,6 +2,7 @@ package com.yapp.pet.web.pet.model;
 
 import com.yapp.pet.domain.common.PetSizeType;
 import com.yapp.pet.domain.pet.entity.PetSex;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -40,4 +41,18 @@ public class PetRequest {
     private List<String> tags = new ArrayList<>();
 
     private MultipartFile imageFile;
+
+    @Builder
+    public PetRequest(String name, Integer year, Integer month, String breed, PetSex sex, boolean neutering,
+                      PetSizeType sizeType, List<String> tags, MultipartFile imageFile) {
+        this.name = name;
+        this.year = year;
+        this.month = month;
+        this.breed = breed;
+        this.sex = sex;
+        this.neutering = neutering;
+        this.sizeType = sizeType;
+        this.tags = tags;
+        this.imageFile = imageFile;
+    }
 }
