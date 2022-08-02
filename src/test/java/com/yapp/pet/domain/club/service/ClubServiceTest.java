@@ -189,7 +189,7 @@ public class ClubServiceTest {
     @DisplayName("모임 참여 실패 - 인원이 다 찬 모임은 참여할 수 없다.")
     void notParticipateClubByFull() {
         //given
-        Long clubId = 7L;
+        Long clubId = 8L;
         Account loginAccount = accountRepository.findById(4L).get();
 
         //when
