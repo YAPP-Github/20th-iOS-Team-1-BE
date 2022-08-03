@@ -68,9 +68,12 @@ insert into club (category, description, eligible_sex, end_date, latitude, longi
 values ('PLAY_GROUND', 'description', 'ALL', '2022-09-05 09:00:00', 37.510033, 126.981571, 5, 'ㅁㄴㅇ', '2022-04-01', 'END', '재롱이 구경하실 분들', 1);
 
 insert into club (category, description, eligible_sex, end_date, latitude, longitude, maximum_people, meeting_place, start_date, status, title, participants)
-values ('PLAY_GROUND', 'description', 'ALL', '2022-10-05 09:00:00', 37.510033, 126.981571, 1, 'ㅁㄴㅇ', '2022-03-01', 'PERSONNEL_FULL', '수다', 1);
+values ('PLAY_GROUND', 'description', 'ALL', '2022-10-05 09:00:00', 37.510033, 126.981571, 1, 'ㅁㄴㅇ', '2022-03-01', 'END', '수다', 1);
 
--- 1번 account는 6개의 club(1,4,5,6,7,8)의 방장임 / 6,7,8 club은 종료된 모임
+insert into club (category, description, eligible_sex, end_date, latitude, longitude, maximum_people, meeting_place, start_date, status, title, participants)
+values ('PLAY_GROUND', 'description', 'ALL', '2022-10-05 09:00:00', 37.510033, 126.981571, 1, 'ㅁㄴㅇ', '2022-12-01', 'PERSONNEL_FULL', '수다', 1);
+
+-- 1번 account는 6개의 club(1,4,5,6,7,8)의 방장임
 insert into account_club (leader, account_id, club_id) values (true, 1, 1);
 insert into account_club (leader, account_id, club_id) values (false , 2, 1);
 insert into account_club (leader, account_id, club_id) values (true, 3, 2);
@@ -79,6 +82,7 @@ insert into account_club (leader, account_id, club_id) values (true, 1, 4);
 insert into account_club (leader, account_id, club_id) values (true, 1, 5);
 insert into account_club (leader, account_id, club_id) values (true, 1, 6);
 insert into account_club (leader, account_id, club_id) values (true, 1, 7);
+insert into account_club (leader, account_id, club_id) values (true, 1, 8);
 
 insert into comment (content, account_id, club_id, updated_at) values ('댓글1', 1, 1, '2022-05-01');
 insert into comment (content, account_id, club_id, updated_at) values ('댓글2', 2, 1, '2022-05-01');
@@ -97,6 +101,7 @@ insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (5
 insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (6, 'SMALL');
 insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (7, 'SMALL');
 insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (7, 'MEDIUM');
+insert into eligible_pet_size_types (club_id, eligible_pet_size_types) values (8, 'ALL');
 
 insert into pet_image (name, origin_name, path, s3Key) values ('90419_펫이미지1', '펫이미지1', 'https://acjic.com', '디렉터리4+파일명4');
 

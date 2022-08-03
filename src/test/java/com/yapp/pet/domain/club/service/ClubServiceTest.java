@@ -46,6 +46,9 @@ public class ClubServiceTest {
     @Autowired
     ClubService clubService;
 
+    @Autowired
+    ClubParticipationService clubParticipationService;
+
     Account accountWithTokenAndImage;
     Account accountWithTokenWithoutImage;
     Account accountWithoutToken;
@@ -133,7 +136,7 @@ public class ClubServiceTest {
         Account loginAccount = accountRepository.findById(3L).get();
 
         //when
-        ClubParticipateResponse response = clubService.participateClub(clubId, loginAccount);
+        ClubParticipateResponse response = clubParticipationService.participateClubWithPessimisticLock(clubId, loginAccount);
 
         //then
         assertThat(response.isEligible()).isFalse();
@@ -148,7 +151,7 @@ public class ClubServiceTest {
         Account loginAccount = accountRepository.findById(2L).get();
 
         //when
-        ClubParticipateResponse response = clubService.participateClub(clubId, loginAccount);
+        ClubParticipateResponse response = clubParticipationService.participateClubWithPessimisticLock(clubId, loginAccount);
 
         //then
         assertThat(response.isEligible()).isFalse();
@@ -163,7 +166,7 @@ public class ClubServiceTest {
         Account loginAccount = accountRepository.findById(5L).get();
 
         //when
-        ClubParticipateResponse response = clubService.participateClub(clubId, loginAccount);
+        ClubParticipateResponse response = clubParticipationService.participateClubWithPessimisticLock(clubId, loginAccount);
 
         //then
         assertThat(response.isEligible()).isFalse();
@@ -178,7 +181,7 @@ public class ClubServiceTest {
         Account loginAccount = accountRepository.findById(4L).get();
 
         //when
-        ClubParticipateResponse response = clubService.participateClub(clubId, loginAccount);
+        ClubParticipateResponse response = clubParticipationService.participateClubWithPessimisticLock(clubId, loginAccount);
 
         //then
         assertThat(response.isEligible()).isFalse();
@@ -189,11 +192,11 @@ public class ClubServiceTest {
     @DisplayName("모임 참여 실패 - 인원이 다 찬 모임은 참여할 수 없다.")
     void notParticipateClubByFull() {
         //given
-        Long clubId = 7L;
+        Long clubId = 8L;
         Account loginAccount = accountRepository.findById(4L).get();
 
         //when
-        ClubParticipateResponse response = clubService.participateClub(clubId, loginAccount);
+        ClubParticipateResponse response = clubParticipationService.participateClubWithPessimisticLock(clubId, loginAccount);
 
         //then
         assertThat(response.isEligible()).isFalse();
@@ -208,7 +211,7 @@ public class ClubServiceTest {
         Account loginAccount = accountRepository.findById(6L).get();
 
         //when
-        ClubParticipateResponse response = clubService.participateClub(clubId, loginAccount);
+        ClubParticipateResponse response = clubParticipationService.participateClubWithPessimisticLock(clubId, loginAccount);
 
         //then
         assertThat(response.isEligible()).isTrue();

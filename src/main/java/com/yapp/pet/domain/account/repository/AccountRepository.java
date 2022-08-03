@@ -7,10 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 public interface AccountRepository extends JpaRepository<Account, Long>, AccountRepositoryCustom {
 
     @Modifying
     @Transactional
     @Query("update Account a set a.token = null where a.id = :id")
     void deleteToken(@Param("id") Long id);
+
+    Optional<Account> findByEmail(@Param("email") String email);
 }

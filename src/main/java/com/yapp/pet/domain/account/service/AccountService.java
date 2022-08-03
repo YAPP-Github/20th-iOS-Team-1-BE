@@ -69,29 +69,29 @@ public class AccountService {
     public SignInResponse signIn(Social social, String uniqueIdBySocial, String email) {
         SignInResponse signInResponse = new SignInResponse();
 
-        String createAccessToken = jwtService.createAccessToken(uniqueIdBySocial);
-        String createRefreshToken = jwtService.createRefreshToken(uniqueIdBySocial);
-        signInResponse.addToken(createAccessToken, createRefreshToken);
+        String createdAccessToken = jwtService.createAccessToken(uniqueIdBySocial);
+        String createdRefreshToken = jwtService.createRefreshToken(uniqueIdBySocial);
+        signInResponse.addToken(createdAccessToken, createdRefreshToken);
 
-        Optional<Token> findRefreshToken = tokenRepository.findByUniqueIdBySocial(uniqueIdBySocial);
+        Token createdToken = Token.of(uniqueIdBySocial, social, createdRefreshToken);
+        tokenRepository.save(createdToken);
 
-        findRefreshToken.ifPresentOrElse(token -> {
+        Optional<Account> findAccount = accountRepository.findByEmail(email);
+
+        findAccount.ifPresentOrElse(account -> {
             log.info("social signIn - " + social.getValue());
 
             signInResponse.setFirstAccount(FALSE);
-            token.exchangeRefreshToken(createRefreshToken);
+            createdToken.addAccount(account);
         }, () -> {
             log.info("social signUp - " + social.getValue());
 
             signInResponse.setFirstAccount(TRUE);
 
-            Token createToken = Token.of(uniqueIdBySocial, social, createRefreshToken);
-            tokenRepository.save(createToken);
-
-            Account createAccount = Account.of(createToken, email);
+            Account createAccount = Account.of(createdToken, email);
             accountRepository.save(createAccount);
 
-            createToken.addAccount(createAccount);
+            createdToken.addAccount(createAccount);
         });
 
         return signInResponse;

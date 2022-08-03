@@ -32,6 +32,7 @@ public enum ExceptionStatus{
 	NOT_PARTICIPATING_CLUB_EXCEPTION(400, "해당 모임에 참여하지 않은 유저입니다.", BAD_REQUEST),
 	NOT_HAVING_ANY_PET_EXCEPTION(403, "해당 모임에 참여할 수 있는 애완견이 없습니다", FORBIDDEN),
 	NOT_LEADER_EXCEPTION(400, "해당 모임의 방장이 아닙니다.", BAD_REQUEST),
+	FAILURE_GET_LOCK_EXCEPTION(500, "Lock 획득을 실패했습니다.", INTERNAL_SERVER_ERROR),
 
 	//Comment
 
