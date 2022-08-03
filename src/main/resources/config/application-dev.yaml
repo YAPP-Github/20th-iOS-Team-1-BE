@@ -10,7 +10,7 @@ spring:
       max-request-size: 100MB
       enabled: true
   redis:
-    host: ENC(uDHhzPz2rvGXSYwIVd80HicBYvDLHUIT)
+    host: ENC(PwAVCI8qx/LF0pyNZptsUVdiAdV41QO+)
     port: 6379
 
   jpa:
