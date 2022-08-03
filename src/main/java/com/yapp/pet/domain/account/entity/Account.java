@@ -139,6 +139,10 @@ public class Account extends BaseEntity {
         return accountImage != null;
     }
 
+    public void addToken(Token token) {
+        this.token = token;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -55,6 +55,7 @@ public class Token extends BaseEntity {
 
     public void addAccount(Account account){
         this.account = account;
+        account.addToken(this);
     }
 
     public void deleteAccount() {
