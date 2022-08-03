@@ -5,7 +5,7 @@ import com.yapp.pet.domain.account.repository.AccountRepository;
 import com.yapp.pet.domain.accountclub.AccountClubRepository;
 import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.club.repository.jpa.ClubRepository;
-import com.yapp.pet.domain.club.service.ClubService;
+import com.yapp.pet.domain.club.service.ClubParticipationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ClubParticipationConcurrencyTest {
 
     @Autowired
-    ClubService clubService;
+    ClubParticipationService clubService;
 
     @Autowired
     AccountRepository accountRepository;
@@ -51,14 +51,15 @@ public class ClubParticipationConcurrencyTest {
     * */
     @Test
     @DisplayName("인원 제한이 2명인 모임에 1명이 이미 참여중(방장)이고, 남은 1자리에 10명이 동시에 참여하는 상황")
-    void participateClub() throws InterruptedException {
-        //givenD
+    void participateClubTest() throws InterruptedException {
+
+        //given
         final int PARTICIPATION_PEOPLE = 10;
         final int CLUB_MAXIMUM_PEOPLE = 2;
         CountDownLatch countDownLatch = new CountDownLatch(PARTICIPATION_PEOPLE);
 
-        List<ParticipateWorker> workers = Stream
-                .generate(() -> new ParticipateWorker(account, countDownLatch))
+        List<ParticipateWorkerWithDistributedLock> workers = Stream
+                .generate(() -> new ParticipateWorkerWithDistributedLock(account, countDownLatch))
                 .limit(PARTICIPATION_PEOPLE)
                 .collect(Collectors.toList());
 
@@ -73,18 +74,34 @@ public class ClubParticipationConcurrencyTest {
         assertThat(participationAccountCount).isEqualTo(CLUB_MAXIMUM_PEOPLE);
     }
 
-    private class ParticipateWorker implements Runnable {
+    private class ParticipateWorkerWithPessimisticLock implements Runnable {
         private Account account;
         private CountDownLatch countDownLatch;
 
-        public ParticipateWorker(Account account, CountDownLatch countDownLatch) {
+        public ParticipateWorkerWithPessimisticLock(Account account, CountDownLatch countDownLatch) {
             this.account = account;
             this.countDownLatch = countDownLatch;
         }
 
         @Override
         public void run() {
-            clubService.participateClub(CLUB_ID, account);
+            clubService.participateClubWithPessimisticLock(CLUB_ID, account);
+            countDownLatch.countDown();
+        }
+    }
+
+    private class ParticipateWorkerWithDistributedLock implements Runnable {
+        private Account account;
+        private CountDownLatch countDownLatch;
+
+        public ParticipateWorkerWithDistributedLock(Account account, CountDownLatch countDownLatch) {
+            this.account = account;
+            this.countDownLatch = countDownLatch;
+        }
+
+        @Override
+        public void run() {
+            clubService.participateClubWithDistributedLock(CLUB_ID, account);
             countDownLatch.countDown();
         }
     }

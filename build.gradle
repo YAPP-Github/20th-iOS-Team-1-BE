@@ -44,6 +44,9 @@ dependencies {
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.8'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+	//redission
+	implementation 'org.redisson:redisson-spring-boot-starter:3.17.4'
+
 	//elastic search
 	implementation 'org.springframework.data:spring-data-elasticsearch:4.3.0'
 

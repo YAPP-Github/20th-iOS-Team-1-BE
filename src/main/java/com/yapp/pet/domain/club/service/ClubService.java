@@ -6,25 +6,24 @@ import com.yapp.pet.domain.accountclub.AccountClubRepository;
 import com.yapp.pet.domain.club.document.ClubDocument;
 import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.club.entity.ClubStatus;
-import com.yapp.pet.domain.club.repository.jpa.ClubRepository;
 import com.yapp.pet.domain.club.repository.elasticsearch.ClubSearchRepository;
+import com.yapp.pet.domain.club.repository.jpa.ClubRepository;
 import com.yapp.pet.domain.comment.CommentRepository;
-import com.yapp.pet.domain.pet.entity.Pet;
 import com.yapp.pet.domain.pet.repository.PetRepository;
 import com.yapp.pet.global.exception.club.NotHaveAnyPetException;
 import com.yapp.pet.global.exception.club.NotLeaderException;
 import com.yapp.pet.global.exception.club.NotParticipatingClubException;
 import com.yapp.pet.global.mapper.ClubMapper;
 import com.yapp.pet.web.club.model.ClubCreateRequest;
-import com.yapp.pet.web.club.model.ClubParticipateResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
-import java.util.List;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -36,8 +35,6 @@ public class ClubService {
     private final PetRepository petRepository;
     private final CommentRepository commentRepository;
     private final ClubSearchRepository clubSearchRepository;
-
-    private final ClubValidator validator;
 
     public Long leaveClub(Long clubId, Account loginAccount) {
 
@@ -126,30 +123,6 @@ public class ClubService {
         return findClub.getAccountClubs().stream()
                 .filter(AccountClub::isLeader)
                 .anyMatch(ac -> ac.getAccount().equals(loginAccount));
-    }
-
-    public ClubParticipateResponse participateClub(Long clubId, Account loginAccount) {
-        Club findClub = clubRepository.findClubDetailByIdWithLock(clubId).orElseThrow(EntityNotFoundException::new);
-        List<Pet> findPets = petRepository.findPetsByAccountId(loginAccount.getId());
-
-        ClubParticipateResponse response = validator.participationValidate(findClub, findPets, loginAccount);
-        response.setClubId(findClub.getId());
-
-        if (!response.isEligible()) {
-            return response;
-        }
-
-        AccountClub accountClub = AccountClub.of(loginAccount, findClub);
-        accountClubRepository.save(accountClub);
-        response.setAccountClubId(accountClub.getId());
-
-        findClub.addAccountClub(accountClub);
-
-        if (isFullClub(findClub)) {
-            findClub.updateStatus(ClubStatus.PERSONNEL_FULL);
-        }
-
-        return response;
     }
 
     public void updateAccountClubDocument(Long accountClubId) {

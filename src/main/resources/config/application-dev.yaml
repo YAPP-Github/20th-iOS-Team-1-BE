@@ -9,6 +9,9 @@ spring:
       max-file-size: 100MB
       max-request-size: 100MB
       enabled: true
+  redis:
+    host: ENC(uDHhzPz2rvGXSYwIVd80HicBYvDLHUIT)
+    port: 6379
 
   jpa:
     hibernate:
