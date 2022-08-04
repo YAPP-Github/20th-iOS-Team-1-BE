@@ -45,7 +45,7 @@ jobs:
         run: docker-compose up -d
 
       - name: do Integration test
-        run: TOGATHER_JASYPT_PASSWORD=${{ secrets.TOGATHER_JASYPT_PASSWORD }} ./gradlew clean integrationTest --stacktrace -info
+        run: TOGATHER_JASYPT_PASSWORD=${{ secrets.TOGATHER_JASYPT_PASSWORD }} ./gradlew clean integrationTest
 
       - name: cache
         uses: actions/cache@v2
