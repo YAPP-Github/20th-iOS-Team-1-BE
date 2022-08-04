@@ -9,23 +9,23 @@ insert into account_image (name, origin_name, s3key, path) values ('165504461440
 insert into account_image (name, origin_name, s3key, path) values ('486421_이미지2', '이미지2', '디렉터리2+파일명2', 'https://vdfkopvd.com');
 insert into account_image (name, origin_name, s3key, path) values ('486421_이미지3', '이미지3', '디렉터리3+파일명3', 'https://daskodpas.com');
 
-insert into account (age, nickname, sex, token_id, city, detail, self_introduction, account_image_id)
-values (10, '재롱잔치', 'MAN', 1, '인천광역시', '남동구', '저는 재롱이 견주입니다.', 1);
+insert into account (age, nickname, sex, token_id, city, detail, self_introduction, account_image_id, email)
+values (10, '재롱잔치', 'MAN', 1, '인천광역시', '남동구', '저는 재롱이 견주입니다.', 1, 'yapp1@gmail.com');
 
-insert into account (age, nickname, sex, token_id, city, detail, account_image_id)
-values (20, '밀란이네 시트콤', 'WOMAN', 2, '서울시', '강남구', 2);
+insert into account (age, nickname, sex, token_id, city, detail, account_image_id, email)
+values (20, '밀란이네 시트콤', 'WOMAN', 2, '서울시', '강남구', 2, 'yapp2@gmail.com');
 
-insert into account (age, nickname, sex, token_id, city, detail, self_introduction, account_image_id)
-values (30, 'yapp', 'PRIVATE', 3, '서울시', '강동구', 'yapp 견주입니다~', 3);
+insert into account (age, nickname, sex, token_id, city, detail, self_introduction, account_image_id, email)
+values (30, 'yapp', 'PRIVATE', 3, '서울시', '강동구', 'yapp 견주입니다~', 3, 'yapp3@gmail.com');
 
-insert into account (age, nickname, sex, token_id, city, detail)
-values (40, 'abcd', 'MAN', 4, '서울시', '강서구');
+insert into account (age, nickname, sex, token_id, city, detail, email)
+values (40, 'abcd', 'MAN', 4, '서울시', '강서구', 'yapp4@gmail.com');
 
-insert into account (age, nickname, sex, token_id, city, detail)
-values (50, '와랄라', 'MAN', 5, '서울시', '강서구');
+insert into account (age, nickname, sex, token_id, city, detail, email)
+values (50, '와랄라', 'MAN', 5, '서울시', '강서구', 'yapp5@gmail.com');
 
-insert into account (age, nickname, sex, token_id, city, detail)
-values (60, 'tmp', 'MAN', 6, '서울시', '강서구');
+insert into account (age, nickname, sex, token_id, city, detail, email)
+values (60, 'tmp', 'MAN', 6, '서울시', '강서구', 'yapp6@gmail.com');
 
 insert into interest_categories (account_id, interest_categories) values (1, 'WALK');
 insert into interest_categories (account_id, interest_categories) values (1, 'DOG_CAFE');
@@ -59,7 +59,6 @@ insert into club (category, description, eligible_sex, end_date, latitude, longi
 values ('PLAY_GROUND', 'description', 'ALL', '2022-10-05 09:00:00', 37.510033, 126.981571, 1, 'ㅁㄴㅇ', '2022-03-01', 'END', '수다', 1);
 
 insert into club (category, description, eligible_sex, end_date, latitude, longitude, maximum_people, meeting_place, start_date, status, title, participants)
-values ('PLAY_GROUND', 'description', 'ALL', '2022-10-05 09:00:00', 37.510033, 126.981571, 1, 'ㅁㄴㅇ', '2022-12-01', 'PERSONNEL_FULL', '수다', 1);
 values ('PLAY_GROUND', 'description', 'ALL', '2022-10-05 09:00:00', 37.510033, 126.981571, 1, 'ㅁㄴㅇ', '2022-03-01', 'END', '수다', 1);
 
 insert into club (category, description, eligible_sex, end_date, latitude, longitude, maximum_people, meeting_place, start_date, status, title, participants)

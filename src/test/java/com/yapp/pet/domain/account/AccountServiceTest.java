@@ -85,6 +85,7 @@ public class AccountServiceTest extends AbstractIntegrationTest {
         accountWithTokenWithoutImage = accountRepository.findById(4L).get();
 
         accountWithoutToken = Account.builder()
+                .id(1L)
                 .age(10)
                 .sex(AccountSex.MAN)
                 .nickname("test")
@@ -171,15 +172,15 @@ public class AccountServiceTest extends AbstractIntegrationTest {
         req.setSex(AccountSex.MAN);
 
         //when
-        Long accountId = accountService.signUp(accountWithoutToken, req);
+        Long accountId = accountService.signUp(accountWithTokenWithoutImage, req);
 
         //then
-        assertThat(accountId).isEqualTo(accountWithoutToken.getId());
-        assertThat(req.getAge()).isEqualTo(accountWithoutToken.getAge());
-        assertThat(req.getCity()).isEqualTo(accountWithoutToken.getAddress().getCity());
-        assertThat(req.getDetail()).isEqualTo(accountWithoutToken.getAddress().getDetail());
-        assertThat(req.getNickname()).isEqualTo(accountWithoutToken.getNickname());
-        assertThat(req.getSex()).isEqualTo(accountWithoutToken.getSex());
+        assertThat(accountId).isEqualTo(accountWithTokenWithoutImage.getId());
+        assertThat(req.getAge()).isEqualTo(accountWithTokenWithoutImage.getAge());
+        assertThat(req.getCity()).isEqualTo(accountWithTokenWithoutImage.getAddress().getCity());
+        assertThat(req.getDetail()).isEqualTo(accountWithTokenWithoutImage.getAddress().getDetail());
+        assertThat(req.getNickname()).isEqualTo(accountWithTokenWithoutImage.getNickname());
+        assertThat(req.getSex()).isEqualTo(accountWithTokenWithoutImage.getSex());
     }
 
     @Test
@@ -197,15 +198,15 @@ public class AccountServiceTest extends AbstractIntegrationTest {
         req.setImageFile(imageFiles.get(0));
 
         //when
-        Long accountId = accountService.signUp(accountWithoutToken, req);
+        Long accountId = accountService.signUp(accountWithTokenWithoutImage, req);
 
         //then
-        assertThat(accountId).isEqualTo(accountWithoutToken.getId());
-        assertThat(req.getAge()).isEqualTo(accountWithoutToken.getAge());
-        assertThat(req.getCity()).isEqualTo(accountWithoutToken.getAddress().getCity());
-        assertThat(req.getDetail()).isEqualTo(accountWithoutToken.getAddress().getDetail());
-        assertThat(req.getNickname()).isEqualTo(accountWithoutToken.getNickname());
-        assertThat(req.getSex()).isEqualTo(accountWithoutToken.getSex());
+        assertThat(accountId).isEqualTo(accountWithTokenWithoutImage.getId());
+        assertThat(req.getAge()).isEqualTo(accountWithTokenWithoutImage.getAge());
+        assertThat(req.getCity()).isEqualTo(accountWithTokenWithoutImage.getAddress().getCity());
+        assertThat(req.getDetail()).isEqualTo(accountWithTokenWithoutImage.getAddress().getDetail());
+        assertThat(req.getNickname()).isEqualTo(accountWithTokenWithoutImage.getNickname());
+        assertThat(req.getSex()).isEqualTo(accountWithTokenWithoutImage.getSex());
 
         assertThat(accountImageRepository.findById(1L).isEmpty()).isFalse();
     }
@@ -219,7 +220,7 @@ public class AccountServiceTest extends AbstractIntegrationTest {
 
         //when
         SignInResponse signInResponse
-                = accountService.signIn(Social.APPLE, "unique1", "yapp@email.com");
+                = accountService.signIn(Social.APPLE, "unique10", "yapp1@gmail.com");
 
         //then
         assertThat(signInResponse.getFirstAccount()).isFalse();
