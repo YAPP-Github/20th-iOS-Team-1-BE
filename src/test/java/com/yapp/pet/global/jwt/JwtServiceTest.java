@@ -3,6 +3,7 @@ package com.yapp.pet.global.jwt;
 import com.yapp.pet.global.exception.common.ExceptionStatus;
 import com.yapp.pet.global.exception.jwt.ExpiredJwtTokenException;
 import com.yapp.pet.global.exception.jwt.InvalidJwtTokenException;
+import com.yapp.pet.support.AbstractIntegrationTest;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -25,10 +26,7 @@ import static com.yapp.pet.global.TogaetherConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-@SpringBootTest
-@Tag("integrationTest")
-@DisplayName("JwtService Integration Test")
-public class JwtServiceTest {
+public class JwtServiceTest extends AbstractIntegrationTest {
 
     @Autowired
     JwtService jwtService;
