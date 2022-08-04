@@ -144,6 +144,8 @@ public class AccountService {
 
         accountClubRepository.deleteAccountClubsByAccountId(account.getId());
 
+        tokenRepository.delete(account.getToken());
+
         accountRepository.delete(account);
 
         return account.getId();
