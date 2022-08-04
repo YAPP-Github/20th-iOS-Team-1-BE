@@ -1,6 +1,7 @@
 package com.yapp.pet.domain.account_image;
 
 import com.yapp.pet.domain.account.entity.Account;
+import com.yapp.pet.domain.account.repository.AccountRepository;
 import com.yapp.pet.global.util.s3.S3Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ public class AccountImageService {
     private final S3Utils s3Utils;
 
     private final AccountImageRepository accountImageRepository;
+    private final AccountRepository accountRepository;
 
     public void create(MultipartFile imageFile, Account account) {
 
@@ -33,7 +35,9 @@ public class AccountImageService {
                 .build();
 
         accountImageRepository.save(accountImage);
+
         account.addImage(accountImage);
+        accountRepository.save(account);
     }
 
     public void delete(Account account){

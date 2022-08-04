@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 import static java.lang.Boolean.FALSE;
@@ -98,9 +99,9 @@ public class AccountService {
     }
 
     public Long signUp(Account account, AccountSignUpRequest request) {
+        account = accountRepository.findById(account.getId()).orElseThrow(EntityNotFoundException::new);
 
         Account updateAccount = accountMapper.toEntity(request);
-
         account.signUp(updateAccount);
 
         if (hasImageFile(request.getImageFile())) {
@@ -108,8 +109,6 @@ public class AccountService {
                     SavedImageEvent.of(request.getImageFile(), account)
             );
         }
-
-        accountRepository.save(account);
 
         return account.getId();
     }

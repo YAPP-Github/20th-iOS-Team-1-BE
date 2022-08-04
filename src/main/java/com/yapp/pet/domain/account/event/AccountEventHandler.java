@@ -19,7 +19,6 @@ public class AccountEventHandler {
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    @Async
     public void saveImage(SavedImageEvent event){
         accountImageService.create(event.getImageFile(), event.getAccount());
     }
