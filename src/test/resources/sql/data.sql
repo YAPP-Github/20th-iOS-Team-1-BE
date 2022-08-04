@@ -74,7 +74,7 @@ insert into account_club (leader, account_id, club_id) values (true, 1, 4);
 insert into account_club (leader, account_id, club_id) values (true, 1, 5);
 insert into account_club (leader, account_id, club_id) values (true, 1, 6);
 insert into account_club (leader, account_id, club_id) values (true, 1, 7);
-insert into account_club (leader, account_id, club_id) values (true, 1, 8);
+insert into account_club (leader, account_id, club_id) values (true, 6, 8);
 
 insert into comment (content, account_id, club_id, updated_at) values ('댓글1', 1, 1, '2022-05-01');
 insert into comment (content, account_id, club_id, updated_at) values ('댓글2', 2, 1, '2022-05-01');

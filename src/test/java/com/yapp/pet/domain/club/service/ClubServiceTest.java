@@ -189,7 +189,7 @@ public class ClubServiceTest extends AbstractIntegrationTest {
     void notParticipateClubByFull() {
         //given
         Long clubId = 8L;
-        Account loginAccount = accountRepository.findById(4L).get();
+        Account loginAccount = accountRepository.findById(6L).get();
 
         //when
         ClubParticipateResponse response = clubParticipationService.participateClubWithPessimisticLock(clubId, loginAccount);
