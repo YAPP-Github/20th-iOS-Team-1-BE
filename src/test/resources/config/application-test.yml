@@ -3,10 +3,8 @@ spring:
     init:
       mode: always
   datasource:
-    url: jdbc:mysql://localhost:3306/pet?characterEncoding=UTF-8&serverTimezone=UCT
-    username: root
-    password: 1234
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:tc:mysql:8.0.28:///test?TC_INITSCRIPT=file:src/test/resources/sql/schema.sql
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
   servlet:
     multipart:
       max-file-size: 100MB
