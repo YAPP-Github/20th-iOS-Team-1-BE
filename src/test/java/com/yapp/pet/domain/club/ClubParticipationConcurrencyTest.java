@@ -64,8 +64,8 @@ public class ClubParticipationConcurrencyTest {
         final int CLUB_MAXIMUM_PEOPLE = 2;
         CountDownLatch countDownLatch = new CountDownLatch(PARTICIPATION_PEOPLE);
 
-        List<ParticipateWorkerWithDistributedLock> workers = Stream
-                .generate(() -> new ParticipateWorkerWithDistributedLock(account, countDownLatch))
+        List<ParticipateWorkerWithPessimisticLock> workers = Stream
+                .generate(() -> new ParticipateWorkerWithPessimisticLock(account, countDownLatch))
                 .limit(PARTICIPATION_PEOPLE)
                 .collect(Collectors.toList());
 
