@@ -41,6 +41,12 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: test environment configuration
+        run: docker-compose up
+
+      - name: do Integration test
+        run: TOGATHER_JASYPT_PASSWORD=${{ secrets.TOGATHER_JASYPT_PASSWORD }} ./gradlew clean integration
+
       - name: cache
         uses: actions/cache@v2
         with:
