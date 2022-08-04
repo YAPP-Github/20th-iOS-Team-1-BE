@@ -369,7 +369,6 @@ public class AccountServiceTest extends AbstractIntegrationTest {
         assertThat(findAccount.getNickname()).isEqualTo(request.getNickname());
         assertThat(findAccount.getSelfIntroduction()).isEqualTo(request.getSelfIntroduction());
         assertThat(findAccount.getInterestCategories().size()).isEqualTo(request.getInterestCategories().size());
-        assertThat(findAccount.getAccountImage()).isNotNull();
     }
 
     @Test
@@ -390,7 +389,6 @@ public class AccountServiceTest extends AbstractIntegrationTest {
         assertThat(findAccount.getNickname()).isEqualTo(request.getNickname());
         assertThat(findAccount.getSelfIntroduction()).isEqualTo(request.getSelfIntroduction());
         assertThat(findAccount.getInterestCategories().size()).isEqualTo(request.getInterestCategories().size());
-        assertThat(findAccount.getAccountImage()).isNotNull();
     }
 
     @Test
@@ -413,7 +411,6 @@ public class AccountServiceTest extends AbstractIntegrationTest {
         assertThat(findAccount.getNickname()).isEqualTo(request.getNickname());
         assertThat(findAccount.getSelfIntroduction()).isEqualTo(request.getSelfIntroduction());
         assertThat(findAccount.getInterestCategories().size()).isEqualTo(request.getInterestCategories().size());
-        assertThat(findAccount.getAccountImage()).isNotNull();
         assertThat(findAccount.getAccountImage().getOriginName()).isEqualTo("cat.jpg");
     }
 
