@@ -89,6 +89,11 @@ dependencies {
 	testImplementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
 	testImplementation group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
 	testImplementation group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
+
+	//testcontainers
+	testImplementation "org.testcontainers:testcontainers:1.17.3"
+	testImplementation "org.testcontainers:junit-jupiter:1.17.3"
+	testImplementation "org.testcontainers:mysql:1.17.3"
 }
 
 def test = tasks.named('test') {
