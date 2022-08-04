@@ -11,14 +11,12 @@ import com.yapp.pet.domain.comment.CommentRepository;
 import com.yapp.pet.global.exception.club.NotLeaderException;
 import com.yapp.pet.global.exception.club.NotParticipatingClubException;
 import com.yapp.pet.global.exception.common.ExceptionStatus;
+import com.yapp.pet.support.AbstractIntegrationTest;
 import com.yapp.pet.web.club.model.ClubParticipateResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.stream.Collectors;
 
@@ -26,10 +24,8 @@ import static com.yapp.pet.web.club.model.ClubParticipateRejectReason.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-@SpringBootTest
-@Transactional
-@Sql({"/data.sql"})
-public class ClubServiceTest {
+@DisplayName("ClubService Integration Test")
+public class ClubServiceTest extends AbstractIntegrationTest {
 
     @Autowired
     ClubRepository clubRepository;
@@ -193,7 +189,7 @@ public class ClubServiceTest {
     void notParticipateClubByFull() {
         //given
         Long clubId = 8L;
-        Account loginAccount = accountRepository.findById(4L).get();
+        Account loginAccount = accountRepository.findById(6L).get();
 
         //when
         ClubParticipateResponse response = clubParticipationService.participateClubWithPessimisticLock(clubId, loginAccount);

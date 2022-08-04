@@ -89,10 +89,33 @@ dependencies {
 	testImplementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
 	testImplementation group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
 	testImplementation group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
+
+	//testcontainers
+	testImplementation "org.testcontainers:testcontainers:1.17.3"
+	testImplementation "org.testcontainers:junit-jupiter:1.17.3"
+	testImplementation "org.testcontainers:mysql:1.17.3"
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
+def test = tasks.named('test') {
+	useJUnitPlatform() {
+		excludeTags "integrationTest"
+	}
+	testLogging {
+		events "PASSED", "FAILED", "SKIPPED"
+	}
+}
+
+def integrationTest = tasks.register("integrationTest", Test) {
+	useJUnitPlatform {
+		includeTags "integrationTest"
+	}
+	testLogging {
+		events "PASSED", "FAILED", "SKIPPED"
+	}
+}
+
+tasks.named("check") {
+	dependsOn integration
 }
 
 def querydslDir = "$buildDir/generated/querydsl"

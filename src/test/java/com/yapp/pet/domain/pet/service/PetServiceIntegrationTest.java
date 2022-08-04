@@ -6,6 +6,7 @@ import com.yapp.pet.domain.common.PetSizeType;
 import com.yapp.pet.domain.pet.entity.Pet;
 import com.yapp.pet.domain.pet.entity.PetSex;
 import com.yapp.pet.domain.pet.repository.PetRepository;
+import com.yapp.pet.domain.pet_image.PetImageService;
 import com.yapp.pet.domain.pet_tag.PetTagRepository;
 import com.yapp.pet.support.AbstractIntegrationTest;
 import com.yapp.pet.web.pet.model.PetRequest;
@@ -38,6 +39,9 @@ class PetServiceIntegrationTest extends AbstractIntegrationTest {
     @Autowired
     PetTagRepository petTagRepository;
 
+    @Autowired
+    PetImageService petImageService;
+
     @Test
     @DisplayName("addPet() : account와 Pet 정보가 정상적으로 요청될 경우 Pet Image가 없어도 account는 Pet을 저장할 수 있다")
     void testAddPetWithoutPetImage() throws Exception {
@@ -63,7 +67,6 @@ class PetServiceIntegrationTest extends AbstractIntegrationTest {
 
         //then
         assertThat(savedPet.getName()).isEqualTo("name");
-        assertThat(savedPet.getAge().getAge()).isEqualTo("10개월");
         assertThat(savedPet.getAccount()).isEqualTo(account);
         assertThat(savedPet.getTags().size()).isEqualTo(2);
     }
@@ -74,6 +77,10 @@ class PetServiceIntegrationTest extends AbstractIntegrationTest {
         //given
         Account account = accountRepository.findById(1L).get();
 
+        List<MultipartFile> mockImageFiles = createMockImageFiles();
+
+        MultipartFile multipartFile = mockImageFiles.get(0);
+
         PetRequest petRequest = PetRequest.builder()
                                           .name("name")
                                           .year(2021)
@@ -83,7 +90,7 @@ class PetServiceIntegrationTest extends AbstractIntegrationTest {
                                           .neutering(true)
                                           .sizeType(PetSizeType.MEDIUM)
                                           .tags(List.of("활발", "사나움"))
-                                          .imageFile(null)
+                                          .imageFile(multipartFile)
                                           .build();
 
         //when

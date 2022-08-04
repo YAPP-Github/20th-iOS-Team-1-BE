@@ -1,0 +1,11 @@
+delete from account_club; alter table account_club auto_increment = 1;
+delete from interest_categories; alter table interest_categories auto_increment = 1;
+delete from pet_tag; alter table pet_tag auto_increment = 1;
+delete from pet; alter table pet auto_increment = 1;
+delete from comment; alter table comment auto_increment = 1;
+delete from account; alter table account auto_increment = 1;
+delete from account_image; alter table account_image auto_increment = 1;
+delete from token; alter table token auto_increment = 1;
+delete from eligible_pet_size_types; alter table eligible_pet_size_types auto_increment = 1;
+delete from eligible_pet_breeds; alter table eligible_pet_breeds auto_increment = 1;
+delete from club; alter table club auto_increment = 1;

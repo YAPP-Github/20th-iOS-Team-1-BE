@@ -1,14 +1,12 @@
 package com.yapp.pet.domain.pet_image;
 
 import com.yapp.pet.global.util.s3.S3Utils;
+import com.yapp.pet.support.AbstractIntegrationTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -18,10 +16,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-@Transactional
-@Sql({"/data.sql"})
-class PetImageServiceTest {
+@DisplayName("PetImageService Integration Test")
+class PetImageServiceTest extends AbstractIntegrationTest {
 
     @Autowired
     PetImageService petImageService;

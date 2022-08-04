@@ -8,6 +8,7 @@ import com.yapp.pet.domain.club.entity.EligibleSex;
 import com.yapp.pet.domain.club.repository.jpa.ClubRepository;
 import com.yapp.pet.domain.common.Category;
 import com.yapp.pet.domain.common.PetSizeType;
+import com.yapp.pet.support.AbstractIntegrationTest;
 import com.yapp.pet.web.club.model.ClubFindByConditionRequest;
 import com.yapp.pet.web.club.model.ClubFindDetailResponse;
 import com.yapp.pet.web.club.model.ClubFindResponse;
@@ -37,9 +38,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.data.domain.Sort.Direction.ASC;
 
-@SpringBootTest
-@Sql({"/data.sql"})
-class ClubQueryServiceTest {
+@DisplayName("ClubQueryService Integration Test")
+class ClubQueryServiceTest extends AbstractIntegrationTest {
 
     @Autowired
     ClubRepository clubRepository;
@@ -64,61 +64,6 @@ class ClubQueryServiceTest {
                 .sex(AccountSex.MAN)
                 .nickname("test")
                 .build();
-    }
-
-    @Test
-    @Transactional
-    @DisplayName("검색 타입이 카테고리일 경우 카테고리가 같은 모임 중에 사용자로부터 가까운 모임 순서대로 조회한다")
-    void searchingClubByCategory() throws Exception {
-        //given
-        SearchingRequest request = new SearchingRequest();
-
-        request.setCategory(Category.WALK);
-        request.setEligibleBreed("상관없음");
-        request.setPetSizeType(PetSizeType.MEDIUM);
-        request.setEligibleSex(EligibleSex.ALL);
-        request.setParticipateMax(3);
-        request.setParticipateMin(0);
-        request.setStartLatitude(37.504757);
-        request.setStartLongitude(126.980149);
-        String searchingType = "word";
-
-        //when
-        List<SearchingResponse> result = clubQueryService.searchingClub(request);
-
-        //then
-        assertThat(result).extracting("category")
-                          .contains(Category.WALK);
-
-        assertThat(result).extracting("distance")
-                          .isSorted();
-    }
-
-    @Test
-    @Transactional
-    @DisplayName("검색 타입이 검색어일 경우 모임 이름 중 검색어가 포함된 모임 중에 사용자로부터 가까운 모임 순서대로 조회한다")
-    void searchingClubByWord() throws Exception {
-        //given
-        SearchingRequest request = new SearchingRequest();
-
-        request.setSearchingWord("산책");
-        request.setEligibleBreed("상관없음");
-        request.setPetSizeType(PetSizeType.MEDIUM);
-        request.setEligibleSex(EligibleSex.ALL);
-        request.setParticipateMax(3);
-        request.setParticipateMin(0);
-        request.setStartLatitude(37.504757);
-        request.setStartLongitude(126.980149);
-        String searchingType = "category";
-
-        //when
-        List<SearchingResponse> result = clubQueryService.searchingClub(request);
-
-        //then
-        assertThat(result.get(0).getTitle()).contains("산책");
-
-        assertThat(result).extracting("distance")
-                          .isSorted();
     }
 
     @Test

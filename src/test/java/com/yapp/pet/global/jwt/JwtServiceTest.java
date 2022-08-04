@@ -3,6 +3,7 @@ package com.yapp.pet.global.jwt;
 import com.yapp.pet.global.exception.common.ExceptionStatus;
 import com.yapp.pet.global.exception.jwt.ExpiredJwtTokenException;
 import com.yapp.pet.global.exception.jwt.InvalidJwtTokenException;
+import com.yapp.pet.support.AbstractIntegrationTest;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -12,6 +13,7 @@ import io.jsonwebtoken.security.SignatureException;
 import io.jsonwebtoken.security.WeakKeyException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,8 +26,7 @@ import static com.yapp.pet.global.TogaetherConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-@SpringBootTest
-public class JwtServiceTest {
+public class JwtServiceTest extends AbstractIntegrationTest {
 
     @Autowired
     JwtService jwtService;
