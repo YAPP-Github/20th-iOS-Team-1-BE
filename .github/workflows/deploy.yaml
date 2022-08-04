@@ -42,7 +42,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: test environment configuration
-        run: docker-compose up
+        run: docker-compose up -d
 
       - name: do Integration test
         run: TOGATHER_JASYPT_PASSWORD=${{ secrets.TOGATHER_JASYPT_PASSWORD }} ./gradlew clean integrationTest
