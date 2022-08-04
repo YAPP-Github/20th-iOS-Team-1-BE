@@ -4,8 +4,8 @@ services:
     image: mysql:8.0.28
     environment:
       MYSQL_DATABASE: 'pet'
-      MYSQL_USER: 'pet'
-      MYSQL_PASSWORD: 'pet'
+      MYSQL_USER: 'root'
+      MYSQL_PASSWORD: '1234'
       MYSQL_ROOT_PASSWORD: 'root'
     ports:
       - '3306:3306'
