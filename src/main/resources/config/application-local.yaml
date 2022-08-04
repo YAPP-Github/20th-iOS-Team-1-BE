@@ -29,6 +29,7 @@ spring:
         format_sql: true
         show_sql: true
         use_sql_comments: true
+    defer-datasource-initialization: true
     open-in-view: false
 
 jasypt:
