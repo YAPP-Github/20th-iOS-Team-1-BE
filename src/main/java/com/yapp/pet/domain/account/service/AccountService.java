@@ -109,6 +109,8 @@ public class AccountService {
             );
         }
 
+        accountRepository.save(account);
+
         return account.getId();
     }
 
