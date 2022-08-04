@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+  mysql:
+    image: mysql:8.0.28
+    environment:
+      MYSQL_DATABASE: 'pet'
+      MYSQL_USER: 'pet'
+      MYSQL_PASSWORD: 'pet'
+      MYSQL_ROOT_PASSWORD: 'root'
+    ports:
+      - '3306:3306'
+
+  es:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.2
+    environment:
+      discovery.type: single-node
+    ports:
+      - '9200:9200'
+      - '9300:9300'
