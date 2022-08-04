@@ -1,0 +1,1 @@
+1659372296823|153|statement|connection 46|url jdbc:mysql://localhost:3306/pet?characterEncoding=UTF-8&serverTimezone=UCT|insert into comment (content, account_id, club_id, updated_at) values ('댓글1', 1, 1, '2022-05-01')|insert into comment (content, account_id, club_id, updated_at) values ('댓글1', 1, 1, '2022-05-01')
