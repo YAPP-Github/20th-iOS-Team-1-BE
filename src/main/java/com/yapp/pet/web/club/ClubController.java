@@ -109,7 +109,9 @@ public class ClubController {
         ClubParticipateResponse response
                 = clubParticipationService.participateClubWithPessimisticLock(clubId, loginAccount);
 
-        clubService.updateAccountClubDocument(response.getAccountClubId());
+        if (response.isEligible()) {
+            clubService.updateAccountClubDocument(response.getAccountClubId());
+        }
 
         return ResponseEntity.ok(response);
     }
