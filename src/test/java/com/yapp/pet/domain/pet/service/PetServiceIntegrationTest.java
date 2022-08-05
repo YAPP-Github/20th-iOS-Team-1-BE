@@ -10,9 +10,9 @@ import com.yapp.pet.domain.pet_image.PetImageService;
 import com.yapp.pet.domain.pet_tag.PetTagRepository;
 import com.yapp.pet.support.AbstractIntegrationTest;
 import com.yapp.pet.web.pet.model.PetRequest;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,22 +25,15 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("PerService Integration Test")
+@RequiredArgsConstructor
 class PetServiceIntegrationTest extends AbstractIntegrationTest {
 
-    @Autowired
-    PetRepository petRepository;
+    private final PetService petService;
+    private final PetImageService petImageService;
 
-    @Autowired
-    AccountRepository accountRepository;
-
-    @Autowired
-    PetService petService;
-
-    @Autowired
-    PetTagRepository petTagRepository;
-
-    @Autowired
-    PetImageService petImageService;
+    private final PetRepository petRepository;
+    private final AccountRepository accountRepository;
+    private final PetTagRepository petTagRepository;
 
     @Test
     @DisplayName("addPet() : account와 Pet 정보가 정상적으로 요청될 경우 Pet Image가 없어도 account는 Pet을 저장할 수 있다")

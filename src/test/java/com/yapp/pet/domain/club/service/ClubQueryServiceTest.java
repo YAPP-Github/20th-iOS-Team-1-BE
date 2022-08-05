@@ -12,6 +12,7 @@ import com.yapp.pet.support.AbstractIntegrationTest;
 import com.yapp.pet.web.club.model.ClubFindByConditionRequest;
 import com.yapp.pet.web.club.model.ClubFindDetailResponse;
 import com.yapp.pet.web.club.model.ClubFindResponse;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,16 +40,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.data.domain.Sort.Direction.ASC;
 
 @DisplayName("ClubQueryService Integration Test")
+@RequiredArgsConstructor
 class ClubQueryServiceTest extends AbstractIntegrationTest {
 
-    @Autowired
-    ClubRepository clubRepository;
+    private final ClubQueryService clubQueryService;
 
-    @Autowired
-    AccountRepository accountRepository;
-
-    @Autowired
-    ClubQueryService clubQueryService;
+    private final ClubRepository clubRepository;
+    private final AccountRepository accountRepository;
 
     Account accountWithTokenAndImage;
     Account accountWithTokenWithoutImage;

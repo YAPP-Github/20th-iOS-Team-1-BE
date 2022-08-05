@@ -14,12 +14,9 @@ import com.yapp.pet.domain.club.entity.ClubStatus;
 import com.yapp.pet.domain.club.entity.EligibleSex;
 import com.yapp.pet.domain.common.PetSizeType;
 import com.yapp.pet.support.AbstractIntegrationTest;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
@@ -36,16 +33,10 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("ClubRepositoryImpl Integration Test")
+@RequiredArgsConstructor
 class ClubRepositoryImplTest extends AbstractIntegrationTest {
 
-    @Autowired
-    JPAQueryFactory queryFactory;
-
-    @Autowired
-    EntityManager em;
-
-    @Autowired
-    ClubRepository clubRepository;
+    private final JPAQueryFactory queryFactory;
 
     @Test
     @DisplayName("검색어를 통해 club을 검색할 때, club의 title에 검색어가 포함된 club이 조회된다")
