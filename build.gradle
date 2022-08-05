@@ -85,6 +85,8 @@ dependencies {
 	// test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
 
 	testImplementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
 	testImplementation group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
