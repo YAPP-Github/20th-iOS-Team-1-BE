@@ -11,13 +11,11 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import io.jsonwebtoken.security.WeakKeyException;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.security.Key;
 import java.util.Date;
@@ -26,10 +24,11 @@ import static com.yapp.pet.global.TogaetherConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
+@DisplayName("JwtService Integration Test")
+@RequiredArgsConstructor
 public class JwtServiceTest extends AbstractIntegrationTest {
 
-    @Autowired
-    JwtService jwtService;
+    private final JwtService jwtService;
 
     @Value("${jwt.token.secret}")
     String secret;

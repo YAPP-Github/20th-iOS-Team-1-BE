@@ -2,17 +2,17 @@ package com.yapp.pet.domain.club;
 
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.account.repository.AccountRepository;
-import com.yapp.pet.domain.accountclub.AccountClubRepository;
 import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.club.repository.jpa.ClubRepository;
 import com.yapp.pet.domain.club.service.ClubParticipationService;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
@@ -27,20 +27,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Sql(value = {"/sql/clean-up.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @Tag("integrationTest")
 @ActiveProfiles("test")
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+@RequiredArgsConstructor
 @DisplayName("ClubParticipationConcurrency Integration Test")
 public class ClubParticipationConcurrencyTest {
 
-    @Autowired
-    ClubParticipationService clubService;
+    private final ClubParticipationService clubService;
 
-    @Autowired
-    AccountRepository accountRepository;
-
-    @Autowired
-    ClubRepository clubRepository;
-
-    @Autowired
-    AccountClubRepository accountClubRepository;
+    private final AccountRepository accountRepository;
+    private final ClubRepository clubRepository;
 
     Account account;
     final Long CLUB_ID = 1L;

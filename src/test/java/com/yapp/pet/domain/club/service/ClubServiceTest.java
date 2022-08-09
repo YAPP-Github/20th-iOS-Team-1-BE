@@ -13,10 +13,10 @@ import com.yapp.pet.global.exception.club.NotParticipatingClubException;
 import com.yapp.pet.global.exception.common.ExceptionStatus;
 import com.yapp.pet.support.AbstractIntegrationTest;
 import com.yapp.pet.web.club.model.ClubParticipateResponse;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.stream.Collectors;
 
@@ -25,25 +25,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @DisplayName("ClubService Integration Test")
+@RequiredArgsConstructor
 public class ClubServiceTest extends AbstractIntegrationTest {
 
-    @Autowired
-    ClubRepository clubRepository;
+    private final ClubService clubService;
+    private final ClubParticipationService clubParticipationService;
 
-    @Autowired
-    AccountRepository accountRepository;
-
-    @Autowired
-    AccountClubRepository accountClubRepository;
-
-    @Autowired
-    CommentRepository commentRepository;
-
-    @Autowired
-    ClubService clubService;
-
-    @Autowired
-    ClubParticipationService clubParticipationService;
+    private final ClubRepository clubRepository;
+    private final AccountRepository accountRepository;
+    private final AccountClubRepository accountClubRepository;
+    private final CommentRepository commentRepository;
 
     Account accountWithTokenAndImage;
     Account accountWithTokenWithoutImage;

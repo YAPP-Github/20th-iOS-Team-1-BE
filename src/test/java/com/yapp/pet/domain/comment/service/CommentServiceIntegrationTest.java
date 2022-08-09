@@ -3,29 +3,22 @@ package com.yapp.pet.domain.comment.service;
 import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.account.repository.AccountRepository;
 import com.yapp.pet.domain.comment.CommentRepository;
-import com.yapp.pet.domain.pet.repository.PetRepository;
 import com.yapp.pet.support.AbstractIntegrationTest;
 import com.yapp.pet.web.comment.model.CommentRequest;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("CommentService Integration Test")
+@RequiredArgsConstructor
 public class CommentServiceIntegrationTest extends AbstractIntegrationTest {
 
-    @Autowired
-    CommentRepository commentRepository;
+    private final CommentService commentService;
 
-    @Autowired
-    PetRepository petRepository;
-
-    @Autowired
-    CommentService commentService;
-
-    @Autowired
-    AccountRepository accountRepository;
+    private final CommentRepository commentRepository;
+    private final  AccountRepository accountRepository;
 
     @Test
     @DisplayName("addComment() : 유저 정보, Club Id, Comment 내용을 정상적으로 요청할 경우 Comment가 생성된다")
