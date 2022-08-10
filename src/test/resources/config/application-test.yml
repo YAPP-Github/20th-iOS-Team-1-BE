@@ -3,8 +3,19 @@ spring:
     init:
       mode: always
   datasource:
-    url: jdbc:tc:mysql:8.0.28:///test?TC_INITSCRIPT=file:src/test/resources/sql/schema.sql
-    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    primary:
+      hikari:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+        jdbc-url: jdbc:tc:mysql:8.0.28:///test?TC_INITSCRIPT=file:src/test/resources/sql/schema.sql
+    secondary:
+      hikari:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+        jdbc-url: jdbc:tc:mysql:8.0.28:///test?TC_INITSCRIPT=file:src/test/resources/sql/schema.sql
+    hikari:
+      pool-name: Hikari
+      auto-commit: false
   servlet:
     multipart:
       max-file-size: 100MB
