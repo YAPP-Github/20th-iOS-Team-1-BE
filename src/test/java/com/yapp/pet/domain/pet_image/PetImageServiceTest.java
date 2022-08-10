@@ -2,9 +2,9 @@ package com.yapp.pet.domain.pet_image;
 
 import com.yapp.pet.global.util.s3.S3Utils;
 import com.yapp.pet.support.AbstractIntegrationTest;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,13 +17,11 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("PetImageService Integration Test")
+@RequiredArgsConstructor
 class PetImageServiceTest extends AbstractIntegrationTest {
 
-    @Autowired
-    PetImageService petImageService;
-
-    @Autowired
-    S3Utils s3Utils;
+    private final PetImageService petImageService;
+    private final S3Utils s3Utils;
 
     List<MultipartFile> createMockImageFiles() {
         List<MultipartFile> mockFiles = new ArrayList<>();

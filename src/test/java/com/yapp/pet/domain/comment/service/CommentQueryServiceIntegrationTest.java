@@ -1,13 +1,11 @@
 package com.yapp.pet.domain.comment.service;
 
 
-import com.yapp.pet.domain.comment.CommentRepository;
-import com.yapp.pet.domain.pet.repository.PetRepository;
 import com.yapp.pet.support.AbstractIntegrationTest;
 import com.yapp.pet.web.comment.model.CommentResponse;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -16,20 +14,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("CommentQueryService Integration Test")
+@RequiredArgsConstructor
 public class CommentQueryServiceIntegrationTest extends AbstractIntegrationTest {
 
-    @Autowired
-    CommentRepository commentRepository;
-
-    @Autowired
-    PetRepository petRepository;
-
-    @Autowired
-    CommentQueryService commentQueryService;
+    private final CommentQueryService commentQueryService;
 
     @Test
     @DisplayName("findComment() : club Id가 주어질 경우 해당 클럽의 모든 댓글들을 조회할 수 있다")
-    void testFindComment() throws Exception {
+    void testFindComment() {
         //given
         long clubId = 1L;
 

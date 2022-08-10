@@ -9,8 +9,6 @@ import com.yapp.pet.domain.account_image.AccountImageRepository;
 import com.yapp.pet.domain.common.Category;
 import com.yapp.pet.domain.pet.entity.PetSex;
 import com.yapp.pet.domain.token.entity.Social;
-import com.yapp.pet.domain.token.repository.TokenRepository;
-import com.yapp.pet.global.jwt.JwtService;
 import com.yapp.pet.global.jwt.TokenType;
 import com.yapp.pet.global.util.s3.S3Utils;
 import com.yapp.pet.support.AbstractIntegrationTest;
@@ -23,17 +21,14 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -49,28 +44,16 @@ import static com.yapp.pet.web.account.model.MyPageResponse.PetInfoResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("AccountService Integration Test")
+@RequiredArgsConstructor
 public class AccountServiceTest extends AbstractIntegrationTest {
 
-    @Autowired
-    AccountService accountService;
+    private final AccountService accountService;
+    private final AccountQueryService accountQueryService;
 
-    @Autowired
-    AccountQueryService accountQueryService;
+    private final AccountRepository accountRepository;
+    private final AccountImageRepository accountImageRepository;
 
-    @Autowired
-    JwtService jwtService;
-
-    @Autowired
-    TokenRepository tokenRepository;
-
-    @Autowired
-    AccountRepository accountRepository;
-
-    @Autowired
-    AccountImageRepository accountImageRepository;
-
-    @Autowired
-    S3Utils s3Utils;
+    private final S3Utils s3Utils;
 
     @Value("${jwt.token.secret}")
     String secret;
