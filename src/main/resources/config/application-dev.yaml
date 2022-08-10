@@ -1,9 +1,22 @@
 spring:
   datasource:
-    url: ENC(zwJFK8HCOJbOI+PMINipGtjyA8QrfgSebqpEx84L/IsZtceoeff+Wk/cksUiesNLmn86NjlZge7YD9kZrGJFo5KIKYcuxvcyfhQeyjMNLRtZ+G0Ef7dNLDEoJiKPkskGcPTOwjZR2Pmy6UWShrNg8g==)
-    username: ENC(OTUfXu9X9QBk4lG0mm19+A==)
-    password: ENC(8d+CPaIyBQOntW/l/k6WlE9NqDqx5eoR)
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    primary:
+      hikari:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        username: ENC(k9HvXvq0ejpgRDN8hTCAbw==)
+        password: ENC(v4QCGkCugrZgtG5jCtpv1FeOliW7aPk7)
+        jdbc-url: ENC(kl+In8I7PIjG/DCtzDCoHwTqqTCUkI93MJY1KZ4pLoHMqLI2w9j6UCgbITRHPY2NnqpRwZ3tje4pHyXAQDOTuKSLOvccr8Aqi40VXsMQWud6ZgPFhThta516MbVxdVFQpF7BDnPPi0Y6/m5yKeMu9CvQxx92AYngwWBdDWTsqAolemNQv27Ol2FbIlAKgQFi)
+    secondary:
+      hikari:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        username: ENC(k9HvXvq0ejpgRDN8hTCAbw==)
+        password: ENC(v4QCGkCugrZgtG5jCtpv1FeOliW7aPk7)
+        jdbc-url: ENC(jn/yj4U8HpOKeZfZtrUGdseTZ3h/u9o5FTRyQ9DEqzL7hd+xWQO8UUJCwtPNlV4ka1/E5by+cwUfN8jxss+kQgDq6DYioNoSa+us5uyGe26GSzqjuIbsTCWssudhyA3QWQKHXF8+5PZAb3/+v7f7QXvzmEBoTRVv1ILpqdLe88RcvgWa7YFWeRWJCa3b6azZcnf26dtRKQM=)
+    hikari:
+      pool-name: Hikari
+      auto-commit: false
   servlet:
     multipart:
       max-file-size: 100MB
@@ -12,7 +25,6 @@ spring:
   redis:
     host: ENC(IZFO1niFTPUsQI0SmRYmo0ycPEVaLVLW)
     port: 6379
-
   jpa:
     hibernate:
       ddl-auto: update
