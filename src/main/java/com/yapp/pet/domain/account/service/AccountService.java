@@ -5,7 +5,9 @@ import com.yapp.pet.domain.account.entity.Account;
 import com.yapp.pet.domain.account.repository.AccountRepository;
 import com.yapp.pet.domain.account_image.AccountImage;
 import com.yapp.pet.domain.account_image.AccountImageService;
+import com.yapp.pet.domain.accountclub.AccountClub;
 import com.yapp.pet.domain.accountclub.AccountClubRepository;
+import com.yapp.pet.domain.club.service.ClubService;
 import com.yapp.pet.domain.comment.service.CommentService;
 import com.yapp.pet.domain.pet.service.PetService;
 import com.yapp.pet.domain.token.entity.Social;
@@ -29,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -52,6 +55,8 @@ public class AccountService {
     private final AccountClubRepository accountClubRepository;
 
     private final ApplicationEventPublisher eventPublisher;
+
+    private final ClubService clubService;
 
     public SignInResponse signInFromApple(AppleRequest appleRequest, Social social) {
         ApplePublicKeyResponse response = appleClient.getApplePublicKey();
@@ -141,7 +146,11 @@ public class AccountService {
 
         petService.deleteAllPetInfo(account);
 
-        commentService.deleteAllComment(account);
+        accountClubRepository.findAccountClubByAccountId(account.getId())
+                             .stream()
+                             .map(AccountClub::getClub)
+                             .collect(Collectors.toList())
+                             .forEach(c -> clubService.deleteClub(c.getId()));
 
         accountClubRepository.deleteAccountClubsByAccountId(account.getId());
 

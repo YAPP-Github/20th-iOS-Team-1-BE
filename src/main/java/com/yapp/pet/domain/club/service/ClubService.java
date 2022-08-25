@@ -99,10 +99,10 @@ public class ClubService {
             throw new NotLeaderException();
         }
 
-        commentRepository.deleteAllInBatch(
-                commentRepository.findCommentByClubId(findClub.getId())
-        );
-        accountClubRepository.deleteAllInBatch(findClub.getAccountClubs());
+        commentRepository.deleteCommentByClubId(findClub.getId());
+
+        accountClubRepository.deleteAccountClubsByClubId(findClub.getId());
+
         clubRepository.delete(findClub);
 
         return findClub.getId();
