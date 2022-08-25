@@ -48,6 +48,7 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom{
                                                   rangeRequest.getUpperLeftLongitude(),
                                                   rangeRequest.getBottomRightLatitude(),
                                                   rangeRequest.getBottomRightLongitude()))
+                           .where(club.status.eq(ClubStatus.AVAILABLE))
                            .fetch();
     }
 
