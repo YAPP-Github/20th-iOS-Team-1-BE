@@ -3,23 +3,27 @@ spring:
     activate:
       on-profile: "local"
   datasource:
-    primary:
-      hikari:
-        type: com.zaxxer.hikari.HikariDataSource
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        username: root
-        password: 1234
-        jdbc-url: jdbc:mysql://localhost:3306/pet?characterEncoding=UTF-8&serverTimezone=UCT
-    secondary:
-      hikari:
-        type: com.zaxxer.hikari.HikariDataSource
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        username: root
-        password: 1234
-        jdbc-url: jdbc:mysql://localhost:3306/pet?characterEncoding=UTF-8&serverTimezone=UCT
-    hikari:
-      pool-name: Hikari
-      auto-commit: false
+    url: jdbc:mysql://localhost:3306/pet?characterEncoding=UTF-8&serverTimezone=UCT
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#    primary:
+#      hikari:
+#        type: com.zaxxer.hikari.HikariDataSource
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+#        username: root
+#        password: 1234
+#        jdbc-url: jdbc:mysql://localhost:3306/pet?characterEncoding=UTF-8&serverTimezone=UCT
+#    secondary:
+#      hikari:
+#        type: com.zaxxer.hikari.HikariDataSource
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+#        username: root
+#        password: 1234
+#        jdbc-url: jdbc:mysql://localhost:3306/pet?characterEncoding=UTF-8&serverTimezone=UCT
+#    hikari:
+#      pool-name: Hikari
+#      auto-commit: false
   servlet:
     multipart:
       max-file-size: 100MB
