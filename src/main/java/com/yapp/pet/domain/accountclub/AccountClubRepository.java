@@ -13,8 +13,16 @@ public interface AccountClubRepository extends JpaRepository<AccountClub, Long> 
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query("delete from AccountClub ac where ac.account.id = :id")
-    int deleteAccountClubsByAccountId(@Param("id") long accountId);
+    void deleteAccountClubsByAccountId(@Param("id") long accountId);
+
+    @Modifying
+    @Transactional
+    @Query("delete from AccountClub ac where ac.club.id = :id")
+    void deleteAccountClubsByClubId(@Param("id") long clubId);
 
     @Query("select ac from AccountClub ac where ac.club.id = :clubId")
     List<AccountClub> findAccountClubByClubId(@Param("clubId") Long clubId);
+
+    @Query("select ac from AccountClub  ac where ac.account.id = :accountId")
+    List<AccountClub> findAccountClubByAccountId(@Param("accountId") Long accountId);
 }

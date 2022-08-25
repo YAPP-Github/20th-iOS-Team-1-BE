@@ -40,8 +40,4 @@ public class CommentService {
 
         return savedComment.getId();
     }
-
-    public void deleteAllComment(Account account) {
-        commentRepository.deleteCommentByAccountId(account.getId());
-    }
 }

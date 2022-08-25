@@ -14,8 +14,8 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @EntityGraph(attributePaths = {"account", "club"})
     List<Comment> findCommentByClubId(long clubId);
 
-    @Modifying(clearAutomatically = true)
+    @Modifying
     @Transactional
-    @Query("delete from Comment c where c.account.id = :id")
-    int deleteCommentByAccountId(@Param("id") long id);
+    @Query("delete from Comment c where c.club.id = :id")
+    void deleteCommentByClubId(@Param("id") long id);
 }
