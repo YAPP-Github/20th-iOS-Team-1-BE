@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface AccountClubRepository extends JpaRepository<AccountClub, Long> {
 
-    @Modifying(clearAutomatically = true)
+    @Modifying
     @Transactional
     @Query("delete from AccountClub ac where ac.account.id = :id")
     void deleteAccountClubsByAccountId(@Param("id") long accountId);
