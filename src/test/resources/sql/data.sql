@@ -61,7 +61,7 @@ values ('PLAY_GROUND', 'description', 'ALL', '2022-10-05 09:00:00', 37.510033, 1
 insert into club (category, description, eligible_sex, end_date, latitude, longitude, maximum_people, meeting_place, start_date, status, title, participants)
 values ('PLAY_GROUND', 'description', 'ALL', '2022-10-05 09:00:00', 37.510033, 126.981571, 1, 'ㅁㄴㅇ', '2022-12-01', 'PERSONNEL_FULL', '수다', 1);
 
--- 1번 account는 6개의 club(1,4,5,6,7,8)의 방장임
+-- 1번 account는 6개의 club(1, 4, 5, 6, 7)의 방장임
 insert into account_club (leader, account_id, club_id) values (true, 1, 1);
 insert into account_club (leader, account_id, club_id) values (false , 2, 1);
 insert into account_club (leader, account_id, club_id) values (true, 3, 2);

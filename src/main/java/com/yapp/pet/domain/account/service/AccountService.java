@@ -7,8 +7,9 @@ import com.yapp.pet.domain.account_image.AccountImage;
 import com.yapp.pet.domain.account_image.AccountImageService;
 import com.yapp.pet.domain.accountclub.AccountClub;
 import com.yapp.pet.domain.accountclub.AccountClubRepository;
+import com.yapp.pet.domain.club.entity.Club;
 import com.yapp.pet.domain.club.service.ClubService;
-import com.yapp.pet.domain.comment.service.CommentService;
+import com.yapp.pet.domain.comment.CommentRepository;
 import com.yapp.pet.domain.pet.service.PetService;
 import com.yapp.pet.domain.token.entity.Social;
 import com.yapp.pet.domain.token.entity.Token;
@@ -31,7 +32,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -51,7 +51,7 @@ public class AccountService {
     private final AppleClient appleClient;
 
     private final PetService petService;
-    private final CommentService commentService;
+    private final CommentRepository commentRepository;
     private final AccountClubRepository accountClubRepository;
 
     private final ApplicationEventPublisher eventPublisher;
@@ -69,7 +69,7 @@ public class AccountService {
     public SignInResponse signInFromKakao(KakaoTokenResponse kakaoTokenResponse, Social social) {
         String uniqueIdBySocial = jwtService.getSubject(kakaoTokenResponse.getIdToken());
 
-        return signIn(social, uniqueIdBySocial,  kakaoTokenResponse.getEmail());
+        return signIn(social, uniqueIdBySocial, kakaoTokenResponse.getEmail());
     }
 
     public SignInResponse signIn(Social social, String uniqueIdBySocial, String email) {
@@ -138,7 +138,7 @@ public class AccountService {
         return account.getId();
     }
 
-    private boolean hasImageFile(MultipartFile imageFile){
+    private boolean hasImageFile(MultipartFile imageFile) {
         return imageFile != null && !imageFile.isEmpty();
     }
 
@@ -149,8 +149,10 @@ public class AccountService {
         accountClubRepository.findAccountClubByAccountId(account.getId())
                              .stream()
                              .map(AccountClub::getClub)
-                             .collect(Collectors.toList())
-                             .forEach(c -> clubService.deleteClub(c.getId()));
+                             .filter(club -> isLeader(club, account))
+                             .forEach(club -> clubService.deleteClub(club.getId(), account));
+
+        commentRepository.deleteCommentByAccountId(account.getId());
 
         accountClubRepository.deleteAccountClubsByAccountId(account.getId());
 
@@ -159,5 +161,11 @@ public class AccountService {
         accountRepository.delete(account);
 
         return account.getId();
+    }
+
+    private boolean isLeader(Club findClub, Account loginAccount) {
+        return findClub.getAccountClubs().stream()
+                       .filter(AccountClub::isLeader)
+                       .anyMatch(ac -> ac.getAccount().equals(loginAccount));
     }
 }
