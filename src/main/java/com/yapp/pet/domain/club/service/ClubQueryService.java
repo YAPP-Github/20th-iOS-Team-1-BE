@@ -74,7 +74,7 @@ public class ClubQueryService {
     }
 
     public SearchingSimpleClubResponse searchingSimpleClub(SearchingSimpleClubRequest simpleRequest, Long clubId) {
-        Club savedClub = clubRepository.findByIdWrapper(clubId);
+        Club savedClub = clubRepository.findClubDetailById(clubId).orElseThrow(EntityNotFoundException::new);
 
         return new SearchingSimpleClubResponse(savedClub, savedClub.getAccountClubs().size(),
                                                simpleRequest.getUserLatitude(), simpleRequest.getUserLongitude());
