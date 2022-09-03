@@ -147,6 +147,12 @@ public class AccountService {
         petService.deleteAllPetInfo(account);
 
         accountClubRepository.findAccountClubByAccountId(account.getId())
+                .stream()
+                .map(AccountClub::getClub)
+                .filter(club -> !isLeader(club, account))
+                .forEach(Club::subtractPerson);
+
+        accountClubRepository.findAccountClubByAccountId(account.getId())
                              .stream()
                              .map(AccountClub::getClub)
                              .filter(club -> isLeader(club, account))
